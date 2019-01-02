@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<script type="text/javascript" src="js/styleMaps.js"></script>
+<style type="text/css">
+.tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+.mapDiv{width:100%;height:60%;}
+.menu {position: fixed;top:125px;left: 260px;z-index: 100;margin: 20px;}
+.mapMenu{position:fixed;right:10px;bottom:10px;z-index:9999;border-radius:4px;background-color:#FFF;}
+#container_map{height:100%;width:100%;}
+</style>
+
+<script type="text/javascript">
+	function report_index(index,fireId) {
+        $("#index_main_context").load("lqz_fire_details.html");
+        $("#index_titel").html("火情上报详情");
+        localStorage.setItem("index_xq",index);
+        localStorage.setItem("fireId_xq",fireId);
+        //隐藏地图
+        stopInterval();
+    };
+	//地图表格切换
+	$("#tabModel").click(function(){
+	    if( $(this).val()=="切换成列表模式" ){
+			$("#container_map").hide();
+			$(".table_show").show();
+			$(".button-group").hide();
+			$(".menu").css({ "position": "fixed", "top": "125px", "left": "260px" });
+			$(this).val("切换成地图模式");
+		}else{
+			$("#container_map").show();
+         	$(".table_show").hide();
+         	$(".button-group").show();
+			 $(".menu").css({ "position": "fixed", "top": "125px", "left": "260px" });
+			$(this).val("切换成列表模式");
+		}
+	});
+	var infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(10, -20)
+    });
+    //基本地图加载
+	var map = new AMap.Map("container_map", {
+	    resizeEnable: true,
+	    zoom:8
+	});
+    var type= new AMap.MapType({
+        defaultType:1,
+        showRoad:true
+    });
+    map.addControl(type);
+	callback1();
+    addBeiJing();
+	function search_btn_fire() {
+		
+		var region=$("#city_sx").val()==''||$("#city_sx").val()==undefined?$("#hot_city").val():($("#area").val()==''||$("#area").val()==undefined?$("#city_sx").val():$("#area").val());
+		var fire_level = $("#frie_type").val();
+		var fire_type = $("#fireKind").val();
+		var start_time = $("#a_start_time_fire").val();
+		var end_time = $("#a_end_time_fire").val();
+	    sendAjax({
+            "url":"fire/fire/getFireUploadList",
+            "data":{"current_page": 1,"per_page":20,"region":region,"fire_level":fire_level,"fire_type":fire_type,"start_time":start_time,"end_time":end_time},
+            "callback":function(result){
+
+				if (result.code=="s_ok") {
+					map.clearMap();var num='';
+					if (result.var.total==0) {
+						layer.msg('查询数据为空');
+						$("#table_tbody").html('');$("#data_total").html("找到：0条记录");
+						$(".count_total").html(0);num=1;
+					}else{
+						$("#data_total").html("找到："+result.var.total+"条记录");
+						$(".count_total").html(result.var.total);
+						$("#table_tbody").html("");num=result.var.total;
+						var data=result.var.data;
+                        for(var i = 0;i<data.length;i++){
+                            if (data[i].status=="0") {
+                                var images="fired.gif"
+                            }else if (data[i].status=="1") {
+                                var images="fireing.gif"
+                            }else {
+                                var images="zz.gif"
+                            }
+                                var lat = data[i].position;
+                                var marker = new AMap.Marker({
+                                    position:lat.split(";")[0].split(","),
+                                    title: data[i].id,
+                                    icon:'img/'+images,
+                                    map: map
+                                });
+                                marker.setLabel({
+                                    offset: new AMap.Pixel(-60, -22),
+                                    content: data[i].region_name+ "；"+data[i].happen_time.substring(0,16)
+                                });
+                                markerClick(marker,data[i]);
+                                //加入表格
+                                $("#table_tbody").append("<tr class=\"cen\"><td>"
+                                    +'HZ'+data[i].id+"</td><td>"+data[i].region_name+"</td><td>" + fireMaps.get(data[i].fire_level) + "</td><td>" + fireTypeMaps.get(data[i].fire_type) + "</td><td>"+data[i].fire_area
+                                    +"</td><td>"+data[i].happen_time+"</td><td>"+data[i].name
+                                    +"</td><td>"+fireStatus.get(data[i].status)+"</td><td><a onclick=\"report_index("+data[i].status+","+data[i].id+")\" href='javascript:;'>"+'详情'
+                                    +"</a><a class=\"delTable\" onclick='toRemove("+data[i].id+");' style=\"margin-left:10px\">删除</a></td></tr>");
+							};
+							var userLevel = sessionStorage.getItem("userLevel");
+            				if (userLevel=="1") {
+                				$(".delTable").remove();
+            				}
+						$(".pagination").createPage({
+							pageCount:Math.ceil(num/20),
+							current:1,
+							backFn:function(p){
+								sendAjax({
+									"url":"fire/fire/getFireUploadList",
+									"data":{"current_page": p,"per_page":20,"region":$("#city_sx").val()==''||$("#city_sx").val()==undefined?$("#hot_city").val():($("#area").val()==''||$("#area").val()==undefined?$("#city_sx").val():$("#area").val()),
+									"fire_level":fire_level,"fire_type":fire_type,"start_time":start_time,"end_time":end_time},
+									"callback":function(result){
+										$("#table_tbody").html('');
+										$(".count_total").html(result.var.total);
+										var data=result.var.data;
+										for(var i = 0;i<data.length;i++){
+											if (data[i].status=="0") {
+											    var images="fireing.gif"
+											}else if (data[i].status=="1") {
+											    var images="firehot.png"
+											}else {
+											    var images="fired.gif"
+											}
+											var lat = data[i].position;
+											var marker = new AMap.Marker({
+												position:lat.split(";")[0].split(","),
+												title: data[i].id,
+												icon:'img/'+images,
+												map: map
+											});
+											marker.setLabel({
+												offset: new AMap.Pixel(-60, -22),
+												content: data[i].region_name+ "；"+data[i].happen_time.substring(0,16)
+											});
+											markerClick(marker,data[i]);
+											//加入表格
+											$("#table_tbody").append("<tr class=\"cen\"><td>"
+											+'HZ'+data[i].id+"</td><td>"+data[i].region_name+"</td><td>" + fireMaps.get(data[i].fire_level) + "</td><td>" + fireTypeMaps.get(data[i].fire_type) + "</td><td>"+data[i].fire_area
+											+"</td><td>"+data[i].happen_time+"</td><td>"+data[i].name
+											+"</td><td>"+fireStatus.get(data[i].status)+"</td><td><a onclick=\"report_index("+data[i].status+","+data[i].id+")\" href='javascript:;'>"+'详情'
+											+"</a><a class=\"delTable\" onclick='toRemove("+data[i].id+");' style=\"margin-left:10px\">删除</a></td></tr>");
+										}
+										var userLevel = sessionStorage.getItem("userLevel");
+            							if (userLevel=="1") {
+                							$(".delTable").remove();
+            							}
+									}
+								})
+								
+							}
+						});
+					}
+				}else  if(result.code=="error"){
+                    $("#data_total").html("找到：0条记录");
+				}
+			},
+		});
+	}
+	search_btn_fire();
+	$("#fire_table_output").click(function(){
+		method5("fire_table");
+	});
+	hidenTimeChoose();
+	// 点击弹框
+	function markerClick(marker,data){
+		var info = [];
+		info.push("<div style=\"width:360px;font-family:'微软雅黑' \"><div><span style=\"color:#262626;font-size:14px;\">火灾编号 : </span>"+'HZ'+data.id+"<span style=\"color:#262626;font-size:14px;margin-left:20px\">&#12288&#12288区域 : </span>"+data.region_name+"</div>");   
+		info.push("<div><span style=\"color:#262626;font-size:14px\">&#12288&#12288等级 : </span>"+fireMaps.get(data.fire_level)+"<span style=\"color:#262626;font-size:14px;margin-left:20px\">火灾发生时间 : </span>"+data.happen_time+"</div> ");    
+		info.push("<div><span style=\"color:#262626;font-size:14px\">&#12288上报人 : </span>"+data.name+"<span style=\"color:#262626;font-size:14px;margin-left:20px\">火灾状态 : </span>"+fireStatus.get(data.status)+"</div> ");
+		info.push("<div><span style=\"color:#262626;font-size:14px\">&#12288上报人电话: </span>"+data.tel+"</div> ");
+		info.push("<div style=\"text-align:center\"><button style=\"width:100px;height:30px;border:none;border-radius:3px;color:#fff;background:#01dacf\" onclick=\"report_index("+data.status+","+data.id+")\">详情</button></div>")   
+		info.push("</div>");
+		marker.content = info.join("<br/>")	
+		AMap.event.addListener(marker, 'click', function() {
+			infoWindow.setContent(marker.content);
+			infoWindow.open(map, marker.getPosition());
+		});
+	}
+	/**
+	* 显示火灾的图片
+	*/
+	function showImg(obj){
+		var img = $(obj).attr("id");
+		var imgs = img.split(",");
+		$("#img_1").attr("src","Image/"+imgs[0]);
+  		$("#img_2").attr("src","Image/"+imgs[1]);
+  		$("#img_3").attr("src","Image/"+imgs[2]);
+  		$("#img_4").attr("src","Image/"+imgs[3]);
+		//弹出照片窗口
+		$('#animal_mask .dialog,#animal_mask .mask').show();
+  		$('#animal_mask .dialog').css('box-shadow', 'none');
+	}
+	function toCenter(obj){
+		map.setZoomAndCenter(15,obj.innerHTML.split(","));
+	}
+	//删除
+	function toRemove(fireid){
+		layer.confirm('确定要删除吗？',{
+            btn: ['确定','取消'],
+            skin: 'layui-layer-molv',
+            title:'提示',
+            btnAlign: 'c'
+        }, function(){
+            sendAjax({
+            "url":"fire/fire/delFire",
+            "data":{"id": Number(fireid)},"callback":function(element){
+                if (element.code=="s_ok"){
+                    layer.closeAll('page');
+                    layer.msg('删除成功');
+					search_btn_fire();
+                }else{
+                    layer.msg(element.var);
+                }
+            },
+            error:function(e){
+                layer.alert("网络不好，请刷新试试！", {
+                skin: 'layui-layer-molv' 
+                ,closeBtn: 0,anim: 4,btnAlign: 'c'
+                });
+            }
+            });
+        }, function(){
+            layer.closeAll();
+        });
+	}
+	function showTimeChoose(){
+		$("#start_time_fire").show();
+		$("#end_time_fire").show();
+	}
+	function hidenTimeChoose(){
+		$("#start_time_fire").hide();
+		$("#end_time_fire").hide();
+	}
+	function seletChange(){
+		var time = $("#timeAreaSelect_fire").val();
+		if(time == "3"){
+			showTimeChoose();
+		}else{
+			hidenTimeChoose();
+		}
+	}
+</script>
+</head>
+<body>
+	<div class="tableDiv_fire">
+		 <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+              区域：	
+      			<select id='hot_city' onchange="callback(value,this)" style="width:80px;">
+                    <!--<option value="43">省</option>
+					<option value="4301">长沙市</option>
+					<option value="4302">株洲市</option>
+					<option value="4303">湘潭市</option>
+					<option value="4304">衡阳市</option>
+					<option value="4305">邵阳市</option>
+					<option value="4306">岳阳市</option>
+					<option value="4307">常德市</option>
+					<option value="4308">张家界市</option>
+					<option value="4309">益阳市</option>
+					<option value="4311">永州市</option>
+					<option value="4310">郴州市</option>
+					<option value="4312">怀化市</option>
+					<option value="4313">娄底市</option>
+					<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id="city_sx" style="width:80px;" onchange="callback(value,this)" ></select>
+                <select id="area" style="width:80px;"></select>
+                种类：<select style="width:80px" id="fireKind">
+                	<option></option>
+					<option value="0">地表火</option>
+					<option value="1">林冠火</option>
+					<option value="2">地下火</option>
+				</select>
+				等级：<select style="width:80px" id="frie_type">
+						<option></option>
+						<option value="0">一般</option>
+                       	<option value="1">较大</option>
+                       	<option value="2">重大</option>
+                       	<option value="3">特别重大</option>
+				</select>
+				火灾发生时间：
+				<input placeholder="开始日期" style="width: 130px" id="a_start_time_fire" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"> 至
+				<input placeholder="结束日期" style="width: 130px" id="a_end_time_fire" class="Wdate" type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'a_start_time_fire\',{d:1});}'})">
+
+				<button  id="search_btn" class="ButtonSearch"  onclick="search_btn_fire()">
+					<input class="data-ycl" type="hidden" value="0">
+					查询
+				</button>
+                <span id="data_total"></span>
+            </div>
+        </div>
+        <div class="menu menu_tow">
+            <div style="position:relative;display:inline-block;">
+                    <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
+                    <input type="button" style="width: 140px;height:40px;background-color:#01dacf;border:none;color:#fff;padding-left:20px;" value="切换成列表模式" id="tabModel" class="bg">
+            </div>
+        </div>
+		<div id="container_map" tabindex="1"></div>
+		<div class="button-group" style="bottom:80px;">
+            <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+            <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+        </div>
+        <div class="table_show" style="margin-left:30px;width:95%;display: none;margin-top: 50px;">
+		 	  <table class="table mb-15">
+					<thead>
+						<tr class="cen">
+							<th class="cen">火灾编号</th>
+							<th class="cen">区域</th>
+							<th class="cen">等级</th>
+							<th class="cen">种类</th>
+							<th class="cen">过火面积(亩)</th>
+							<th class="cen">火灾发生时间</th>
+							<th class="cen">上报人</th>
+							<th class="cen">火灾状态</th>
+							<th class="cen">操作</th>
+						</tr>
+					</thead>
+					<tbody id="table_tbody">
+
+					</tbody>
+				</table>
+		        <!-- 分页 -->
+                <div class="office_page" style="text-align: center;">
+                    <span>总记录:<i class="count_total"></i>条</span>
+                    <div class="pagination count_page">
+                        <span class="disabled">上一页</span><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+		</div>
+	</div>
+	<script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+	</script>
+</body>
+</html>

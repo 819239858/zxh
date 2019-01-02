@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link href="js/lqz/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+    <!-- 上传 -->
+    <script src="js/imgPlugin.js"></script>
+    <script src="javascript/plug-ins/pagination.js"></script>
+    
+    <style type="text/css">
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:90%;background: #fff;}
+    .search_area{height:40px;border:1px solid #e6e6e6;}
+    .search_area .search_container{margin-top:5px;}
+    .search_container .user{margin-right:10px;padding-left:5px;width:100px;height:25px;border:1px solid #aaa;border-radius:3px;}
+    .search_area .search_container select{width:100px;border-radius:3px;}
+    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .container_box{background-color:#fff;}
+    .container_box .report_btn{position: absolute;right: 200px;top: 155px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .container_box .report_table{padding-left:30px;width:85%;margin:0 auto;}
+    .container_box h1{text-align: center;margin-top: 30px;}
+    .container_box acronym{text-align:center;display:block;color:#e5e5e5;border-top:1px solid #e5e5e5;width:80px;margin: 0 auto;padding-top:5px;margin-bottom:50px;}
+    .report_table .table_flex{width: 30%;margin: 0 3% 5% 0;display: inline-block;position: relative;}
+    .report_table .table_flex img{width:100%;margin-bottom: 5px;height:190px;}
+     .report_table .table_flex .describe{position:relative;}
+    .report_table .table_flex .describe p{margin-bottom: 0;color: #999;}
+    .report_table .table_flex .describe p.title{font-weight: bold;color: #666;border-bottom: 1px solid #e5e5e5;padding-bottom: 5px;}
+    .report_table .table_flex .describe .address{position: absolute;bottom:0px;right:0;cursor: pointer;color: #01dacf;} 
+    .search_container .Wdate{width:140px;height:25px;border-radius:3px;}
+    .report_table .table_flex .mr-5 .title{color: #666;margin: 5px 0;display: block;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .report_table .table_flex .mr-5 .title:hover{color: #01dacf;cursor: pointer;}
+     #editor{margin: auto;text-align: left;margin-top:50px;display: none;}
+    .form_sub_release{border:solid 1px #e5e5e5;padding:10px;margin-bottom: 40px;width:800px}
+    .form_sub_release label{width:auto;}
+    .form_sub_release .enter_map{width:80px;background-color:#01dacf;border:none;color:#fff;border-radius:3px;}
+    .form_sub_release .border_btoom{width:100%;border:none;border-bottom: 1px solid #e5e5e5;padding-left: 10px;}
+    .form_sub_release .cancel,.form_sub_release #latLngs{width: 100px;}
+    #editor_two{margin:20px auto;padding:20px;width:65%;text-align:left;}
+    #editor_two h2{text-align:center;}
+    #editor_two p{text-indent:2em;}
+    #editor_two .author{margin-bottom:20px;color:#999;text-align:center;}
+    #editor_two .content_article img{padding:5px 0;width:100%;}
+    #editor_two .btn_return{margin:20px auto;width:100px;border:solid 1px #666;border-radius:2px;text-align:center;cursor:pointer;}
+    .return_top{position:fixed;right:20px;bottom:100px;}
+    .list_up_dom{float:right;margin-right:150px;margin-bottom:50px;}
+    #imgBox2{position: absolute;left: 280px;top: 0;}
+    #imgBox2 img{width:70px;height:70px;}
+    .mr-5{display: block;}
+    .content_article pre{border:none!important;}
+    .form_sub_release select{width:70px;}
+    </style>   
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+                区域：<select onchange="callback(value,this)" id="hot_city">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id='city' onchange="callback(value,this)"></select>
+                <select id="area"></select>
+                发布时间：<input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate remove_disabled form-control" id="startTime" />
+                至&nbsp;<input type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'startTime\',{d:1});}'})"  class="Wdate remove_disabled form-control" id="endTime" />
+                <button  id="search_btn" class=" ButtonSearch"  onclick="video_list()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <h1>典型案例</h1>
+            <acronym>CASE</acronym>
+            <button class="report_btn" id="position_all" onclick="report_index()"><i class="icon-upload"></i>发布</button>
+            <script>
+                var userLevel = sessionStorage.getItem("userLevel");
+                if (userLevel=="1") {
+                    $("#position_all").remove();
+                }
+            </script>
+            <div class="report_table" id="complete_report">
+            </div>
+             <!-- 分页 -->
+            <div class="office_page" style="text-align: center;margin-top: 20px;">
+                <span>总记录:<i class="end_total complete_total"></i>条</span>
+                <div class="pagination complete_page">
+                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                </div>
+            </div>
+        </div>
+        <section id="editor">
+            <ul class="form_sub form_sub_release">
+                <li>
+                    <label>区域<i style='color:red'>*</i></label>
+                    <select id="province" class="remove_disabled" onchange="callback(value,this)">
+                        <!--<option value="">城市</option>-->
+                        <!--<option value="4301">长沙市</option>-->
+                        <!--<option value="4302">株洲市</option>-->
+                        <!--<option value="4303">湘潭市</option>-->
+                        <!--<option value="4304">衡阳市</option>-->
+                        <!--<option value="4305">邵阳市</option>-->
+                        <!--<option value="4306">岳阳市</option>-->
+                        <!--<option value="4307">常德市</option>-->
+                        <!--<option value="4308">张家界市</option>-->
+                        <!--<option value="4309">益阳市</option>-->
+                        <!--<option value="4311">永州市</option>-->
+                        <!--<option value="4310">郴州市</option>-->
+                        <!--<option value="4312">怀化市</option>-->
+                        <!--<option value="4313">娄底市</option>-->
+                        <!--<option value="4331">湘西自治州</option>-->
+                    </select>
+                    <select id="city_two" onchange="callback(value,this)"></select>
+                    <select id="area_two" class="remove_disabled"></select>
+                    <label style="margin-left:50px;">地图位置<i style='color:red'>*</i></label>
+                    <input type="text" class="form-control form-boxed" disabled id="latLngs" name="latLngs">
+                    <input class="enter_map" type="button" value="进入地图" onclick="layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#latLngs').val(localStorage.getItem('site'));}})" />
+                </li>
+                <li>
+                    <label>文章标题<i style='color:red'>*</i></label><input type="text" class="border_btoom" id="titel">
+                </li>
+                <li>
+                    <label>文章作者<i style='color:red'>*</i></label><input type="text" class="border_btoom" id="author">
+                </li>
+                <li style="position: relative;">
+                    <label>微缩图</label>
+                    <ul class="form_sub" style="margin: 0;" onclick="impot()">
+                        <li class="file_img" style="border-radius: 0;">
+                        <label>上传图片</label>
+                        <input type="file" class="file_impot" id="file_impot">
+                        </li>
+                    </ul>
+                    <div id="imgBox2"></div>
+                </li>
+                <li>
+                    <label>文章内容<i style='color:red'>*</i></label><textarea id='edit'></textarea>
+                </li>
+                <li style="text-align: center;">
+                    <input type="button" value="返回上一页" class="cancel" onclick="report_index_fh()" />
+                    <input type="button" value="发布" class="report submit" id="btn2" onclick="fsubmit_chase()"/>
+                </li>
+            </ul>
+        </section>
+        <div id="article" style="display: none;">
+            <section id="editor_two">
+                <h2></h2>
+                <div class="author">作者：<span></span></div>
+                <div class="content_article">
+                    
+                </div>
+                <div onclick="report_index_fh()" class="btn_return">返回上一页</div>
+            </section>
+            <a href="#editor_two"><img src="img/lqz/top.png" class="return_top"></a>
+            <!-- <ul class="list_up_dom">
+                <li><a href="#">上一篇：<span>业建设上森林是保</span></a></li>
+                <li><a href="#">下一篇：<span>物及其与环境的综合体</span></a></li>
+            </ul> -->
+        </div>
+    </div>
+</body>
+
+<script>
+
+    var city=localStorage.getItem('Public_city');
+    $('#hot_city').html(city);
+    $('#province').html(city);
+
+
+
+
+// 加载文章列表
+function video_list() {
+    $(".container_box").show();
+    $("#editor").hide();
+    $("#article").hide();
+    $("#index_titel").html("典型案例");
+    var region=$("#city").val()==''||$("#city").val()==undefined?$("#hot_city").val():($("#area").val()==''||$("#area").val()==undefined?$("#city").val():$("#area").val());
+    console.log(region);
+    var begin_time=$("#startTime").val();
+    var end_time=$("#endTime").val();
+    sendAjax({
+        "url":"fire/typical_case/getTypicalCaseList",
+        "data":{"current_page": 1, "region":region,"per_page":6,"begin_time":begin_time,"end_time":end_time},
+        "callback":function(data){
+            var num='';
+            if (data.code=="s_ok") {
+                $("#complete_report").html('');
+                //总条数
+                if(data.var.total==0){
+                    $(".complete_total").html(0); num=1;layer.msg('查询数据为空');
+                }else{
+                    $(".complete_total").html(data.var.total);num=data.var.total;
+                    var result=data.var.data;
+                    console.log(result.image_path);
+                    $("#complete_report").html('');
+                    //分页
+                    $(".complete_page").createPage({
+                        pageCount:Math.ceil(num/6),
+                        current:1,
+                        backFn:function(p){
+                            $("#complete_report").html('');
+                            sendAjax({
+                                "url":"fire/typical_case/getTypicalCaseList",
+                                "data":{"current_page":p, "region":region,"per_page":6,"begin_time":begin_time,"end_time":end_time},"callback":function(data){
+                                    var result=data.var.data;
+                                    for(var i=0;i<result.length;i++){
+                                        if(result[i].image_path.length>0){
+                                            $("#complete_report").append("<div class=\"table_flex\"><a class=\"mr-5\"><img src="+Public_address+'uploads/'+result[i].image_path[0].path+" onerror=\"javascript:this.src='img/timg.png'\"><p class=\"title\">" + result[i].title + "</p></a><div class=\"describe\"><p>时间：" + result[i].update_time.substr(0,10) + "</p><p data-map=\""+result[i].position+"\">位置：" + result[i].region_name + "</p><p class=\"address\" onclick=\"remove_news("+result[i].id+")\">删除</p></div></div>");
+                                        }else{
+                                            $("#complete_report").append("<div class=\"table_flex\"><a class=\"mr-5\"><img src="+Public_address+'uploads/'+result.image_path+" onerror=\"javascript:this.src='img/timg.png'\"><p class=\"title\">" + result[i].title + "</p></a><div class=\"describe\"><p>时间：" + result[i].update_time.substr(0,10) + "</p><p data-map=\""+result[i].position+"\">位置：" + result[i].region_name + "</p><p class=\"address\" onclick=\"remove_news("+result[i].id+")\">删除</p></div></div>");
+                                        }
+                                    };
+                                    $("#complete_report .mr-5").click(function() {
+                                        var index=$("#complete_report .mr-5").index(this);
+                                        article(result[index]);
+                                    });
+                                }
+                            })
+                        }
+                    });
+                    for(var i=0;i<result.length;i++){
+                        if(result[i].image_path.length>0){
+                            $("#complete_report").append("<div class=\"table_flex\"><a class=\"mr-5\"><img src="+Public_address+'uploads/'+result[i].image_path[0].path+" onerror=\"javascript:this.src='img/timg.png'\"><p class=\"title\">" + result[i].title + "</p></a><div class=\"describe\"><p>时间：" + result[i].update_time.substr(0,10) + "</p><p data-map=\""+result[i].position+"\">位置：" + result[i].region_name + "</p><p class=\"address\" onclick=\"remove_news("+result[i].id+")\">删除</p></div></div>");
+                        }else{
+                            $("#complete_report").append("<div class=\"table_flex\"><a class=\"mr-5\"><img src="+Public_address+'uploads/'+result.image_path+" onerror=\"javascript:this.src='img/timg.png'\"><p class=\"title\">" + result[i].title + "</p></a><div class=\"describe\"><p>时间：" + result[i].update_time.substr(0,10) + "</p><p data-map=\""+result[i].position+"\">位置：" + result[i].region_name + "</p><p class=\"address\" onclick=\"remove_news("+result[i].id+")\">删除</p></div></div>");
+                        }
+                    };
+                    $("#complete_report .mr-5").click(function() {
+                        var index=$("#complete_report .mr-5").index(this);
+                        article(result[index]);
+                    }); 
+                    if(sessionStorage.getItem("userLevel")=="1"){
+                        $(".describe .address").remove();
+                    }
+                }
+            }
+        },
+        error:function(result){
+            layer.alert("网络不好，请刷新试试！", {
+            skin: 'layui-layer-molv' 
+            ,closeBtn: 0,anim: 4,btnAlign: 'c'
+            });
+        }
+    });
+}
+video_list();
+// 发布文章
+function fsubmit_chase() {
+    var region=$("#city_two").val()==''||$("#city_two").val()==undefined?$("#province").val():($("#area_two").val()==''||$("#area_two").val()==undefined?$("#city_two").val():$("#area_two").val());
+    var title =$("#titel").val();
+    var context =$('#edit').val();
+    var position = $("#latLngs").val();
+    var case_image=imgName[0];
+    var author=$("#author").val();
+    if (title!=''&&position!=''&&region!=''&&context!=''&&author!='') {
+        sendAjax({
+            "url":"fire/typical_case/addTypicalCase",
+            "data":{"title":title,"context":context,"region":region,"position":position,"case_image":case_image,
+                "author":author},
+            "callback":function(data){
+                if (data.code=="s_ok") {
+                    layer.alert("<img src='img/lqz/ok.png'><br>发布成功<br>", {
+                      skin: 'layui-layer-molv' ,closeBtn: 0,anim: 4,btnAlign: 'c'
+                    });
+                    $("#index_main_context").load("lqz_typical_cases.html");
+                    $("#index_titel").html("典型案例");
+                }else{
+                    layer.msg(data.var);
+                }
+            },
+            error: function() {
+                layer.msg('发布失败');
+            }
+        })
+    }else{
+        layer.alert("请完善案例发布信息", {
+            skin: 'layui-layer-molv',
+            title:'温馨提示',
+            closeBtn: 0,anim: 4,btnAlign: 'c'
+        });
+    }
+    callback1();
+}
+// 跳转文章发布
+function report_index() {
+    $(".container_box").hide();
+    $("#editor").show();
+    $("#article").hide();
+    $("#author").val(sessionStorage.getItem("name"));
+    $("#index_titel").html("文章发布");
+};
+// 返回典型案例
+function report_index_fh() {
+    $(".container_box").show();
+    $("#editor").hide();
+    $("#article").hide();
+    $("#index_titel").html("典型案例");
+};
+// 跳转文章详情
+function article(result) {
+    $("#editor_two h2").html(result.title);
+    $("#editor_two .author span").html(result.author);
+    $(".content_article").load(Public_address+"uploads/"+result.context);
+    $("#article").show();
+    $("#editor").hide();
+    $(".container_box").hide();
+    $("#index_titel").html("案例详情");
+};
+// 删除案例
+function remove_news(fireid){
+    layer.confirm('确定要删除吗？',{
+        btn: ['确定','取消'],
+        skin: 'layui-layer-molv',
+        title:'提示',
+        btnAlign: 'c'
+    }, function(){
+    sendAjax({
+        "url":"fire/typical_case/delTypicalCase",
+        "data":{"id": Number(fireid)},"callback":function(element){
+            if (element.code=="s_ok"){
+                layer.closeAll('page');
+                layer.msg('删除成功');
+                video_list();
+            }else{
+                layer.msg(element.var);
+            }
+        },
+        error:function(e){
+        layer.alert("网络不好，请刷新试试！", {
+            skin: 'layui-layer-molv' 
+            ,closeBtn: 0,anim: 4,btnAlign: 'c'
+        });
+        }
+    });
+    }, function(){
+        layer.closeAll();
+    });
+}
+function impot() {
+    $("#file_impot").takungaeImgup({
+        formData: {
+            "path": "fire_image",
+            "file_ext":"image"
+        },
+        url:"fire/upload/fileUpload",
+        id:"imgBox2"
+    });
+}
+
+</script>
+<script src="js/lqz/js/froala_editor.min.js"></script>
+<script src="js/lqz/js/langs/zh_cn.js"></script>
+<script src="js/lqz/js/plugins/tables.min.js"></script>
+<script src="js/lqz/js/plugins/colors.min.js"></script>
+<script src="js/lqz/js/plugins/media_manager.min.js"></script>
+<script src="js/lqz/js/plugins/font_family.min.js"></script>
+<script src="js/lqz/js/plugins/font_size.min.js"></script>
+<script src="js/lqz/js/plugins/block_styles.min.js"></script>
+<script src="js/lqz/js/plugins/video.min.js"></script>
+
+<script>
+$(function(){
+  $('#edit').editable({inlineMode: false,language: "zh_cn",alwaysBlank: true})
+});
+</script>
+</html>

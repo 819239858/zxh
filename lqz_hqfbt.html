@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <style>
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+    #input_hot{position:absolute;top:40px;left:-10px;z-index: 99;}
+    #input_hot .import{cursor:pointer;}
+    #input_hot li{display:none;}
+    #mapContainer,#mapContainer1{width:49%;height:100%;z-index: 99;display: inline-block;}
+    .amap-info-content{padding:10px;}
+    .form_sub_release li{margin:15px 0;position: relative;}
+    .form_sub_release label{width:100px;}
+    .form_sub_release video{border:1px solid #333;background:#000;}
+    .form_sub input{width:146px;}
+    #imgBox,#imgBox1{display:inline-block;margin-left:10px;}
+    #imgBox img,#imgBox1 img{width:60px;height:60px;}
+    .form_sub_release .screening select{width:75px;height:32px;outline:0;border:1px solid #dbdbdb;background:0 0;}
+    .form_sub_release .screening{position:absolute;top:31px;right:69px;display:none;background-color:#eee;}
+    #user_query{position:absolute;top:63px;right:69px;display:none;padding:10px;width:300px;height:100px;border:solid 1px #e5e5e5;border-top:none;background-color:#fff;overflow: scroll;}
+    #user_query1{position:absolute;top:32px;right:69px;display:none;padding:10px;width:300px;height:100px;border:solid 1px #e5e5e5;background-color:#fff;overflow: scroll;}
+    #user_query span{padding:0 5px;cursor:pointer;}
+    #user_query1 span{padding:0 5px;cursor:pointer;}
+    #toName{display:inline-block;margin-left:10px;width:300px;}
+    #province,#city_two,#area2,#area{width: 49px;}
+    .form_sub_release .upFileimg{left:95px;top:0;}
+    #imgBox11 img{width: 50px;height: 50px;}
+    #upimg .fileInput{width: 100px;}
+    .form_sub .report{margin-left: 50px;}
+    #view,#view_two{margin: 5px auto;display: block;}
+    .marker_content .header{margin-top: -15px;}
+    .amap-info-close{right:10px;top:10px;color: #01dacf;}
+    tr img{height: 20px;}
+    #mapyue,#mapyue1{position: fixed;z-index: 2;color: #333;padding: 0 30px;font-size: 16px;font-weight: bold;
+        background-color: #fff;margin-left: 10px;margin-top: 10px;border-radius: 41%;}
+    .span_set{background-color: #fff;color:#333;padding:3px 15px;margin-top: 10px;}
+    .changeSearchBtn{background-color: #fff;color: #01dacf;border: 1px solid #01dacf;box-sizing: border-box;}
+    .seenBtn{background-color: #fff;color: #01dacf;border: 1px solid #01dacf;box-sizing: border-box;}
+    </style>
+    <script>
+    var heatmap;var heatmap1;
+    getLngLatByCondition();
+    function getLngLatByCondition() {
+        //基本地图加载
+        var map = new AMap.Map("mapContainer", {
+            resizeEnable: true,
+            zoom:8,
+        });
+        var type= new AMap.MapType({
+            defaultType:1,
+            showRoad:true
+        });
+        var type1= new AMap.MapType({
+            defaultType:1,
+            showRoad:true
+        });
+        var map1 = new AMap.Map("mapContainer1", {
+            resizeEnable: true,
+            zoom:8,
+        });
+        map.addControl(type);
+        map1.addControl(type1);
+        if (!isSupportCanvas()) {
+            alert('热力图仅对支持canvas的浏览器适用,您所使用的浏览器不能使用热力图功能,请换个浏览器试试~')
+        }
+
+        var region=$("#city").val()==''||$("#city").val()==undefined?$("#fireArea").val():($("#area").val()==''||$("#area").val()==undefined?$("#city").val():$("#area").val());
+        sendAjax({
+            "url":"fire/fire/getFireHeatMap",
+            "data":{"region": region},
+            "callback":function(result){
+                if (result.code="s_ok") {
+                    // 本月
+                    map.plugin(["AMap.Heatmap"], function() {
+                        //初始化heatmap对象
+                        heatmap = new AMap.Heatmap(map, {
+                            radius: 40, //给定半径
+                            opacity: [0, 0.8]
+                        });
+                        heatmap.setDataSet({
+                            data: result.var.this,
+                            max: 100
+                        });
+                    });
+                    // 上一个月
+                    map1.plugin(["AMap.Heatmap"], function() {
+                        //初始化heatmap对象
+                        heatmap1 = new AMap.Heatmap(map1, {
+                            radius: 40, //给定半径
+                            opacity: [0, 0.8]
+                        });
+                        heatmap1.setDataSet({
+                            data: result.var.last,
+                            max: 100
+                        });
+                    });
+                }else{
+                    layer.msg(result.var)
+                }
+          }
+        });
+
+
+        function dragend() {
+            var centerPoint=map.getCenter();
+            map1.setCenter(centerPoint);
+        }
+        function dragend1() {
+            var centerPoint=map1.getCenter();
+            map.setCenter(centerPoint);
+        }
+        function mousewheel(){
+            var zoom=map.getZoom();
+            map1.setZoom(zoom);
+        }
+        function mousewheel1(){
+            var zoom=map1.getZoom();
+            map.setZoom(zoom);
+        }
+        $('#relationBtn').on('click',function () {
+            if($('#relationBtn').html()=='确认关联'){
+                $('#relationBtn').addClass('seenBtn');
+                $('#relationBtn').html('关联中');
+                //地图拖拽关联
+                map.on("dragend",dragend);
+
+                map1.on("dragend",dragend1);
+                //缩放
+                map.on("mousewheel",mousewheel);
+                map1.on("mousewheel",mousewheel1);
+            }else{
+                $('#relationBtn').removeClass('seenBtn');
+                $('#relationBtn').html('确认关联');
+                //地图拖拽关联
+                map.off("dragend",dragend);
+                map1.off("dragend",dragend1);
+                //缩放
+                map.off("mousewheel",mousewheel);
+                map1.off("mousewheel",mousewheel1);
+            }
+        });
+
+    }
+
+
+    function isSupportCanvas() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+</script>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+              区域：<select id='fireArea' onchange="callback(value,this)">
+                <!--<option value="43">省</option>-->
+                <!--<option value="4301">长沙市</option>-->
+                <!--<option value="4302">株洲市</option>-->
+                <!--<option value="4303">湘潭市</option>-->
+                <!--<option value="4304">衡阳市</option>-->
+                <!--<option value="4305">邵阳市</option>-->
+                <!--<option value="4306">岳阳市</option>-->
+                <!--<option value="4307">常德市</option>-->
+                <!--<option value="4308">张家界市</option>-->
+                <!--<option value="4309">益阳市</option>-->
+                <!--<option value="4311">永州市</option>-->
+                <!--<option value="4310">郴州市</option>-->
+                <!--<option value="4312">怀化市</option>-->
+                <!--<option value="4313">娄底市</option>-->
+                <!--<option value="4331">湘西自治州</option>-->
+              </select>
+              <select id="city" onchange="callback(value,this)"></select>
+              <select id="area" class="remove_disabled" style="width:100px"></select>
+              <!--月份对比：<input  style="width: 110px" id="start_time"  class="Wdate" type="text"  onclick="WdatePicker({dateFmt:'yyyy-MM'})">-->
+                <!--至：<input style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM'})" > -->
+            <input  class="btn_ss"  value="搜索" type="button"  onclick="getLngLatByCondition()"/>
+                <button class="ButtonSearch"  id="relationBtn">确认关联</button>
+
+            </div>
+        </div>
+        <!-- 地图区域 -->
+        <div style="height: 100%;width: 100%" >
+            <div id="mapContainer" tabindex="0"></div>
+            <div id="mapContainer1" tabindex="0"></div>
+            <div style="height: 40px;width: 100%;z-index: 1000;position: absolute;
+            background: rgba(255, 255, 255, 0);top:50px;left:0;padding-top: 13px;">
+                <div style="width: 48%;height: 40px;display: inline-block;opacity: 1;padding-left: 1%">
+                    <span class="span_set">本月</span>
+                </div>
+                <div style="width: 48%;height: 40px;display: inline-block;opacity: 1;padding-left: 2%">
+                     <span class="span_set">上个月</span>
+                </div>
+            </div>
+        </div>
+        <script>
+            var city=localStorage.getItem('Public_city');
+            $('#fireArea').html(city);
+        </script>
+    </div>                                             
+</body>
+</html>

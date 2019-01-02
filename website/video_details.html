@@ -1,0 +1,44 @@
+<p class="details_title">社保医疗 | 请你来投票</p>
+<div class="center">
+    <span class="details_name">上传者：无谷建</span>
+    <span class="details_date">上传时间：2018年1月11日</span>
+</div>
+<div class="video">
+    <video src="http://222.247.57.142:8888/HNLYT/Image/v2.mp4" controls="controls"></video>
+    <label>视频描述：</label><span>社保医疗 | 请你来投票</span><br/>
+    <label>视频类型：</label><span>无人机视频</span><br/>
+    <label>地图位置：</label><span class="btn">显示地图</span><br/>
+    <label>所属区域：</label><span>长沙市芙蓉区烈士公园</span><br/>
+</div>
+<div id="container"></div>
+<!-- <ul class="details_list">
+    <li><label>上一篇：</label><a href="javascript:;">胡长清厅长到省设计院、省植物园、省林科院调研指导</a></li>
+    <li><label>下一篇：</label><a href="javascript:;">梁志强组长率队深入我厅驻村帮扶点城步县白毛坪乡和平村督查脱贫攻坚工作</a></li>
+</ul> -->
+<script>
+$(".video").on("click",".btn",function() {
+    var lnglat=$(this).attr("data-latlngs").split(";");
+    lnglat.pop();
+    
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom:11
+    });
+    var type= new AMap.MapType({
+        defaultType:1,
+        showRoad:true
+    });
+    map.addControl(type);
+    for (var i = 0; i < lnglat.length; i++) {
+        var marker = new AMap.Marker({
+            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: JSON.parse('[' + String(lnglat[i]) + ']'),
+            map: map
+        });
+        map.setZoomAndCenter(17, JSON.parse('[' + String(lnglat[i]) + ']'));
+        marker.setMap(map);
+        map.setFitView(10);// 执行定位
+    };
+    $("#container").show();
+})
+</script>

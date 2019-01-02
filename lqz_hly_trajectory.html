@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+              区域：<select id='hot_city' onchange="callback(value,this)">
+                <!--<option>省</option>-->
+                <!--<option value="4301" data-value="长沙市">长沙市</option>-->
+                <!--<option value="4302" data-value="株洲市">株洲市</option>-->
+                <!--<option value="4303" data-value="湘潭市">湘潭市</option>-->
+                <!--<option value="4304" data-value="衡阳市">衡阳市</option>-->
+                <!--<option value="4305" data-value="邵阳市">邵阳市</option>-->
+                <!--<option value="4306" data-value="岳阳市">岳阳市</option>-->
+                <!--<option value="4307" data-value="常德市">常德市</option>-->
+                <!--<option value="4308" data-value="张家界市">张家界市</option>-->
+                <!--<option value="4309" data-value="益阳市">益阳市</option>-->
+                <!--<option value="4311" data-value="永州市">永州市</option>-->
+                <!--<option value="4310" data-value="郴州市">郴州市</option>-->
+                <!--<option value="4312" data-value="怀化市">怀化市</option>-->
+                <!--<option value="4313" data-value="娄底市">娄底市</option>-->
+                <!--<option value="4331" data-value="湘西自治州">湘西自治州</option>-->
+              </select>
+              <select id="city_sx" onchange="callback(value,this)"></select>
+              <select id="area" class="remove_disabled"></select>
+              用户名：<input type="text" class="search_user" id="userName" />
+              
+              回放时间：<input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate remove_disabled form-control" id="startTime" />
+              <input id="search_btn_two" value="查询" type="button" class="search_btn" />
+            </div>
+        </div>
+       
+        <!-- 地图区域 -->
+        <div id="mapContainer" tabindex="0"></div>
+        <div class="button-group">
+          <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+          <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+      </div>
+    </div>                                             
+</body>
+<style>
+.tableDiv_fire{position:fixed;top:60px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;}
+.search_area{height:40px;border:1px solid #e6e6e6;}
+.search_container{margin-top:5px;margin-left:30px;}
+.search_container input,.search_container select{width:100px;}
+.search_container .search_btn{height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+.search_container .Wdate{width:140px;height:25px;border-radius:3px;}
+.search_container .search_user{margin-right:10px;padding-left:5px;width:100px;height:21px;border:1px solid #aaa;border-radius:3px;}
+#mapContainer{width:100%;height:100%;}  
+.mak_con{margin: 10px}
+.mak_con .title{color: #01dacf;font-size: 16px;}
+.mak_con li{margin:2px 0;}
+#user_query1{position:absolute;top:32px;left:380px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+#user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+</style>
+<script type="text/javascript">
+
+    addBeiJing();
+    var city=localStorage.getItem('Public_city');
+    $('#hot_city').html(city);
+
+
+
+    //基本地图加载
+    var map = new AMap.Map("mapContainer", {
+        resizeEnable: true,
+        zoom: 13 
+    });
+    var type= new AMap.MapType({
+      defaultType:1,
+      showRoad:true
+    });
+    map.addControl(type);
+    var infoWindow = new AMap.InfoWindow({
+      offset: new AMap.Pixel(16, -25)//窗体位置的偏移量
+    });
+    callback1();
+    var marker, lineArr = [];
+    $(".search_container").on('click','#search_btn_two',function() {
+      var city = $("#hot_city option:checked").html()=="省"?'':$("#hot_city option:checked").html();
+      var town = $("#city_sx option:checked").html();
+      var village = $("#area option:checked").html();
+      var tel=$('#userName').val();
+      var startTime=$('#startTime').val();
+      if (startTime=='') {
+        layer.open({
+          content: '回放时间不能为空',
+          skin: 'layui-layer-molv',
+          scrollbar: false,btnAlign: 'c'
+        });
+      }else{
+        sendAjax({
+          "url":"fire/receive_app_info/getPath",
+          "data":{"city":city,"town":town,"village":village,"tel":tel,"time":startTime,"type":"2"},
+          "callback":function(data){
+            if (data.code=="s_ok") {
+              map.clearMap();
+              var data = data.var.hly;
+              if (data!='') {
+                layer.msg('显示成功');
+                for (var i=0;i<data.length;i++){
+                  // 开始
+                  marker1 = new AMap.Marker({
+                    map: map,
+                    position: JSON.parse('[' + String(data[i].obj[0].lng) + ',' + String(data[i].obj[0].lat) + ']'),
+                    icon: "img/lqz/qd.png",
+                    offset: new AMap.Pixel(-10, -30),
+                    autoRotation: false
+                  });
+                  marker1.setLabel({
+                    offset: new AMap.Pixel(-100, -20),
+                    content: data[i].name+'；'+data[i].obj[0].city+data[i].obj[0].town+data[i].obj[0].village
+                  });
+                  // 结束
+                  marker = new AMap.Marker({
+                    map: map,
+                    position: JSON.parse('[' + String(data[i].obj.pop().lng) + ',' + String(data[i].obj.pop().lat) + ']'),
+                    icon: "img/lqz/zd.png",
+                    offset: new AMap.Pixel(-10, -30),
+                    autoRotation: false
+                  });
+                  marker.setLabel({
+                    offset: new AMap.Pixel(-100, -20),
+                    content: data[i].name+'；'+data[i].obj[0].city+data[i].obj[0].town+data[i].obj[0].village
+                  });
+                  
+                  addHotMarkerClick(marker,data[i].obj.pop());
+                  addHotMarkerClick_two(marker1,data[i].obj);
+                  var polyline = new AMap.Polyline({
+                      map: map,
+                      path: lineArr,
+                      strokeColor: "#01dacf",  //线颜色
+                      // strokeOpacity: 1,     //线透明度
+                      strokeWeight: 3,      //线宽
+                      // strokeStyle: "solid"  //线样式
+                  });
+                  var passedPolyline = new AMap.Polyline({
+                    map: map,
+                    // path: lineArr,
+                    strokeColor: "#F00",  //线颜色
+                    // strokeOpacity: 1,     //线透明度
+                    strokeWeight: 3,      //线宽
+                    // strokeStyle: "solid"  //线样式
+                  });
+                  marker.on('moving',function(e){
+                      passedPolyline.setPath(e.passedPath);
+                  })
+                  map.setFitView();
+                  marker.moveAlong(lineArr, 5000);
+                  lineArr = [];
+                }
+              }else{
+                layer.msg('查询数据为空');
+              }
+            }
+            else{
+                layer.msg(data.var);
+            }
+          }  
+        });
+      }
+    });
+    // 起点
+    function addHotMarkerClick(marker,data) {
+      marker.content ="<ul class=\"mak_con\"><li><label class=\"title\">轨迹信息</label></li><li><label>用户名：</label><span>"+data.name+"</span></li><li><label>手机：</label><span>"+data.tel+"</span></li><li><label>结束时间：</label><span>"+data.time+"</span></li><li><label>结束位置：</label><span style='width: 73%;vertical-align: middle;display: inline-block;'>"+data.lng+","+data.lat+"</span></li><li><label>结束区域：</label><span>"+data.city+data.town+data.village+"</span></li></ul>"
+      AMap.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(marker.content);
+        infoWindow.open(map, marker.getPosition());
+      });
+    }
+    // 终点
+    function addHotMarkerClick_two(marker,data) {
+      for (var i = 0; i < data.length; i++) {
+        lineArr.push(JSON.parse('[' + String(data[i].lng) + ',' + String(data[i].lat) + ']'));
+      }
+      marker.content ="<ul class=\"mak_con\"><li><label class=\"title\">轨迹信息</label></li><li><label>用户名：</label><span>"+data[0].name+"</span></li><li><label>手机：</label><span>"+data[0].tel+"</span></li><li><label>开始时间：</label><span>"+data[0].time+"</span></li><li><label>出发位置：</label><span style='width: 73%;vertical-align: middle;display: inline-block;'>"+data[0].lng+","+data[0].lat+"</span></li><li><label>出发区域：</label><span>"+data[0].city+data[0].town+data[0].village+"</span></li></ul>"
+      AMap.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(marker.content);
+        infoWindow.open(map, marker.getPosition());
+      });
+    }
+
+</script>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+
+    <!--3D地图Cesium.js-->
+    <!--<script src="CesiumUnminified/Cesium.js"></script>-->
+    <!--<style>-->
+        <!--@import url(CesiumUnminified/Widgets/widgets.css);-->
+    <!--</style>-->
+    <style>
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:89%;}
+    #mapContainer{width:100%;height:100%;}
+        .display_none{display: none;}
+    </style>
+    <script type="text/javascript">
+        addBeiJing();
+        var infoWindow = new AMap.InfoWindow({
+            offset: new AMap.Pixel(0, -20)
+        });
+        //基本地图加载
+        var map = new AMap.Map("mapContainer", {
+            resizeEnable: true,
+            zoom:8
+        });
+        var type= new AMap.MapType({
+            defaultType:1,
+            showRoad:true
+        });
+        map.addControl(type);
+//        var marker = new AMap.Marker({
+//            position: [111.475006, 28.881903],
+//            //title: data[i].baseName,
+//            icon: new AMap.Icon({
+//                image: "img/sanwei_icon.png",
+//                size: new AMap.Size(57, 44)
+//            }),
+//            map: map
+//        });
+//        marker.setLabel({ //label默认蓝框白底左上角显示，样式className为：amap-marker-label
+//            offset: new AMap.Pixel(20, -20), //修改label相对于maker的位置
+//            content: "桃源林场"
+//        });
+//        sanweiMarkerClick(marker, 0);
+//        var lanshan = new AMap.Marker({
+//            position: [112.194086, 25.378382],
+//            //title: data[i].baseName,
+//            icon: new AMap.Icon({
+//                image: "img/sanwei_icon.png",
+//                size: new AMap.Size(57, 44)
+//            }),
+//            map: map
+//        });
+//        lanshan.setLabel({ //label默认蓝框白底左上角显示，样式className为：amap-marker-label
+//            offset: new AMap.Pixel(20, -20), //修改label相对于maker的位置
+//            content: "蓝山县"
+//        });
+//        sanweiMarkerClick(lanshan, 1);
+
+        //      112.420721,25.380268
+//        var lanshan = new AMap.Marker({
+//            position: [112.420721, 25.380268],
+//            //title: data[i].baseName,
+//            icon: new AMap.Icon({
+//                image: "img/sanwei_icon.png",
+//                size: new AMap.Size(57, 44)
+//            }),
+//            map: map
+//        });
+//        lanshan.setLabel({ //label默认蓝框白底左上角显示，样式className为：amap-marker-label
+//            offset: new AMap.Pixel(20, -20), //修改label相对于maker的位置
+//            content: "火市镇"
+//        });
+//        sanweiMarkerClick(lanshan, 2);
+        //奥林匹克花园
+        var aolinpik = new AMap.Marker({
+            position: [112.9991, 28.108926],
+            //title: data[i].baseName,
+            icon: new AMap.Icon({
+                image: "img/alpk.png",
+                size: new AMap.Size(57, 42)
+            }),
+            map: map
+        });
+        aolinpik.setLabel({ //label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            offset: new AMap.Pixel(20, -20), //修改label相对于maker的位置
+            content: "长沙奥林匹克花园"
+        });
+        sanweiMarkerClick(aolinpik, 3);
+        function sanweiMarkerClick(marker, id) {
+            AMap.event.addListener(marker, 'click', function() {
+                if (id == 0) {
+                    $("#index_main_context").load("taoyuan.jsp");
+                } else if (id == 1) {
+                    $("#index_main_context").load("lanshan.jsp");
+                } else if (id == 2) {
+                    $("#index_main_context").load("huoshizhen.jsp");
+                } else if (id == 3) {
+//                    $("#index_main_context").load("alpk.jsp");
+                    //$("#index_main_context").load("http://112.35.44.168:81/alpk/App/#%2F");
+                    $('#index_main_context').html('<iframe class="box_address" id="iframe_box" style="width:99%;height:96%;margin-top:25px;margin-left:10px;"  src="http://112.35.44.168:81/alpk/App/#%2F" ></iframe>');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 地图区域 -->
+        <div id="mapContainer" tabindex="0"></div>
+        <div class="button-group">
+            <input type="button" id="point" class="button"  value="点距离量测" onClick="javascript:startRuler1()"/>
+            <input type="button" id="mian" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+            <input type="button"  id="return" class="button display_none" value="返回"  onClick="javascript:returnBack()">
+            <input type="button" class="button" value="3D地图" onClick="javascript:nav3dMap()"/>
+        </div>
+        <iframe class="box_address display_none" id="iframe_box" style="width:100%;height:700px;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);" hspace="-500px" vspace="-150px" src="http://134.175.247.171:89/file/3D/Apps/HelloWorld.html"></iframe>
+
+        <!--3D地图Cesium.js-->
+        <!--<div id="cesiumContainer"></div>-->
+        <!--<script >-->
+            <!--viewer = new Cesium.Viewer('cesiumContainer',{-->
+                <!--scene3DOnly: true,-->
+                <!--selectionIndicator: false,-->
+                <!--baseLayerPicker: false-->
+            <!--});-->
+        <!--</script>-->
+    </div>
+    <script>
+        function nav3dMap() {
+            $('#iframe_box').removeClass('display_none');
+            $('#mapContainer').addClass('display_none');
+            $('#point').addClass('display_none');
+            $('#mian').addClass('display_none');
+            $('#return').removeClass('display_none');
+        }
+        function returnBack() {
+            $('#iframe_box').addClass('display_none');
+            $('#mapContainer').removeClass('display_none');
+            $('#point').removeClass('display_none');
+            $('#mian').removeClass('display_none');
+            $('#return').addClass('display_none');
+        }
+    </script>
+</body>
+</html>

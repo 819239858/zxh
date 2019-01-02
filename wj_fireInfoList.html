@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script src="js/styleMaps.js" type="text/javascript"></script>
+    <script src="javascript/public.js"></script>
+    <script src="javascript/plug-ins/fourPage.js"></script>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="container_box">
+            <button class="report_btn" onclick="report()">火情上报</button>
+            <input class="data-ycl" type="hidden" value="0">
+            <input class="data-ycl1" type="hidden" value="0">
+            <input class="data-ycl2" type="hidden" value="0">
+            <input class="data-ycl3" type="hidden" value="0">
+            <div class="report_table">
+                <!-- 表格切换 -->
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="tab-nav">
+                            <li class="active">已上报</li>
+                            <li class="">已跟踪</li>
+                            <li class="">已结束</li>
+                        </ul>
+                    </div>
+                    <div class="tab-cont" style="display: block;">
+                        <!-- 已上报 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>火灾编号</th>
+                                    <th>区域</th>
+                                    <th>等级</th>
+                                    <th>种类</th>
+                                    <th>火灾发生时间</th>
+                                    <th>上报人</th>
+                                    <th>上报人电话</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                                <span>总记录:<i class="complete_total"></i>条</span>
+                                <div class="pagination complete_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <!-- 已追踪 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>火灾编号</th>
+                                    <th>区域</th>
+                                    <th>等级</th>
+                                    <th>种类</th>
+                                    <th>火灾发生时间</th>
+                                    <th>上报人</th>
+                                    <th>上报人电话</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_track">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="track_total"></i>条</span>
+                                <div class="pagination track_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <!-- 已结束 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>火灾编号</th>
+                                    <th>区域</th>
+                                    <th>等级</th>
+                                    <th>种类</th>
+                                    <th>火灾发生时间</th>
+                                    <th>上报人</th>
+                                    <th>上报人电话</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_end">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                                <span>总记录:<i class="end_total"></i>条</span>
+                                <div class="pagination end_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<style type="text/css">
+    .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:80px;right: 10px;left: 250px;background-color:#fff;}
+    .top_box{width:95%;height:55px;border:1px solid #e5e5e5;border-right:none;font-size:18px; padding-left:30px;}
+    .top_box p{line-height:55px;}
+    .top_box p span{color:#01dacf;height:100%;}
+    .container_box{background-color:#fff;}
+    .report_btn{background-color:#01dacf;color:#fff;width:110px;height:28px;border:none;margin:10px 0 20px 30px;}
+    .report_table{width:95%; padding-left:30px;}
+    .report_page{text-align:center;margin-bottom:80px;}
+    </style>    
+<script>
+    //进入页面请求已上报列表
+    function refresh1(){
+        sendAjax({
+            "url":"fire/fire/getFireUploadList",
+            "data":{"current_page": 1, "status":"1","per_page":20},
+            "callback":function(result){
+                var num = '';$("#complete_report").html('');
+                if (result.code!="s_ok") {
+                    num=1;$(".complete_total").html(0);layer.msg('查询数据为空');
+                }else{
+                    num=result.var.total;$(".complete_total").html(result.var.total);
+                    var result=result.var.data;
+                    //分页
+                    $(".complete_page").createPage({
+                        pageCount:Math.ceil(num/20),
+                        current:1,
+                        backFn:function(p){
+                            $("#complete_report").html('');
+                            sendAjax({
+                                "url":"fire/fire/getFireUploadList",
+                                "data":{"current_page":p, "status":"1","per_page":20},"callback":function(result){
+                                    var result=result.var.data;
+                                    for(var i=0;i<result.length;i++){
+                                        $("#complete_report").append(
+                                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                                        );
+                                    }
+                                    // var userLevel = sessionStorage.getItem("userLevel");
+                                    // if (userLevel=="1") {
+                                    // $("#complete_report .mr-5").siblings().hide();
+                                    // }
+                                }
+                            })
+                        }
+                    });
+                    for(var i=0;i<result.length;i++){
+                        $("#complete_report").append(
+                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                        );
+                    };
+                    // var userLevel = sessionStorage.getItem("userLevel");
+                    // if (userLevel=="1") {
+                    //     $("#complete_report .mr-5").siblings().hide();
+                    // }
+                }
+            },
+            error:function(result){
+                layer.msg(result);
+            }
+        })
+    };
+    //进入页面请求已追踪列表
+    function refresh2(){
+        sendAjax({
+            "url":"fire/fire/getFireUploadList",
+            "data":{"current_page": 1, "status":"2","per_page":20},
+            "callback":function(result){
+                var num = '';$("#complete_track").html('');
+                if (result.code!="s_ok") {
+                    num=1;$(".track_total").html(0);layer.msg('查询数据为空');
+                }else{
+                    num=result.var.total;$(".track_total").html(result.var.total);
+                    var result=result.var.data;
+                    //分页
+                    $(".track_page").createPage({
+                        pageCount:Math.ceil(num/20),
+                        current:1,
+                        backFn:function(p){
+                            $("#complete_track").html('');
+                            sendAjax({
+                                "url":"fire/fire/getFireUploadList",
+                                "data":{"current_page":p, "status":"2","per_page":20},"callback":function(result){
+                                    var result=result.var.data;
+                                    for(var i=0;i<result.length;i++){
+                                        $("#complete_track").append(
+                                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                                        );
+                                    }
+                                    // var userLevel = sessionStorage.getItem("userLevel");
+                                    // if (userLevel=="1") {
+                                    //     $("#complete_track .mr-5").siblings().hide();
+                                    // }
+                                }
+                            })
+                        }
+                    });
+                    for(var i=0;i<result.length;i++){
+                        $("#complete_track").append(
+                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                        );
+                    };
+                    // var userLevel = sessionStorage.getItem("userLevel");
+                    // if (userLevel=="1") {
+                    //     $("#complete_track .mr-5").siblings().hide();
+                    // }
+                }
+            },
+            error:function(result){
+                layer.msg(result);
+            }
+        })
+    };
+    //进入页面请求已结束列表
+    function refresh3(){
+        sendAjax({
+            "url":"fire/fire/getFireUploadList",
+            "data":{"current_page": 1, "status":"3","per_page":20},
+            "callback":function(result){
+                var num = '';$("#complete_end").html('');
+                if (result.code!="s_ok") {
+                    num=1;$(".end_total").html(0);layer.msg('查询数据为空');
+                }else{
+                    num=result.var.total;$(".end_total").html(result.var.total);
+                    var result=result.var.data;
+                    //分页
+                    $(".end_page").createPage({
+                        pageCount:Math.ceil(num/20),
+                        current:1,
+                        backFn:function(p){
+                            $("#complete_end").html('');
+                            sendAjax({
+                                "url":"fire/fire/getFireUploadList",
+                                "data":{"current_page":p, "status":"3","per_page":20},"callback":function(result){
+                                    var result=result.var.data;
+                                    for(var i=0;i<result.length;i++){
+                                        $("#complete_end").append(
+                                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                                        );
+                                    }
+                                    // var userLevel = sessionStorage.getItem("userLevel");
+                                    // if (userLevel=="1") {
+                                    //     $("#complete_end .mr-5").siblings().hide();
+                                    // }
+                                }
+                            })
+                        }
+                    });
+                    for(var i=0;i<result.length;i++){
+                        $("#complete_end").append(
+                            "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a> <a  onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                        );
+                    };
+                    // var userLevel = sessionStorage.getItem("userLevel");
+                    // if (userLevel=="1") {
+                    //     $("#complete_end .mr-5").siblings().hide();
+                    // }
+                }
+            },
+            error:function(result){
+                layer.msg(result);
+            }
+        })
+    };
+    $(function(){
+        refresh1();
+        refresh2();
+        refresh3();
+    });
+    //删除记录
+    function delete_data(fireid) {
+        layer.confirm('确定要删除吗？',{
+            btn: ['确定','取消'],
+            skin: 'layui-layer-molv',
+            title:'提示',
+            btnAlign: 'c'
+        }, function(){
+            sendAjax({
+            "url":"fire/fire/delFire",
+            "data":{"id": Number(fireid)},"callback":function(element){
+                if (element.code=="s_ok"){
+                    layer.closeAll('page');
+                    layer.msg('删除成功');
+                    refresh1();
+                    refresh2();
+                    refresh3();
+                }else{
+                    layer.msg(element.var);
+                }
+            },
+            error:function(e){
+                layer.alert("网络不好，请刷新试试！", {
+                skin: 'layui-layer-molv' 
+                ,closeBtn: 0,anim: 4,btnAlign: 'c'
+                });
+            }
+            });
+        }, function(){
+            layer.closeAll();
+        });
+    }
+
+    //点击火情上报进入录入页面
+    function report(argument) {
+        $("#index_main_context").load("lqz_fire_report.html")
+        $("#index_titel").html("火情上报");
+        //隐藏地图
+        stopInterval();
+    }
+    function report_index(index,id) {
+        $("#index_main_context").load("lqz_fire_details.html");
+        $("#index_titel").html("火情上报详情");
+        localStorage.setItem("index_xq",index);
+        localStorage.setItem("fireId_xq",id);
+        sessionStorage.setItem("location","wj_fireInfoList.html");
+	    sessionStorage.setItem("location_html","火情信息");
+        //隐藏地图
+        stopInterval();
+    }
+</script>
+</html>

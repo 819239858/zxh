@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script src="js/imgPlugin.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script src="js/LK/LK_dmjkd.js"></script>
+    <style>
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff}
+    .form_sub_release .upFileBtn{position:absolute;bottom:0px;left:105px;z-index:-1;width:80px;height:80px;opacity:0;}
+    .form_sub_release .upFileBtn1{display:inline-block;opacity:0;}
+    .form_sub_release .upload{position:relative;display:inline-block;height:25px;border:solid 1px #cfdadd;}
+    .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:30px;width:80px;height:80px;border:1px solid #e5e5e5;}
+    .form_sub_release .fileInput1{position:absolute;top:3px;left:75px;}
+    .search_area{height:40px;border:1px solid #e6e6e6;}
+    .search_container{margin-top:5px;margin-left:30px;}
+    #container_map{width:100%;height:100%;}
+    .menu{position:fixed;top:135px;left:260px;z-index:100;}
+    .container_table{width:100%;}
+    .table_cont{margin-top:70px;padding-left:10px;width:95%;}
+    .office_page{margin-bottom:50px;text-align:center;}
+    .form_sub_release{width:648px;}
+    .form_sub_release select{width:58px;}
+    .form_sub input{width:175px;}
+    #office_latLngs{margin-right:2px;width:140px;height:25px;}
+    #wjadd_map{width:70px;height:25px;border:none;background-color:#01dacf;color:#fff;text-align:center;cursor:pointer;}
+    #imgBox img{width:80px;height:80px;margin:0 5px;}
+    .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+    .search_user{margin-right: 10px;padding-left: 5px;width: 100px;height: 21px;border: 1px solid #aaa;border-radius: 3px;}
+    p{margin: 10px 0 0px;}
+    #user_query1{position:absolute;top:32px;left:385px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+                区域：<select name="fireArea" id="hot_city" class="remove_disabled" onchange="callback(value,this)">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id="city" class="remove_disabled" onchange="callback(value,this)">
+                </select>
+                <select id="area" class="remove_disabled"></select>
+                录入人：<input type="text" class="user_name" id="userName"/>
+                设备名：<input type="text"  id="deviceName" style="width: 70px;border-radius:3px;border: 1px solid #aaa;"/>
+                录入时间：<input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate remove_disabled form-control"  id="start_time" />
+                至：<input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start_time\',{d:1});}'})" class="Wdate remove_disabled form-control" id="end_time"/>
+
+                <button  id="search_btn" class="ButtonSearch"  onclick="query()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="menu">
+            <div style="position:relative;display:inline-block;top: 10px;" id="input_hot_1">
+                    <img src="img/add.png" alt="" style="position:absolute;top:15px;left:10px;">
+                    <input type="button" id="add_office" style="width: 100px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="新增" onclick="new_office()">
+            </div>
+            <script>
+                var userLevel = sessionStorage.getItem("userLevel");
+                if (userLevel=="1") {
+                    $("#input_hot_1").remove();
+                }
+            </script>
+
+            <div style="position:relative;display:inline-block;top: 10px;">
+                    <img src="img/change.png" alt="" style="position:absolute;top:10px;left:5px;">
+                    <input id="modeSwitch" type="button" style="width: 160px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="切换成列表模式">
+            </div>
+        </div>
+        <!-- 下部地图区域 -->
+        <div id="container_map" tabindex="0"></div>
+        <div class="button-group" style="bottom:80px;">
+            <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+            <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+        </div>
+        <div class="container_table" style="display:none">
+            <div class="table_cont">
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                        <tr>
+                            <th>区域</th>
+                            <th>位置</th>
+                            <th>设备</th>
+                            <th>录入人</th>
+                            <th>录入时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_report">
+                       
+                    </tbody>
+                </table>
+                 <!-- 分页 -->
+                <div class="office_page">
+                    <span>总记录:<i class="complete_total"></i>条</span>
+                    <div class="pagination complete_page">
+                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>请假明细</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+    <script src="js/lqz/lqz_drawing.js"></script>
+    <script src="javascript/public.js"></script>
+    <script src="javascript/plug-ins/threePage.js"></script>
+    <style type="text/css">
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+    .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .report_btn_two{margin:0;width: 100px;margin-left:10px;}
+    .report_table,.report_table1{padding-left:30px;width:95%;}
+    .report_page{margin-bottom:80px;text-align:center;}
+    #complete_report .audit{color:red;}
+    #complete_report .audit_ok{color:#969696;}
+    .form_sub_release select{width:50px;}
+    .form_sub li{position:relative;}
+    .checkbox, .radio{display: inline-block;}
+    .checkbox+.checkbox, .radio+.radio{margin-top: 10px;}
+    .form_sub_release .upFileBtn{position:absolute;width:70px;height:70px;opacity:0;top: 0;left: 110px;z-index: 1;}
+    .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:20px;width:70px;height:70px;border:1px solid #e5e5e5;}
+    #imgBox{display: inline-block;}
+    #imgBox img{width:70px;height:70px;z-index: 11;position: relative;}
+    tr img{height: 30px;}
+    #qx_yh{background-color: #fff;border: 1px solid #ddd;width:71%;display:inline-block;text-align: center;vertical-align:middle;}
+    #qx_yh li{margin:0px;cursor: pointer;display:inline-block;padding: 5px;}
+    input[type=checkbox], input[type=radio]{width: 15px;vertical-align: -3px;margin: 0 5px;}
+    #qx_yh input[type=checkbox], input[type=radio]{vertical-align: -8px;}
+    .form_sub .enter_map {width: 65px;border: none;background: #01dacf;color: #fff;}
+    .form_sub li i{position: relative;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+                区域：
+                <select onchange="callback(value,this)" id="hot_city">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select onchange="callback(value,this)" id="city_sx"></select>
+                <select id="area"></select>
+                用户名： <input type="text" class="user_name" id="userName"/>
+                时间：<input  style="width: 110px" id="start_time"  class="Wdate" type="text" onclick="WdatePicker()">
+                至：<input style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time\',{d:1});}'})" >
+                <button  id="search_btn" class="search_btn ButtonSearch"  onclick="information()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    <input class="data-ycl1" type="hidden" value="0">
+                    <input class="data-ycl2" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <div class="report_table report_table2">
+                <!-- 表格切换 -->
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="tab-nav">
+                            <li class="active">待批准</li>
+                            <li class="">已批准</li>
+                            <li class="">已拒绝</li>
+                        </ul>
+                        <button class="report_btn report_btn_two" onclick="audit()" id="removeBtn">
+                            <i class="icon-file-alt"></i>一键批准</button>
+                        <script>
+                            var userLevel = sessionStorage.getItem("userLevel");
+                            console.log(userLevel);
+                            if (userLevel=="1") {
+                                $("#removeBtn").remove();
+                            }
+                        </script>
+                    </div>
+                    <div class="tab-cont" style="display: block;">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>全选<input type="checkbox" style="margin:0 0 0 3px;" id="all" onclick="chk()"></th>
+                                    <th>请假人</th>
+                                    <th>所属区域</th>
+                                    <th>请假说明</th>
+                                    <th>请假时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report2">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                                <span>总记录:<i class="complete_total1"></i>条</span>
+                                <div class="pagination complete_page1">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>请假人</th>
+                                    <th>所属区域</th>
+                                    <th>请假说明</th>
+                                    <th>请假时间</th>
+                                    <th>批准时间</th>
+                                    <th>审批人</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_track">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="track_total"></i>条</span>
+                                <div class="pagination track_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>请假人</th>
+                                    <th>手机号码</th>
+                                    <th>所属区域</th>
+                                    <th>请假说明</th>
+                                    <th>请假时间</th>
+                                    <th>拒绝理由</th>
+                                    <th>审批人</th>
+                                    <th>审批时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_track3">
+
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="track_total2"></i>条</span>
+                                <div class="pagination track_page2">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

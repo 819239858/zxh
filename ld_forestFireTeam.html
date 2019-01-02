@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script>
+        var address=localStorage.getItem('setAllAddress');
+        $('.setAddress').html(address);
+    
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+    <script src="js/imgPlugin.js"></script>
+    <script>
+        var region=sessionStorage.getItem("region");
+        if(region !='43'){
+            $("#hot_city option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
+        
+        }
+    </script>
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script type="text/javascript" src="js/ld/ld_forestFireTeam.js"></script>
+    <style>
+        .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:80px;right: 10px;left: 250px;background-color:#fff;}
+        .search_area{height:40px;border:1px solid #e6e6e6;}
+        .search_container{margin-top:5px;margin-left:30px;}
+        #container_map{height:100%;width:100%;}
+        .menu{position:fixed;z-index:100;left:260px;top:145px;}
+        .container_table{width:100%;background: #fff;margin-top: -40px;padding-top: 10px;}
+        .table_cont{width:95%; padding-left:10px;margin-top:100px;height: 580px;overflow-y: scroll;}
+        .office_page{text-align:center;margin-bottom:50px;}
+        .add{background-image:url(img/add.png) no-repeat;}
+        .addPage{padding:20px 0 0 50px;color:#67758f;}
+        .addPage .add_area{margin-bottom:20px;}
+        .addPage .add_area select{width:140px;margin-left:6px;}
+        .addPage .add_list li{margin-bottom:20px;}
+        .addPage .add_list li:nth-child(2n+1){margin-right:30px;}
+        .addPage .add_list li label,.addPage .add_describ label,.addPage .add_upImg label{color:#67758f;font-weight:normal;width:60px;text-align: right;}
+        .addPage .add_list li input,.addPage .add_list li select{width:156px;border:1px solid #a1b6cb;padding-left:6px;}
+        .addPage .add_describ{margin-bottom:20px;}
+        .addPage .add_describ textarea{width:156px;height:80px;resize: none;margin-left:4px;}
+        .addPage .add_upImg div{width:100px;height:100px; border:1px solid #a1b6cb;margin:0 0 20px 4px;}
+        .addPage .operation input{width:80px;height: 30px;border-radius:4px;}
+        .addPage .operation input:nth-child(1){color:#4ace9d;border:1px solid #4ace9d;background-color:#fff;margin:0 100px 0 130px;}
+        .addPage .operation input:nth-child(2){color:#fff;border:1px solid #4ace9d;background-color:#01dacf;}
+        .form_sub_release{width: 648px;}
+        .form_sub_release select{width: 58px;}
+        .form_sub input{width: 175px;}
+        #imgBox1 img{width:60px;height:60px;}
+        .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+        .form_sub_release .upFileBtn{position:absolute;width:70px;height:70px;opacity:0;bottom:45px;left: 120px;}
+        .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:20px;width:70px;height:70px;border:1px solid #e5e5e5;}
+        #imgBox{display: inline-block;}
+        #imgBox img{width: 80px;height: 80px;}
+   </style>
+</head>
+<body>
+<!--森林消防资源分布--消防队伍-->
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+              区域：<select name="fireArea" id="hot_city" class="remove_disabled" onchange="callback(value,this)">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id="city" class="remove_disabled" onchange="callback(value,this)"></select>
+                <select id="village" class="remove_disabled"></select>
+                资源条数：<input type="text" id="numberBySearch"  value="100">
+                <button  id="search_btn" class="ButtonSearch"  onclick="queryBtn()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="menu">
+            <div style="position:relative;display:inline-block;margin-right:6px;" id="xz">
+                    <img src="img/add.png" alt="" style="position:absolute;top:15px;left:20px;">
+                    <input type="button" class="add" style="width: 100px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="新增" id="add" onclick="new_office()">
+            </div>
+            <script>
+              var userLevel = sessionStorage.getItem("userLevel");
+              if (userLevel=="1") {
+                $("#xz").remove();
+              }
+            </script>
+            <div style="position:relative;display:inline-block;margin-right:6px;">
+                    <img src="img/ld/static.png" alt="" style="position:absolute;top:12px;left:10px;">
+                    <input type="button" class="add" style="width: 102px;height:40px;background-color:#01dacf;border:none;color:#fff;padding-left:16px;" value="数据统计" onclick="toStatic()" />
+            </div>
+            <div style="position:relative;display:inline-block;">
+                    <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
+                    <input type="button" style="width: 140px;height:40px;background-color:#01dacf;border:none;color:#fff;padding-left:20px;" value="切换成列表模式" id="tabModel">
+            </div>
+        </div>
+        <!-- 下部地图区域 -->
+        <div id="container_map" tabindex="0" ></div>
+        <div class="button-group" style="bottom:80px;">
+          <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+          <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+        </div>
+        <div class="container_table" style="display: none;">
+          <div class="table_cont">
+            <table class="table table-bordered  mb-15">
+              <thead>
+                  <tr>
+                      <th>区域</th>
+                      <th>位置</th>
+                      <th>队伍名称</th>
+                      <th>人数</th>
+                      <th>性质</th>
+                      <th>成立时间</th>
+                      <th>录入时间</th>
+                      <th>操作</th>
+                  </tr>
+              </thead>
+              <tbody id="complete_report">
+                 
+              </tbody>
+            </table>
+            <!-- 分页 -->
+            <div class="office_page">
+              <span>总记录:<i class="complete_total"></i>条</span>
+              <div class="pagination complete_page">
+                  <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container_table_two" style="display: none;background: #fff;margin-top: -60px;padding-top: 10px;">
+            <div class="table_cont">
+                <table class="table table-bordered  mb-15">
+                    <caption style="text-align: center;color:#000;font-size:20px;background-color: #eeeeee;height:42px;"><span class="setAddress"></span>消防队伍统计数据</caption>
+                    <thead>
+                        <tr>
+                            <th>区域</th>
+                            <th>队伍数量(队)</th>
+                            <th>人数(个)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_report_two">
+                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+    <script src="js/LK/zdzxqk.js"></script>
+    <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.2.js" charset="utf-8"></script>
+    <style>
+    .tableDiv_fire{position:fixed;top:60px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;}
+    .search_area{height:40px;border:1px solid #e6e6e6;}
+    .search_container{margin-top:5px;margin-left:30px;}
+    .search_container input,.search_container select{width:100px;}
+    .search_container .search_btn{height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .search_container .Wdate{width:140px;height:25px;border-radius:3px;}
+    .search_container .search_user{margin-right:10px;padding-left:5px;width:100px;height:21px;border:1px solid #aaa;border-radius:3px;}
+    .search_area .search_container select{width:70px;}
+    #mapContainer{width:100%;height:100%;}  
+    .mak_con{margin: 10px}
+    .mak_con .title{color: #01dacf;font-size: 16px;}
+    .mak_con li{margin:2px 0;}
+    #user_query1{position:absolute;top:32px;left:380px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+    .form_sub_release label{width:60px;}
+    .form_sub li{margin:0;}
+
+
+    .left_div{background-color: #fff;position: fixed;top:200px;height: 400px;right: 0;z-index: 200;
+        width: 0px;border-radius: 6px;}
+    .left_width{width: 300px;}
+    .list_div{width: 100%;overflow: scroll;height: 300px;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+              区域：<select id='hot_city' onchange="callback(value,this)">
+                <!--<option value="">城市</option>-->
+                <!--<option value="4301" data-value="长沙市">长沙市</option>-->
+                <!--<option value="4302" data-value="株洲市">株洲市</option>-->
+                <!--<option value="4303" data-value="湘潭市">湘潭市</option>-->
+                <!--<option value="4304" data-value="衡阳市">衡阳市</option>-->
+                <!--<option value="4305" data-value="邵阳市">邵阳市</option>-->
+                <!--<option value="4306" data-value="岳阳市">岳阳市</option>-->
+                <!--<option value="4307" data-value="常德市">常德市</option>-->
+                <!--<option value="4308" data-value="张家界市">张家界市</option>-->
+                <!--<option value="4309" data-value="益阳市">益阳市</option>-->
+                <!--<option value="4311" data-value="永州市">永州市</option>-->
+                <!--<option value="4310" data-value="郴州市">郴州市</option>-->
+                <!--<option value="4312" data-value="怀化市">怀化市</option>-->
+                <!--<option value="4313" data-value="娄底市">娄底市</option>-->
+                <!--<option value="4331" data-value="湘西自治州">湘西自治州</option>-->
+              </select>
+              <select id="city_sx" onchange="callback(value,this)"></select>
+              <select id="area" class="remove_disabled"></select>
+              类型：<select id="type">
+                <option></option>
+                <option value="4">无人机</option>
+                <option value="3">消防员</option>
+                <option value="2">护林员</option>
+              </select>
+              用户名：<input type="text" class="search_user" id="userName"/>
+              <input id="search_btn_two" value="查询" type="button" class="search_btn" onclick="zdzxqk()" />
+            </div>
+        </div>
+        <!-- 地图区域 -->
+        <div id="mapContainer" tabindex="0"></div>
+        <div class="left_div">
+            <p style="margin-top: 10px;text-align: center;font-size: 18px;">在线列表</p>
+            <div class="list_div">
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>姓名/编号</th>
+                        <th>详情</th>
+                    </tr>
+                    </thead>
+                    <tbody id="text_list">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="button-group">
+            <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+            <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+            <input type="button" class="button" value="在线列表"   onClick="javascript:textDiv()"/>
+        </div>
+    </div>
+
+</body>
+</html>

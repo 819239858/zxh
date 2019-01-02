@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="website/main.css">
+    <link rel="icon" href="img/timg.png" type="image/x-icon">
+    <!--<link rel="icon" href="img/fujian.png" type="image/x-icon">-->
+    <script src="javascript/jquery.js"></script>
+    <script src="javascript/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="javascript/public.js"></script>
+    <script src="javascript/pages/login.js"></script>
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script src="javascript/public.js?v=1.4.0"></script>
+
+    <script src="website/main.js"></script>
+    <script>
+        var address=localStorage.getItem('setAllAddress');
+        $('.setAddress').html(address);
+        document.title =address+'森林防火网';
+        
+        if(address !='湖南省'){
+            $('.showNews').remove();
+        }
+    </script>
+
+    <title>湖南省森林防火网</title>
+    <style>
+        .showNews{display: inline-block;position: fixed;z-index: 30;left: 0;top:120px;background-color: #fff;
+            box-shadow: 0 0 10px #fff;border: 1px solid #f5f5f5;}
+        .showNews li{width: 160px;text-align: center;margin-top: 15px;padding-bottom: 10px;}
+        .borderLi{border-bottom: 1px solid #f5f5f5}
+        .moduleBox{position: fixed;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);z-index: 100;
+        top:0;left: 0;overflow: auto;display: none;}
+        .contentImg{margin-top: 8%;margin-left: 30%;}
+        .contentBtn{margin-left: 40%;}
+
+        .moduleBox1{position: fixed;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);z-index: 60;
+            top:0;left: 0;overflow: auto;display: none;}
+        .contentBtn1{margin-left: 18%;}
+        .display{display: block;}
+
+    </style>
+</head>
+<body>
+    
+    <div class="header"></div>
+    <ul class="nav">
+        <li class="cur"><a href="index2.html">网站首页</a></li>
+        <li id="menu_1" onclick="menu1()"><a href="javascript:;">防火新闻</a></li>
+        <li id="menu_2" onclick="menu2()"><a href="javascript:;">火险预报</a></li>
+        <li id="menu_3" onclick="menu3()"><a href="javascript:;">当前火情</a></li>
+        <li id="menu_4" onclick="menu4()"><a href="javascript:;">防火知识</a></li>
+    </ul>
+    <div class="nav_link">
+        <img src="img/postion.png"/>
+        当前位置：<a href="index2.html">网站首页 &gt;</a>
+        <span></span>
+    </div>
+    
+    <div class="main" id="main">
+       
+        <div class="clearfix">
+            <div class="section" style="width:860px;float: left;">
+                <p class="title">防火新闻</p>
+                <ul class="article" id="article1" style="width:50%;margin-right: 4%;">
+                </ul>
+                <a href="javascript:;" class="more" onclick="menu_1()">更多&nbsp;&gt;</a>
+                <div id="slideBox" class="slideBox">
+                    <!-- 文字 -->
+                    <div class="td"><ul></ul></div>
+                    <!-- 点 -->
+                    <div class="hd">
+                        <ul></ul>
+                    </div>
+                    <!-- 图片 -->
+                    <div class="bd">
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="aside">
+                <p class="title">登录</p>
+                <input type="text" placeholder="请输入手机号" id="adminName">
+                <input type="password" placeholder="请输入密码" id="adminPwd">
+                <div class="form-group">
+                    <input type="text" placeholder="请输入验证码" style="width:135px;" id="adminyzm">
+                    <img src="" class="yzm" onclick="reimg()" width="93">
+                </div>
+                <input type="button" class="btn" value="登录" onclick="login()">
+                <a href="javascript:alert('忘记密码请联系管理员！');" class="forget_pswd">忘记密码？</a>
+            </div>
+        </div>
+        
+        <div class="section" style="float: none">
+            <p class="title">当前火情</p>
+            <ul class="article" id="article2">
+            </ul>
+            <a href="javascript:;" class="more" onclick="menu_3()">更多&nbsp;&gt;</a>
+        </div>
+        
+        <div class="clearfix">
+            <div class="section" style="width:567px;">
+                <p class="title">火险预报</p>
+                <ul class="article" id="article3">
+                </ul>
+                <a href="javascript:;" class="more" onclick="menu_2()">更多&nbsp;&gt;</a>
+            </div>
+            <div class="section" style="width:568px;">
+                <p class="title">经验交流</p>
+                <ul class="article" id="article4">
+                </ul>
+                <a href="javascript:;" class="more" onclick="menu_4()">更多&nbsp;&gt;</a>
+            </div>
+        </div>
+       
+        <div class="section" style="min-height:auto;">
+            <p class="title">视频专栏</p>
+            <div class="picScroll-left">
+                    <a class="next"></a>
+                    <a class="prev"></a>
+                    <div class="bd">
+                        <ul class="picList">
+                            
+                        </ul>
+                    </div>
+                </div>
+        </div>
+    </div>
+    
+    <div class="showNews">
+        <ul>
+            <li class="borderLi">
+                <a href="http://www.slfh.gov.cn/" target="_blank">
+                    <img src="img/logo/yi.jpg" alt="">
+                </a>
+            </li>
+            <li class="borderLi">
+                <a href="http://119.39.124.66/fireforecast/" target="_blank">
+                    <img src="img/logo/er.jpg" alt="">
+                </a>
+            </li>
+            <li class="borderLi">
+                <a href="http://127.16.1.7" target="_blank">
+                    <img src="img/logo/san.jpg" alt="" >
+                </a>
+            </li>
+            <li>
+                <a href="http://60.205.191.66/FireReport/Account/LogOn?returnUrl=%2FFireReport" target="_blank">
+                    <img src="img/logo/si.jpg" alt="">
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p><span class="setAddress"></span>森林防火报警电话：12119</p>
+        <p><span class="setAddress"></span>森林防火网</p>
+    </div>
+
+    
+    <div class="moduleBox">
+        <div class="contentImg">
+            <img src="img/indexBack/1.png" alt="">
+        </div>
+        <div class="contentBtn">
+            <a href="javascript:;"  id="moduleBtn1">
+                <img src="img/indexBack/2.png" alt="">
+            </a>
+        </div>
+    </div>
+    <div class="moduleBox1">
+        <div class="contentImg">
+            <img src="img/indexBack/21.png" alt="">
+        </div>
+        <div class="contentBtn1">
+            <div href="javascript:;"  onclick="indexModule()">
+                <img src="img/indexBack/23.png" alt="" style="width: 25%;">
+                <a href="javascript:;" onclick="indexModule1()">
+                    <img src="img/indexBack/22.png" alt="">
+                </a>
+
+            </div>
+        </div>
+    </div>
+  
+    <script>
+        var getOSAndBrowser = function () {
+            var userAgent = navigator.userAgent;
+            var text = window.navigator.userAgent;  //用来判断360的极速模式和兼容模式
+            var info = {level:'',ifOk:''};
+            //判断浏览器版本
+            var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+            var isEdge = userAgent.toLowerCase().indexOf("edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+            var isIE11 = (userAgent.toLowerCase().indexOf("trident") > -1 && userAgent.indexOf("rv") > -1);
+            if (isIE) {
+                var version = "";
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if (fIEVersion == 7) { version = "7"; } else if (fIEVersion == 8)
+                { version = "8"; } else if (fIEVersion == 9) { version = "9"; }
+                else { version = "10"; };
+                info.level += version;
+            }
+            //360极速模式可以区分360安全浏览器和360极速浏览器
+            //if (text.indexOf('WOW') != -1 && text.indexOf("NET") < 0 && text.indexOf("Firefox") < 0) {
+                if(navigator.javaEnabled()){
+                    //360极速模式--显示
+                    info.ifOk =1;
+                }else{
+                    info.ifOk =0;
+                }
+            //}
+            return info;
+        };
+        function firstText(){
+            if(getOSAndBrowser().level >9 && (getOSAndBrowser().ifOk == '1')){
+               
+                $('.moduleBox1').addClass('display');
+            }else if(getOSAndBrowser().level >9 && (getOSAndBrowser().ifOk == '0')){
+                
+                $('.moduleBox').addClass('display');
+                $('#moduleBtn1').on('click',function () {
+                    $('.moduleBox').removeClass('display')
+                })
+            }else if(getOSAndBrowser().level <10 && (getOSAndBrowser().ifOk == '1')){
+                
+                $('.moduleBox').addClass('display');
+                $('#moduleBtn1').on('click',function () {
+                    $('.moduleBox').removeClass('display');
+                    $('.moduleBox1').addClass('display');
+                })
+            }
+        }
+        firstText();
+        //关闭IE小于10的模态框
+        function indexModule() {
+            $('.moduleBox').removeClass('display')
+        }
+        //关闭360模式问题的模态框
+        function indexModule1() {
+            $('.moduleBox1').removeClass('display')
+        }
+        
+    </script>
+</body>
+</html>

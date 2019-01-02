@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <style>
+    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+    .search_area{height:40px;border:1px solid #e6e6e6;}
+    .search_container{margin-top:5px;margin-left:30px;position: relative;}
+    .search_container input,.search_container select{width:100px;}
+    .search_container .search_btn{height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .search_container .search_user{margin-right:10px;padding-left:5px;width:100px;height:21px;border:1px solid #aaa;border-radius:3px;}
+    #mapContainer{width:100%;height:100%;}
+    .menu{position:fixed;top:145px;left:260px;z-index:100;}
+    .amap-info-content{padding:10px;}
+    .container_table{width:100%;}
+    .table_cont,.table_cont_flex{margin-top:60px;padding-left:30px;width:95%;text-align: center;}
+    .table_cont_flex .hlyflex{width:24%;display: inline-block;font-size:14px;background-color:#01dacf;}
+    .table_cont_flex .hlyflex span{font-size:36px;color:#c6e63b;padding:15px 0;display: block;}
+    .office_page{margin-bottom:80px;text-align:center;}
+    .form_sub_release li{margin:5px 0;}
+    .form_sub_release label{width:60px;}
+    .form_sub_release video{border:1px solid #333;background:#000;}
+    #user_query1{position:absolute;top:32px;left:370px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+              区域：<select id='hot_city' onchange="callback(value,this)">
+                <!--<option>省</option>-->
+                <!--<option value="4301" data-value="长沙市">长沙市</option>-->
+                <!--<option value="4302" data-value="株洲市">株洲市</option>-->
+                <!--<option value="4303" data-value="湘潭市">湘潭市</option>-->
+                <!--<option value="4304" data-value="衡阳市">衡阳市</option>-->
+                <!--<option value="4305" data-value="邵阳市">邵阳市</option>-->
+                <!--<option value="4306" data-value="岳阳市">岳阳市</option>-->
+                <!--<option value="4307" data-value="常德市">常德市</option>-->
+                <!--<option value="4308" data-value="张家界市">张家界市</option>-->
+                <!--<option value="4309" data-value="益阳市">益阳市</option>-->
+                <!--<option value="4311" data-value="永州市">永州市</option>-->
+                <!--<option value="4310" data-value="郴州市">郴州市</option>-->
+                <!--<option value="4312" data-value="怀化市">怀化市</option>-->
+                <!--<option value="4313" data-value="娄底市">娄底市</option>-->
+                <!--<option value="4331" data-value="湘西自治州">湘西自治州</option>-->
+              </select>
+              <select id="city_sx" onchange="callback(value,this)"></select>
+              <select id="area" class="remove_disabled"></select>
+              电话号码：<input type="text" class="search_user" id="userName"/>
+                <button  id="search_btn" class="search_btn ButtonSearch"  onclick="showFireHot_two()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+          </div>
+        <div class="menu">
+          <div style="position:relative;display:inline-block;">
+            <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px;">
+            <input id="modeSwitch" type="button" style="width: 160px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="切换成列表模式">
+          </div>
+        </div>
+        <div class="container_table" style="display:none">
+
+          <div class="table_cont_flex">
+            <p><span class="setAddress"></span>护林员在线情况统计</p>
+            <div class="hlyflex"><span id="hlyTotal">0</span><p>总人数</p></div>
+            <div class="hlyflex"><span id="total">0</span><p>在线人数</p></div>
+            <div class="hlyflex"><span id="hlyTotal_total">0%</span><p>上线率</p></div>
+            <div class="hlyflex"><span id="yesterday_total">0%<sub>&#8593;</sub></span><p>相比昨日</p></div>
+          </div>
+
+          <div class="table_cont" style="margin-top:20px;">
+              <table class="table table-bordered  mb-15">
+                  <thead>
+                      <tr>
+                          <th>用户名</th>
+                          <th>手机</th>
+                          <!-- <th>区域</th> -->
+                          <th>位置</th>
+                          <!-- <th>上线时间</th> -->
+                          <th>事件描述</th>
+                      </tr>
+                  </thead>
+                  <tbody id="complete_report">
+                     
+                  </tbody>
+              </table>
+               <!-- 分页 -->
+              <div class="office_page">
+                  <span>总记录:<i class="complete_total"></i>条</span>
+                  <div class="pagination complete_page">
+                      <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                  </div>
+              </div>
+          </div>
+        </div>
+        
+        <!-- 地图区域 -->
+        <div id="mapContainer" tabindex="0"></div>
+        <div class="button-group" style="bottom:80px;">
+          <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+          <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+        </div>
+    </div>                                             
+</body>
+<script type="text/javascript">
+
+    var city=localStorage.getItem('Public_city');
+    $('#hot_city').html(city);
+
+
+    var address=localStorage.getItem('setAllAddress');
+    $('.setAddress').html(address);
+
+//基本地图加载
+var map = new AMap.Map("mapContainer", {
+    resizeEnable: true,
+    zoom:8
+});
+var type= new AMap.MapType({
+  defaultType:1,
+  showRoad:true
+});
+map.addControl(type);
+var infoWindow = new AMap.InfoWindow({
+  offset: new AMap.Pixel(16, -25)
+});
+var geocoder = new AMap.Geocoder({
+  radius: 1000,
+  extensions: "all"
+});
+callback1();
+showFireHot_two();
+    addBeiJing();
+//查询定位
+
+function showFireHot_two(){
+  var city = $("#hot_city option:checked").html()=="省"?'':$("#hot_city option:checked").html();
+  var town = $("#city_sx option:checked").html();
+  var area=$("#area option:checked").html();
+  var phone=$('#userName').val();
+  sendAjax({
+		"url":"fire/receive_app_info/getHlyLocation",
+		"data":{"city":city,"town":town,"village":area,"phone":phone},
+		"callback":function(data){
+			if (data.code=="s_ok") {
+        map.clearMap();
+        if (data.var.total==0) {
+          layer.msg('查询数据为空'); num=1;$("#complete_report").html('');
+          $(".complete_total").html(0);
+        }else{
+          
+          num=data.var.total;
+          $(".complete_total").html(data.var.total);
+          var result=data.var.hly_list;
+          $("#hlyTotal").html(data.var.hly_total);
+          $("#total").html(data.var.total);
+          $("#hlyTotal_total").html((data.var.total/data.var.hly_total).toFixed(2)+'%');
+          $("#yesterday_total").html(data.var.yesterday_total+'%');
+          $("#complete_report").html('');
+          
+          $(".complete_page").createPage({
+              pageCount:Math.ceil(num/20),
+              current:1,
+              backFn:function(p){
+                $.ajax({
+                  url:"getFireIsolationList.htm",
+                  type:"post",
+                  dataType:"json",
+                  data:{"city":city,"town":town,"page":p},
+                  success:function(data){
+                    var result=data.obj;
+                    $("#complete_report").html('');
+                    for(var i=0;i<result.length;i++){
+                      $("#complete_report").append("<tr><td>" + result[i].areaName + "</td><td class=\"lt\">" + result[i].publishName + "</td><td>" + result[i].userLongitude + "," + result[i].userLatitude + "</td><td>我正在巡逻，有事可以call我...</td></tr>");
+                    }
+                  }
+                })
+              }
+            });
+          for(var i=0;i<result.length;i++){
+            $("#complete_report").append("<tr><td>" + result[i].areaName + "</td><td class=\"lt\">" + result[i].publishName + "</td><td>" + result[i].userLongitude + "," + result[i].userLatitude + "</td><td>我正在巡逻，有事可以call我...</td></tr>");
+            if (result[i].isPublish=="1") {var images="zb.png"}
+            if (result[i].isPublish=="0") {var images="wzb.png"}
+            if (result[i].userLongitude!=null) {
+              var lnglatXY=JSON.parse('[' + String(result[i].userLongitude) + ',' + String(result[i].userLatitude) + ']');
+              zm(lnglatXY,result[i]);
+              function zm(lnglatXY,result) {
+                geocoder.getAddress(lnglatXY, function(status, result1) {
+                  if (status === 'complete' && result1.info === 'OK') {
+                    lnglatX_Y=result1.regeocode.formattedAddress;
+                    var marker = new AMap.Marker({
+                      position: lnglatXY,
+                      icon:'img/lqz/'+images,
+                      map: map
+                    });
+                    marker.setLabel({
+                      offset: new AMap.Pixel(-40, -20),
+                      content: result.name
+                    });
+                    var s_token = sessionStorage.getItem("s_token");
+                    $.ajax({
+                      url:Public_address+'fire/play_push/getPlayUrl?s_token='+s_token,
+                      async:false,
+                      data:{"live_id" :result.uid},
+                      dataType: 'json',
+                      type:'get',
+                      success:function(results){
+                        if(result.code='s_ok'){
+                            var location=results.var.PlayUrl[0];
+                            addHotMarkerClick_two(marker,result,lnglatX_Y,location);
+                        }else{
+                            layer.msg("直播发生错误！")
+                        }
+                      }
+                    })
+                  }
+                }); 
+              }
+            }
+            
+          }
+        }
+      }else{
+          layer.msg(data.var);
+      }
+    }
+  });
+}
+//marker点击事件
+function addHotMarkerClick_two(marker,data,lnglatX_Y,location){
+  AMap.event.addListener(marker, 'click', function() {
+    infoWindow.setContent(marker.content);
+    infoWindow.open(map, marker.getPosition());
+  });
+  if (data.isPublish=="0") {
+    marker.content="<div style=\"color:#01dacf;font-size:16px;\">直播实况</div><ul class=\"form_sub form_sub_release\" style=\"width:290px;height:100%\"><li><object width='290' height='200' id='SampleMediaPlayback' "+"name='SampleMediaPlayback' type='application/x-shockwave-flash' "+ "classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' > "+"<param name='movie' value='swfs/SampleMediaPlayback.swf' />  "+"<param name='quality' value='high' /> "+ "<param name='bgcolor' value='#000000' /> "+ "<param name='allowfullscreen' value='true' />  "+"<param name='flashvars'  "+"value= '&src="
+        + location + "&autoHideControlBar=true&streamType=live&autoPlay=true&verbose=true'/> "+"<embed src='swfs/SampleMediaPlayback.swf' width='290' height='200' "+ "id='SampleMediaPlayback' quality='high' bgcolor='#000000' "+ "name='SampleMediaPlayback' allowfullscreen='true'  "+"pluginspage='http://www.adobe.com/go/getflashplayer'  "+"flashvars='&src="
+        + location + "&autoHideControlBar=true&streamType=live&autoPlay=true&verbose=true'  "+"type='application/x-shockwave-flash'> </embed> "+"</object></li><li><label>用户名：</label><span>"+data.name+"</span><br><label>手机：</label><span>"+data.publishName+"</span></li><li><label>位置：</label><span>"+lnglatX_Y+"</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span>" +
+        "</ul>"
+  }
+//<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName + ")\" style='margin: 2px 20px;'>发送信息</label></li></ul>"
+
+  if (data.isPublish=="1"){
+    marker.content="<div style=\"color:#01dacf;font-size:16px;\">人员信息</div><ul class=\"form_sub form_sub_release\" style=\"width:350px;height:125px\"><li><label>用户名：</label><span>"+data.name+"</span><br><label>手机：</label><span>"+data.publishName+"</span></li><li><label>位置：</label><span>"+data.userLongitude+""+data.userLatitude+"</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span></li><li><i class=\"icon-map-marker\"></i><span>"+lnglatX_Y+"</span></li>" +
+        "</ul>"
+  }
+//    "<li><label style='margin: 2px 20px;' class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName + ")\">发送信息</label></li></ul>"
+
+};
+
+$("#modeSwitch").click(function(){
+    if($(this).val()=="切换成列表模式"){
+      $("#mapContainer").hide();
+      $(".button-group").hide();
+      $(".container_table").show();
+      $(this).val("切换成地图模式");
+    }else{
+      $("#mapContainer").show();
+      $(".container_table").hide();
+      $(".button-group").show();
+      $(this).val("切换成列表模式");
+    }
+});
+</script>
+</html>

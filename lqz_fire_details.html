@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/lqz_man.css">
+<script type="text/javascript" src="js/styleMaps.js"></script>
+<!-- 上传 -->
+<script src="js/videoPlugin.js"></script>
+<script src="js/imgPlugin.js"></script>
+<script>
+   var city=localStorage.getItem('Public_city');
+   $('#province').html(city);
+</script>
+<script src="js/lqz/lqz_man.js"> </script>
+<style>
+	.back{font-size: 14px;margin-left: 19px;border: solid 1px #01dacf;padding: 2px 5px;vertical-align: middle;color: #01dacf;border-radius: 3px;cursor: pointer;}
+</style>
+<script>
+function onback() {
+	var location=sessionStorage.getItem("location");
+	var location_html=sessionStorage.getItem("location_html");
+	$("#index_main_context").load(location);
+	$("#index_titel").html(location_html);
+}
+var isFirst=isFirst_two=isFirst_there=isFirst4=isFirst5= true; 
+var index_xq = localStorage.getItem("index_xq");
+var fireId_xq = localStorage.getItem("fireId_xq");
+var lnglatXY=[];
+
+if (index_xq==1) {
+	$(".form_sub").hide().eq(0).show();
+	$(".serial-number ul li").addClass("progressing").eq(0).siblings().removeClass("progressing");
+	details();
+}
+if (index_xq==2) {
+	$(".form_sub").hide().eq(1).show();
+	$(".serial-number ul li").addClass("progressing").eq(1).siblings().removeClass("progressing");
+	details();
+	
+}
+if (index_xq==3) {
+	$(".form_sub").hide().eq(2).show();
+	$(".serial-number ul li").addClass("progressing").eq(2).siblings().removeClass("progressing");
+	details();
+}
+$(".serial-number ul").on("click","li",function(){
+	var index = $(this).index();
+	$(this).addClass("progressing").siblings().removeClass("progressing");
+	$(".form_sub").hide().eq(index).show();
+	$(".enter_map").show();
+});
+var list1=[];
+var list2=[];
+var list3=[];
+var img_del1=[];
+var img_del2=[];
+var img_del3=[];
+//三详情
+function details(){
+	sendAjax({
+		"url":"fire/fire/getFireUploadInfo",
+		"data":{"id":fireId_xq},
+		"callback":function(result){
+			if (result.code=="s_ok"){
+				var data=result.var;
+				// 上报详情
+				if (data.length>0) {
+					if (index_xq<2) {
+						var op1 = 
+						"<div class=\"right_move\"><label>1.监控设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" id=\"materialSupply\" name=\"materialSupply\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>2.灭火装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>3.防护装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>4.通信设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>5.油&nbsp;&nbsp;料</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>6.食物和水</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>7.其他物资</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div>";
+						$(".input_wz").append(op1);
+					}
+					// if (index_xq ==3) {
+					// 	var form3="<li><input type=\"button\" value=\"取消\" class=\"cancel\" onclick=\"back()\"> <input type=\"button\" value=\"上报\" class=\"report submit\" id=\"btn3\" onclick=\"fsubmit_over()\"></li>";
+					// 	$(".form_sub_three").append(form3);
+					// }
+					$('#form1 .fileInput').hide();
+					var element = result.var[0];var lnglatXY=[];
+					localStorage.setItem("var", element.id);
+					if (element.position_type == "0") {
+						var lnglat=element.position.split(";");
+						lnglat.pop();
+						for (var i = 0; i < lnglat.length; i++) {
+							map.setZoomAndCenter(17, JSON.parse('[' + String(lnglat[i]) + ']'));
+							marker(JSON.parse('[' + String(lnglat[i]) + ']'),0);
+						}
+						var lnglatXY=[];
+					}
+					if (element.position_type=="1") {
+						var lnglat=element.position.split(";");
+						lnglat.pop();
+						for(var i=0;i<lnglat.length;i++){
+							lnglatXY.push(JSON.parse('[' + String(lnglat[i]) + ']'));
+						}
+						marker(lnglatXY,1);
+						map.setZoomAndCenter(16, lnglatXY[0]);
+						var lnglatXY=[];
+					}
+					if (element.position_type=="2") {
+						var lnglat=element.position.split(";");
+						lnglat.pop();
+						for(var i=0;i<lnglat.length;i++){
+							lnglatXY.push(JSON.parse('[' + String(lnglat[i]) + ']'));
+						}
+						marker(lnglatXY,2);
+						map.setZoomAndCenter(16, lnglatXY[0]);
+						var lnglatXY=[];
+					}
+					$("#latLngs").val(element.position);
+					$("#lnglat1").val(element.position);
+					$("#lnglat2").val(element.position);
+					$("#bianhao").val(fireId_xq);
+					$("#creactTime").val(element.happen_time);
+					$("#person_name").val(element.user_name);
+					$("#fireMj").val(element.fire_area);
+					$("#person_telephone").val(element.user_tel);
+					$("#fireHj").html(element.environment);
+					$("#fireCause").get(0).selectedIndex=element.fire_cause;
+					$("#province option[value='" +(element.region).substr(0,4)+ "']").prop("selected", "selected");
+					callback((element.region).substr(0,4),$("#province"));
+					$("#city option[value='" +(element.region).substr(0,6)+ "']").prop("selected", "selected");
+					callback((element.region).substr(0,6),$("#city"));
+					$("#area option[value='" +(element.region).substr(0,9)+ "']").prop("selected", "selected");
+					$("#fireLeve").get(0).selectedIndex=element.fire_level;
+					$("#fireKind").get(0).selectedIndex=element.fire_type;
+                    list1=[];
+                    img_del1=[];
+					if (element.image_path!=null&&element.image_path!='') {
+						var images=element.image_path;
+						for (var i = 0; i < images.length; i++) {
+							$("#imgBox").append("<img src="+Public_address+'uploads/'+images[i].path+" onerror=\"this.style=&quot;display:none&quot;\" class='img_yl'>");
+							list1.push(images[i].id);
+						}
+					}
+					if (element.are_taken_file!='') {
+						$(".videoname").append("<a href='javascript:;' onclick='drawing(this)' style='margin-left:20px;'>"+element.are_taken_file[0].folder_path+"</a>");
+					}
+					
+					$("#describe").val(element.are_taken_file_describe);
+					save(0);
+					//追踪详情
+					if (data.length>1) {
+						$('#form2 .fileInput').hide();
+						var element1 = result.var[1];
+						var material=[];var commandGroup=[];
+						if (element1.commander_member!='') {
+							var materialSupply=element1.commander_member.split(",");
+							for(var i=0;i<materialSupply.length;i++){
+								commandGroup[i]=materialSupply[i].split("_");
+								var op ="<input type=\"text\" class=\"form-control form-boxed remove_disabled commandGroupName\" placeholder=\"姓名\" value=\"" + commandGroup[i][0] + "\"><input type=\"text\" class=\"form-control form-boxed remove_disabled commandGroupName\" placeholder=\"职务\" value=\"" + commandGroup[i][1] + "\">";
+								$(".add_comm_add").append(op);
+							}
+						}
+						if (index_xq<2||element1.materials=='') {
+							var op1 = 
+							"<div class=\"right_move\"><label>1.监控设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" id=\"materialSupply\" name=\"materialSupply\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>2.灭火装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>3.防护装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>4.通信设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>5.油&nbsp;&nbsp;料</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>6.食物和水</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div><div class=\"right_move\"><label>7.其他物资</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled number\" placeholder=\"数量\"></div>";
+							$(".input_wz").append(op1);
+							
+						}
+						$("#btn2").attr('onclick',"fsubmit_chase_modify()");
+						if (element1.materials!='') {
+							var material=element1.materials.split(",");
+							for(var i=0;i<material.length;i++){
+								material[i]=material[i].split("_");
+							}
+							var op1 = "<div class=\"right_move\"><label>1.监控设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" id=\"materialSupply\" value=\"" + material[0][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[0][1] + "\"></div><div class=\"right_move\"><label>2.灭火装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[1][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[1][1] + "\"></div><div class=\"right_move\"><label>3.防护装备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[2][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[2][1] + "\"></div><div class=\"right_move\"><label>4.通信设备</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[3][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[3][1] + "\"></div><div class=\"right_move\"><label>5.油&nbsp;&nbsp;料</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[4][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[4][1] + "\"></div><div class=\"right_move\"><label>6.食物和水</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[5][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[5][1] + "\"></div><div class=\"right_move\"><label>7.其他物资</label><input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"名称\" value=\"" + material[6][0] + "\"> <input type=\"text\" class=\"form-control form-boxed remove_disabled\" placeholder=\"数量\" value=\"" + material[6][1] + "\"></div>";
+							$(".input_wz").append(op1);
+						}
+
+						$("#weather").val(element1.trace_weather);
+						$("#creactTime1").val(element1.trace_time);
+						$("#chiefName").val(element1.commander_name);
+						$("#chiefJob").val(element1.commander_job);
+						$("#truckmanTeamName").val(element1.firemen_name);
+						$("#truckmanNo").val(element1.firemen_num);
+						$("#woodLandArea").get(0).selectedIndex=element1.woods_area;
+						$("#mainTree").get(0).selectedIndex=element1.tree_species;
+						$("#woodLandFirePostion").get(0).selectedIndex=element1.tree_fire;
+						$("#fireStep").get(0).selectedIndex=element1.fire_level;
+						$("#estimatedFireTime").get(0).selectedIndex=element1.quench_time;
+						if (element1.are_taken_file!='') {
+							$(".videoname1").append("<a href='javascript:;' onclick='drawing(this)' style='margin-left:20px;'>"+element1.are_taken_file[0].folder_path+"</a>");
+						}
+						$("#describe1").val(element1.are_taken_file_describe);
+                        list2=[];
+                        img_del2=[];
+						if (element1.image_path!=null&&element1.image_path!='') {
+							var images=element1.image_path;
+							for (var i = 0; i < images.length; i++) {
+								$("#imgBox1").append("<img src="+Public_address+'uploads/'+images[i].path+" onerror=\"this.style=&quot;display:none&quot;\" class='img_yl'>");
+                                list2.push(images[i].id);
+							}
+						}
+						save(1);
+						$('#commandGroup').css("visibility","hidden");
+						$('#commandGroup_two').css("visibility","hidden");
+						$(".cancel").click(function (){editor(1)});
+					}
+					// 结束详情
+					if (data.length>2) {
+						$('#form3 .fileInput').hide();
+						var element2 = result.var[2];
+						$("#creactTime2").val(element2.finish_time);
+						$("#keepTime").val(element2.cost_time);
+						$("#firearea").val(element2.fire_area);
+						$("#destroyBuild").val(element2.destroy_build);
+						$("#death").val(element2.death_people);
+						$("#injured").val(element2.bruise_people);
+						$("#economicLoss").val(element2.financial_loss);
+						$("#reason").val(element2.danger_cause);
+						$("#experience").val(element2.summarize);
+						$("#hiddenDanger").get(0).selectedIndex=element2.hidden_danger;
+						if (element2.are_taken_file!='') {
+							$(".videoname2").append("<a href='javascript:;' onclick='drawing(this)' style='margin-left:20px;'>"+element2.are_taken_file[0].folder_path+"</a>");
+							
+						}
+						$("#describe2").val(element2.are_taken_file_describe);
+                        list3=[];
+                        img_del3=[];
+						if (element2.image_path.length>0) {
+							var images=element2.image_path;
+							for (var i = 0; i < images.length; i++) {
+								$("#imgBox2").append("<img src="+Public_address+'uploads/'+images[i].path+" onerror=\"this.style=&quot;display:none&quot;\" class='img_yl'>");
+                                list3.push(images[i].id);
+							}
+						}
+						save(2);
+						$(".cancel").click(function (){editor(2)});
+					}
+				}
+			}
+	    },
+	    error:function(e){
+	        layer.msg("网络错误！");
+	    }
+	});
+}
+
+// 图片
+//$('body').on( "click", ".img_yl",function(event) {
+//	var src=$(this).attr("src");
+//	var $h1="<img src=\"" +src+ "\" style='width:100%'>";
+//	layer.open({
+//        skin: 'layui-layer-molv',
+//        title:'图片预览',
+//        type: 0,
+//        area: ['570px', '480px;'],
+//        shadeClose: true,
+//        btnAlign: 'c',
+//        content:$h1
+//    });
+//});
+
+</script>
+</head>
+<body>
+	<div class="tableDiv_fire">
+		<div class="top_box">
+            <p>当前位置:<span class="on" onclick="back()">火情信息 &gt;</span><span style="color:#01dacf;">火情详情</span><span class="back" onclick="onback()">返回上一页</span></p>
+        </div>
+		<div class="panel-bd">
+			<div class="serial-number">
+				<ul>
+					<li class="progressing">
+						<span>火情上报</span>
+					</li>
+					<li class="">
+						<span>火情追踪</span>
+					</li>
+					<li class="">
+						<span>火情结束</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="container"></div>
+		<form id="form1" method="post" action="" enctype="multipart/form-data">
+			<ul class="form_sub" style="display: block;padding-left: 35px;">
+				<li>
+					<label>火灾编号</label>
+					<input type="text" value="" class="form-control form-boxed" disabled id="bianhao">
+				</li>
+				<li>
+					<label>火灾发生时间<i style="color:red">*</i></label>
+					<input type="text" id="creactTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate remove_disabled form-control" style="width:180px" name="creactTime" />
+				</li>
+				<li>
+					<label>区域<i style="color:red">*</i></label>
+					<select name="fireArea" id="province" class="remove_disabled" onchange="callback(value,this)">
+						<!--<option value="43">省</option>-->
+						<!--<option value="4301">长沙市</option>-->
+						<!--<option value="4302">株洲市</option>-->
+						<!--<option value="4303">湘潭市</option>-->
+						<!--<option value="4304">衡阳市</option>-->
+						<!--<option value="4305">邵阳市</option>-->
+						<!--<option value="4306">岳阳市</option>-->
+						<!--<option value="4307">常德市</option>-->
+						<!--<option value="4308">张家界市</option>-->
+						<!--<option value="4309">益阳市</option>-->
+						<!--<option value="4311">永州市</option>-->
+						<!--<option value="4310">郴州市</option>-->
+						<!--<option value="4312">怀化市</option>-->
+						<!--<option value="4313">娄底市</option>-->
+						<!--<option value="4331">湘西自治州</option>-->
+					</select>
+					<select id="city" class="remove_disabled" onchange="callback(value,this)">
+					</select>
+					<select id="area" class="remove_disabled">
+					</select>
+				</li>
+				<li>
+					<label>上报人姓名</label>
+					<input type="text" value="" class="form-control form-boxed" disabled id="person_name">
+				</li>
+				<li>
+					<label>上报人电话</label>
+					<input type="text" value="" class="form-control form-boxed" disabled id="person_telephone">
+				</li>
+				<li>
+					<label>地图位置<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed " disabled id="latLngs" name="latLngs">
+					<input class="enter_map" type="button" value="进入地图" onclick="layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#latLngs').val(localStorage.getItem('site'));}})" />
+				</li>
+				<li>
+					<label>等级</label>
+					<select name="fireLeve" id="fireLeve" class="xla_k remove_disabled" > 
+						<option value="0">一般</option>
+						<option value="1">较大</option>
+						<option value="2">重大</option>
+						<option value="3">特别重大</option>
+					</select>
+				</li>
+				<li>
+					<label>种类</label>
+					<select name="fireKind" id="fireKind" class="xla_k remove_disabled"> 
+						<option value="0">地表火</option>
+						<option value="1">林冠火</option>
+						<option value="2">地下火</option>
+					</select>
+				</li>
+				<li>
+					<label>过火面积(亩)</label>
+					<input type="text" name="fireMj" id="fireMj" class="form-control form-boxed remove_disabled">
+				</li>
+				<li>
+					<label>火灾原因</label>
+					<select name="fireCause" id="fireCause" class="xla_k remove_disabled">
+						<option value="0">人为因素</option>
+						<option value="1">自然因素</option>
+						<option value="2">其他</option>
+					</select>
+				</li>
+				<li>
+					<label>现场环境</label>
+					<textarea class="form-control form-boxed remove_disabled" name="fireHj" id="fireHj"></textarea>
+				</li>
+				<li>
+					<label>图片上传</label>
+					<input type="file" name="photoName1" id="photoName1" class="upFileBtn"  accept="image/png,image/jpg,image/gif,image/JPEG"/>
+	           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#photoName1').click()" />
+	           		<div id="imgBox"></div>
+				</li>
+				<li>
+					<label>正射图上传</label>
+					<input type="file" id="videoName1" class="upFileBtn" />
+	           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName1').click()" />
+	           		<span class="videoname"></span>
+				</li>
+				<li>
+					<label>正射图描述</label>
+					<textarea class="form-control form-boxed remove_disabled" id="describe"></textarea>
+				</li>
+				<li class="sb_input">
+					<input type="button" value="取消" class="cancel" onclick="back()" />
+					<input type="button" value="保存" class="report submit" id="btn1" onclick="fsubmit_modify()"/>
+				</li>
+			</ul>
+		</form>
+		<form id="form2" method="post" action="" enctype="multipart/form-data">
+			<ul class="form_sub form_sub_two">
+					<li >
+						<label>跟踪时间<i style="color:red">*</i></label>
+						<input type="text" id="creactTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate remove_disabled form-control" style="width:180px" name="creactTime" />
+						<label style="width: 70px;">天气情况</label>
+						<input type="text" value="" class="form-control form-boxed remove_disabled" id="weather" name="weather">
+					</li>
+					<li>
+						<label>林地面积</label>
+						<select name="select" id="woodLandArea" class="xla_k remove_disabled" name="woodLandArea"> 
+							<option value="0">小于五十亩</option>
+							<option value="1">50-200亩</option>
+							<option value="2">200-500亩</option>
+							<option value="3">500-1000亩</option>
+							<option value="4">1000亩以上</option>
+						</select>
+					</li>
+					<li>
+						<label>主要树种</label>
+						<select name="mainTree" id="mainTree" class="xla_k remove_disabled"> 
+							<option value="0">针叶林</option>
+							<option value="1">阔叶林</option>
+							<option value="2">杂灌木</option>
+							<option value="3">混交林</option>
+							<option value="4">草地</option>
+							<option value="5">其他</option>
+						</select>
+					</li>
+					<li>
+						<label>林地与火点位置关系</label>
+						<select name="woodLandFirePostion" id="woodLandFirePostion" class="xla_k remove_disabled"> 
+							<option value="0">顶风（0-30度）</option>
+							<option value="1">前迎风（30-60度）</option>
+							<option value="2">后迎风（60-80度）</option>
+							<option value="3">横风（80-100度）</option>
+							<option value="4">顺风（100-170度）</option>
+							<option value="5">尾风（170-180度）</option>
+						</select>
+					</li>
+					<li>
+						<label>火情发展阶段</label>
+						<select name="fireStep" id="fireStep" class="xla_k remove_disabled"> 
+							<option value="0">初期</option>
+							<option value="1">发展</option>
+							<option value="2">猛烈</option>
+							<option value="3">下降</option>
+							<option value="4">熄灭</option>
+						</select>
+					</li>
+					<li>
+						<label>指挥长<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="姓名" name="chiefName" id="chiefName">
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="职务" name="chiefJob" id="chiefJob">
+					</li>
+					<li class="add_comm_add">
+						<label>指挥组成员：</label>
+						<input type="text" class="form-control form-boxed" placeholder="姓名" id="commandGroup">
+						<input type="text" class="form-control form-boxed" placeholder="职务" id="commandGroup_two">
+						<img class="comm_add" src="img/LK/tjtp.png">
+					</li>
+					<li>
+						<label>消防员</label>
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="队伍名称" name="truckmanTeamName" id="truckmanTeamName">
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="消防队伍人数" name="truckmanNo" id="truckmanNo">
+					</li>
+					<li class="input_wz">
+						<label >消防物资调拔情况：</label>
+					</li>
+					<li>
+						<label>预计灭火时间</label>
+						<select name="estimatedFireTime" id="estimatedFireTime" class="xla_k remove_disabled min_xla" > 
+							<option value="0">一小时内</option>
+							<option value="1">1-2小时</option>
+							<option value="2">2-5小时</option>
+							<option value="3">5小时以上</option>
+						</select>
+						<label style="width:70px;">地图位置</label>
+						<input type="text" class="form-control form-boxed" disabled id="lnglat1" >
+					</li>
+					<li>
+						<label>图片上传</label>
+						<input type="file" name="photoName1" id="photoName2" class="upFileBtn"  accept="image/png,image/jpg,image/gif,image/JPEG" />
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#photoName2').click()" />
+		           		<div id="imgBox1"></div>
+					</li>
+					<li>
+						<label>正射图上传</label>
+						<input type="file" id="videoName2" class="upFileBtn" />
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName2').click()" />
+		           		<span class="videoname1"></span>
+					</li>
+					<li>
+						<label>正射图描述</label>
+						<textarea class="form-control form-boxed remove_disabled" id="describe1"></textarea>
+					</li>
+					<li class="sb_input">
+						<input type="button" value="取消" class="cancel" onclick="back()"/>
+						<input type="button" value="保存" class="report submit" id="btn2" onclick="fsubmit_chase()"/>
+					</li>
+				</ul>
+		</form>
+		<form id="form3" method="post" action="" enctype="multipart/form-data">
+			<ul class="form_sub form_sub_three">
+				<li >
+					<label>火灾结束时间<i style="color:red">*</i></label>
+					<input type="text" id="creactTime2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate remove_disabled form-control" style="width:180px" name="creactTime" />
+				</li>
+				<li>
+					<label>地图位置<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed" disabled id="lnglat2" >
+				</li>
+				<li>
+					<label>火灾扑灭时间（小时）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="keepTime" id="keepTime">
+				</li>
+				<li>
+					<label>过火面积（亩）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="fireArea" id="firearea">
+				</li>
+				<li>
+					<label>破坏建筑（间）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="destroyBuild" id="destroyBuild">
+				</li>
+				<li>
+					<label>死亡人数（人）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="death" id="death">
+				</li>
+				<li>
+					<label>受伤人数（人）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="injured" id="injured">
+				</li>
+				<li>
+					<label>经济损失（万元）<i style="color:red">*</i></label>
+					<input type="text" class="form-control form-boxed remove_disabled" name="economicLoss" id="economicLoss">
+				</li>
+				<li>
+					<label>安全隐患</label>
+					<select name="hiddenDanger" id="hiddenDanger" class="xla_k remove_disabled"> 
+						<option value="0">是</option>
+						<option value="1" selected>否</option>
+					</select>
+				</li>
+				<li>
+					<label>隐患原因</label>
+					<textarea class="form-control form-boxed textarea remove_disabled" name="reason" id="reason"></textarea>
+				</li>
+				<li>
+					<label>经验总结</label>
+					<textarea class="form-control form-boxed textarea remove_disabled" name="experience" id="experience"></textarea>
+				</li>
+				<li class="photo3_input">
+					<label class="img_over">图片:</label>
+					<input type="file" name="photoName1" id="photoName3" class="upFileBtn photo3"  accept="image/png,image/jpg,image/gif,image/JPEG"/>
+			        <img class="fileInput photo3" src="img/lqz/sc.png" onclick="$('#photoName3').click()" />
+					<div id="imgBox2"></div>
+				</li>
+				<li>
+					<label>正射图上传</label>
+					<input type="file" id="videoName3" class="upFileBtn" />
+	           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName3').click()" />
+	           		<span class="videoname2"></span>
+				</li>
+				<li>
+					<label>正射图描述</label>
+					<textarea class="form-control form-boxed remove_disabled" id="describe2"></textarea>
+				</li>
+				<li class="sb_input">
+					<input type="button" value="取消" class="cancel" onclick="back()" />
+					<input type="button" value="保存" class="report submit"  onclick="fsubmit_over()"/>
+				</li>
+			</ul>
+		</form>
+	</div>
+
+</body>
+</html>

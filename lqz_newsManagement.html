@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>新闻管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link href="js/lqz/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+
+    </script>
+    <script src="js/lqz/lqz_newsManagement.js"></script>
+    <script src="javascript/public.js"></script>
+    <script src="javascript/plug-ins/fourPage.js"></script>
+    <script src="js/imgPlugin.js"></script>
+    <script src="js/videoPlugin.js"></script>
+    <style type="text/css">
+        .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:89%;background: #fff;}
+        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+        .report_btn_two{margin:0;width: 100px;margin-left:10px;}
+        .report_table,.report_table1{padding-left:30px;width:95%;}
+        .report_page{margin-bottom:50px;text-align:center;}
+        #complete_report .audit{color:red;}
+        #complete_report .audit_ok{color:#969696;}
+        .form_sub li{position:relative;}
+        .form_sub_release .upFileBtn{position:absolute;width:70px;height:30px;opacity:0;top: 0;left: 100px;z-index: 1;}
+        .form_sub input{border-color: transparent;border-bottom: 1px solid #ccc;width: 80%;}
+        .form_sub input:focus {border:none;outline:none;}
+        .fileInput{display: inline-block;background: #01dacf;color: #fff;padding: 5px;}
+        .checkbox, .radio{display: inline-block;}
+        .checkbox+.checkbox, .radio+.radio{margin-top: 10px;}
+        #user_query span{padding:0 5px;cursor:pointer;display: inline-block;width: auto;}
+        #user_query{width:100%;border:solid 1px #e5e5e5;background-color:#fff;height: 200px;overflow: auto;margin-top:10px;text-align: left;}
+        .form_sub_release select{width:25%;}
+        #imgBox{display: inline-block;}
+        #imgBox img{width:50px;height:50px;z-index: 11;position: relative;}
+        tr img{height: 30px;}
+        #qx_yh{background-color: #fff;border: 1px solid #ddd;width:71%;display:inline-block;text-align: center;vertical-align:middle;}
+        #qx_yh li{margin:0px;cursor: pointer;display:inline-block;padding: 5px;}
+        input[type=checkbox], input[type=radio]{width: 15px;vertical-align: -3px;margin: 0 5px;}
+        #qx_yh input[type=checkbox], input[type=radio]{vertical-align: -8px;}
+        .form_sub li i{position: relative;}
+        #editor_two{margin:20px auto;padding:20px;width:65%;text-align:left;}
+        #editor_two h2{text-align:center;}
+        #editor_two p{text-indent:2em;}
+        #editor_two .author{margin-bottom:20px;color:#999;text-align:center;}
+        #editor_two .content_article img{padding:5px 0;width:100%;}
+        #editor_two .btn_return{margin:20px auto;width:100px;border:solid 1px #666;border-radius:2px;text-align:center;cursor:pointer;}
+        .return_top{position:fixed;right:20px;bottom:100px;}
+        .list_up_dom{float:right;margin-right:150px;margin-bottom:50px;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+                区域：
+                <select onchange="callback(value,this)" id="hot_city">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select onchange="callback(value,this)" id="city_sx"></select>
+                <select id="area"></select>
+                新闻类型：<select class="remove_disabled" id="news_type">
+                    <option></option>
+                    <option value="0">防火动态</option>
+                    <option value="1">当前火情</option>
+                    <option value="2">火险预报</option>
+                    <option value="3">经验交流</option>
+                </select>
+                发布时间：<input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate remove_disabled form-control" id="startTime" />
+                至&nbsp;<input type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'startTime\',{d:1});}'})"  class="Wdate remove_disabled form-control" id="endTime" />
+
+                <button  id="search_btn" class="ButtonSearch"  onclick="information()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    <input class="data-ycl1" type="hidden" value="0">
+                    <input class="data-ycl2" type="hidden" value="0">
+                    <input class="data-ycl3" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <button class="report_btn" onclick="news_user()"> + 新闻发布</button>
+            <div class="report_table report_table2" >
+                <!-- 表格切换 -->
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="tab-nav">
+                            <li class="active">已发布的</li>
+                            <li class="">待审核</li>
+                            <li class="">已审核</li>
+                            <li class="">已驳回</li>
+                        </ul>
+                        <button class="report_btn report_btn_two" onclick="audit()"><i class="icon-file-alt"></i>一键审核</button>
+                    </div>
+                    <div class="tab-cont " style="display: block;">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>区域</th>
+                                    <th>微缩图</th>
+                                    <th>新闻类型</th>
+                                    <th>新闻标题</th>
+                                    <th style="max-width: 500px;">新闻简介</th>
+                                    <th>发布时间</th>
+                                    <th>发布人</th>
+                                    <th style="min-width: 80px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report1">
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                                <span>总记录:<i class="complete_total1"></i>条</span>
+                                <div class="pagination complete_page1">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th class="qxuan">全选<input type="checkbox" style="margin:0 0 0 3px;" id="all" onclick="chk()"></th>
+                                    <th>区域</th>
+                                    <th>微缩图</th>
+                                    <th>新闻类型</th>
+                                    <th>新闻标题</th>
+                                    <th style="max-width: 500px;">新闻简介</th>
+                                    <th>发布时间</th>
+                                    <th>发布人</th>
+                                    <th style="min-width: 80px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report2">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="complete_total2"></i>条</span>
+                                <div class="pagination complete_page2">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>区域</th>
+                                    <th>微缩图</th>
+                                    <th>新闻类型</th>
+                                    <th>新闻标题</th>
+                                    <th style="max-width: 500px;">新闻简介</th>
+                                    <th>审核人</th>
+                                    <th>发布时间</th>
+                                    <th>发布人</th>
+                                    <th style="min-width: 80px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report3">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="complete_total3"></i>条</span>
+                                <div class="pagination complete_page3">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>区域</th>
+                                    <th>微缩图</th>
+                                    <th>新闻类型</th>
+                                    <th>新闻标题</th>
+                                    <th>新闻简介</th>
+                                    <th>发布时间</th>
+                                    <th>发布人</th>
+                                    <th style="min-width: 80px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report4">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="complete_total4"></i>条</span>
+                                <div class="pagination complete_page4">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="article" style="display: none;">
+            <section id="editor_two">
+                <h2></h2>
+                <div class="author">作者：<span>lqz</span></div>
+                <div class="content_article">
+                    
+                </div>
+                <div onclick="report_index_fh()" class="btn_return">返回上一页</div>
+            </section>
+            <a href="#editor_two"><img src="img/lqz/top.png" class="return_top"></a>
+            <!-- <ul class="list_up_dom">
+                <li><a href="#">上一篇：<span>业建设上森林是保</span></a></li>
+                <li><a href="#">下一篇：<span>物及其与环境的综合体</span></a></li>
+            </ul> -->
+        </div>
+    </div>
+</body>    
+<script src="js/lqz/js/froala_editor.min.js"></script>
+<script src="js/lqz/js/langs/zh_cn.js"></script>
+<script src="js/lqz/js/plugins/tables.min.js"></script>
+<script src="js/lqz/js/plugins/colors.min.js"></script>
+<script src="js/lqz/js/plugins/media_manager.min.js"></script>
+<script src="js/lqz/js/plugins/font_family.min.js"></script>
+<script src="js/lqz/js/plugins/font_size.min.js"></script>
+<script src="js/lqz/js/plugins/block_styles.min.js"></script>
+<script src="js/lqz/js/plugins/video.min.js"></script>
+
+<script>
+
+
+$(function(){
+  $('#edit').editable({inlineMode: false,language: "zh_cn",alwaysBlank: true})
+});
+</script>
+</html>

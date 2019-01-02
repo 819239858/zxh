@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<script type="text/javascript" src="js/styleMaps.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+<script type="text/javascript" src="js/LK/LK_hzsq.js"></script>
+<style type="text/css">
+.tableDiv_fire{position:fixed;top:60px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;}
+.mapDiv{width:100%;height:60%;}
+.menu {position: relative;top:0px;left: 30px;z-index: 100;margin: 20px 0;}
+.menu_tow{position: fixed;top:100px;left: 300px;z-index: 100;margin: 20px 0;}
+.mapMenu{position:fixed;right:10px;bottom:10px;z-index:9999;border-radius:4px;background-color:#FFF;}
+#container_map{height:100%;width:100%;}
+</style>
+</head>
+<body>
+  <div class="tableDiv_fire">
+     <!-- 头部查询区域 -->
+        <div class="search_area">
+          <div class="search_container">
+          区域：
+          <select id='hot_city' onchange="callback(value,this)" style="width:80px;">
+            <!--<option value="43">省</option>-->
+            <!--<option value="4301">长沙市</option>-->
+            <!--<option value="4302">株洲市</option>-->
+            <!--<option value="4303">湘潭市</option>-->
+            <!--<option value="4304">衡阳市</option>-->
+            <!--<option value="4305">邵阳市</option>-->
+            <!--<option value="4306">岳阳市</option>-->
+            <!--<option value="4307">常德市</option>-->
+            <!--<option value="4308">张家界市</option>-->
+            <!--<option value="4309">益阳市</option>-->
+            <!--<option value="4311">永州市</option>-->
+            <!--<option value="4310">郴州市</option>-->
+            <!--<option value="4312">怀化市</option>-->
+            <!--<option value="4313">娄底市</option>-->
+            <!--<option value="4331">湘西自治州</option>-->
+          </select>
+          <select id="city_sx" style="width:80px;" onchange="callback(value,this)" ></select>
+          <select id="area" style="width:80px;"></select>
+        选择时间：
+        <input placeholder="开始日期" style="width: 110px" id="a_start_time_fire" class="Wdate" type="text" onClick="WdatePicker();">
+        <input placeholder="结束日期" style="width: 110px" id="a_end_time_fire" class="Wdate" type="text" onClick="WdatePicker();">
+              <button  id="search_btn" class="ButtonSearch"  onclick="search_btn_fire()">
+                  <input class="data-ycl" type="hidden" value="0">
+                  查询
+              </button>
+               <span id="data_total"></span>
+            </div>
+        </div>
+        <!-- <div class="menu menu_tow">
+            <div style="position:relative;display:inline-block;">
+                    <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
+                    <input type="button" style="width: 140px;height:40px;background-color:#addc9d;border:none;color:#fff;padding-left:20px;" value="切换成列表模式" id="tabModel" class="bg">
+            </div>
+        </div> -->
+        <div id="container_map" tabindex="1"></div>
+        <div class="button-group">
+            <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+            <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+        </div>
+        <div class="table_show" style="width:95%;margin:20px 0 0 30px;display: none;">
+        <table class="table mb-15">
+          <thead>
+            <tr class="cen">
+              <th class="cen">火灾编号</th>
+              <th class="cen">区域</th>
+              <th class="cen">等级</th>
+              <th class="cen">种类</th>
+              <th class="cen">过火面积(亩)</th>
+              <th class="cen">火灾发生时间</th>
+              <th class="cen">上报人</th>
+              <th class="cen">火灾状态</th>
+              <th class="cen">操作</th>
+            </tr>
+          </thead>
+          <tbody id="table_tbody">
+            
+          </tbody>
+        </table>
+            <!-- 分页 -->
+                <div class="office_page" style="text-align: center;">
+                        <span>总记录:<i class="count_total"></i>条</span>
+                        <div class="pagination count_page">
+                            <span class="disabled">上一页</span><a href="javascript:;" class="nextPage">下一页</a>
+                        </div>
+                </div>
+     </div>
+  </div>
+
+</body>
+</html>

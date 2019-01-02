@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script src="js/styleMaps.js" type="text/javascript"></script>
+    <script src="javascript/public.js"></script>
+    <script src="js/imgPlugin.js"></script>
+    <script src="js/otherPlugin.js"></script>
+    
+    <script src="js/lqz/lqz_mail.js"> </script>
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link href="js/lqz/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+    .tableDiv_fire{z-index:19;position:fixed;height:89%;overflow:auto;top:80px;right: 10px;left: 250px;background: #fff;}
+    .search_area li{display:inline-block;cursor: pointer;}
+    .search_area li a{color: #666;border-right:1px #ddd solid;display: inline-block;margin: 10px 0px;padding:0 30px;}
+    .search_area li.progressing{background-color:#01dacf;color:#fff;}
+    .search_area li.progressing a{color:#fff;}
+    .mail_index{margin:25px;display: none;overflow: hidden;}
+    .introduction{display: inline-block;vertical-align:top;margin-left: 10px}
+    .introduction ul li{display: inline-block;text-align:center;vertical-align:top;padding: 0 10px;}
+    .introduction ul li h2{margin: 5px;font-weight: bold;}
+    .introduction ul li span{margin:0 5px;}
+    .introduction ul li p{margin:5px 0;font-size:16px;color:#01dacf;cursor:pointer;}
+    .search_user{width:150px;height:25px;border:1px solid #aaa;border-radius:3px!important;margin-left:10%;padding: 0 5px;}
+    #tq span{font-size: 16px;}
+    #tq{display: inline-block;vertical-align: middle;}
+    .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .report_btn_two{margin:0;width: 100px;margin-bottom:10px;}
+    .report_page{margin-bottom:50px;text-align:center;}
+    #complete_report .audit{color:red;}
+    .card .tab-cont{padding:0;}
+    #edit{padding: 0 30px;}
+    .form_sub_release .upFileBtn{position:absolute;width:70px;height:30px;opacity:0;top: 0;left: 100px;z-index: 1;}
+    .form_sub input{border-color: transparent;border-bottom: 1px solid #ccc;width: 80%;}
+    .form_sub input:focus {border:none;outline:none;}
+    .fileInput{display: inline-block;background: #01dacf;color: #fff;padding: 5px;}
+    #user_query{position:fixed;top:81px;right:50px;z-index:2;overflow:scroll;padding:10px;width:300px;height:100px;border:solid 1px #e5e5e5;border-top:none;background-color:#fff;}
+    /* #userphone,#usertitle{width:40%;margin-right: 20px;} */
+    #usertitle{width:40%;margin-right: 20px;}
+    #user_query1{position:absolute;top:25px;left:105px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span,#user_query span{display:inline-block;margin:0 5px;cursor:pointer;}
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {border: none;text-align: center;}
+    tbody > tr{border-bottom: solid 1px #eee;}
+    .getPerMail{width: 280px;height: 60px;border: 1px solid #999999;
+        background-color: #fff;border-radius: 5px;padding: 5px 10px;
+        overflow:scroll;display: inline-block;margin-right: 40px;}
+    .form_sub  .label1 input{width:40%;margin-right: 20px;}
+    
+</style>
+<body>
+    <div class="tableDiv_fire">
+        <ul class="search_area">
+            <li><a href="javascript:;">收件夹<span></span></a></li>
+            <li><a href="javascript:;">已发送<span></span></a></li>
+            <li><a href="javascript:;">草稿夹<span></span></a></li>
+            <li><a href="javascript:;">已删除<span></span></a></li>
+            <input type="text" class="search_user"/>
+            <button  id="search_btn" class="ButtonSearch"  onclick="information()">
+                <input class="data-ycl" type="hidden" value="0">
+                <input class="data-ycl1" type="hidden" value="0">
+                <input class="data-ycl2" type="hidden" value="0">
+                <input class="data-ycl3" type="hidden" value="0">
+                搜索标题
+            </button>
+        </ul>
+        <div class="mail_index" style="display: block;margin:50px;">
+            <div style="float:left;" class="toux">
+                <div class="introduction">
+                    <p style="margin-left: 15px;"><span></span></p>
+                    <ul>
+                        <li style="border-right: 1px solid #aaa;cursor: pointer;" onclick="sj()">
+                            <h2 class="title1">235</h2>
+                            <span>收件夹</span>
+                        </li>
+                        <li style="border-right: 1px solid #aaa;cursor: pointer;" onclick="sj()">
+                            <h2 class="title2">12</h2>
+                            <span>未读邮件</span>
+                        </li>
+                        <li>
+                            <p onclick="new_office()"><i class="icon-pencil"></i>写信</p>
+                            <p onclick="sj()"><i class="icon-inbox"></i>收件</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="float:right;margin-right:50px;">
+                <img src="img/lqz/00.png" class="imgtq">
+                <div id="tq"></div>
+            </div>
+        </div>
+        <div class="mail_index">
+            <div class="tab-cont">
+                <div class="card-header">
+                    <button class="report_btn report_btn_two" onclick="audit()">一键删除</button>
+                    <button class="report_btn report_btn_two" onclick="new_office()"><i class="icon-pencil"></i>写信</button>
+                </div>
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                        <tr>
+                            <th>全选<input type="checkbox" style="margin:0 0 0 3px;" id="all" onclick="chk($('#all'),$('input[name=check_name]'))"></th>
+                            <th>是否已读</th>
+                            <th>标题</th>
+                            <th>发件者</th>
+                            <th>管辖区域</th>
+                            <th>有无附件</th>
+                            <th>发送时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_report2">
+                       
+                    </tbody>
+                </table>
+                 <!-- 分页 -->
+                <div class="report_page">
+                    <span>总记录:<i class="complete_total1"></i>条</span>
+                    <div class="pagination complete_page1">
+                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mail_index">
+            <div class="tab-cont">
+                <div class="card-header">
+                    <button class="report_btn report_btn_two" onclick="audit_two()">一键删除</button>
+                    <button class="report_btn report_btn_two" onclick="new_office()"><i class="icon-pencil"></i>写信</button>
+                </div>
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                        <tr>
+                            <th>全选<input type="checkbox" style="margin:0 0 0 3px;" id="all_all" onclick="chk($('#all_all'),$('input[name=check_name1]'))"></th>
+                            <th>标题</th>
+                            <th>收件者</th>
+                            <th>管辖区域</th>
+                            <th>有无附件</th>
+                            <th>发送时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_track">
+                       
+                    </tbody>
+                </table>
+                 <!-- 分页 -->
+                 <div class="report_page">
+                    <span>总记录:<i class="track_total"></i>条</span>
+                    <div class="pagination track_page">
+                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mail_index">
+            <div class="tab-cont">
+                <div class="card-header">
+                    <button class="report_btn report_btn_two" onclick="audit_th()">一键删除</button>
+                </div>
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                        <tr>
+                            <th>全选<input type="checkbox" style="margin:0 0 0 3px;" id="all1" onclick="chk($('#all1'),$('input[name=check_name2]'))"></th>
+                            <th>标题</th>
+                            <th>收件者</th>
+                            <th>管辖区域</th>
+                            <th>有无附件</th>
+                            <th>发送时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_report3">
+                       
+                    </tbody>
+                </table>
+                 <!-- 分页 -->
+                <div class="report_page">
+                    <span>总记录:<i class="complete_total2"></i>条</span>
+                    <div class="pagination complete_page2">
+                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mail_index">
+            <div class="tab-cont">
+                <table class="table table-bordered  mb-15">
+                    <thead>
+                        <tr>
+                            <th>发件者</th>
+                            <th>标题</th>
+                            <th>有无附件</th>
+                            <th>发送时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complete_report4">
+                       
+                    </tbody>
+                </table>
+                 <!-- 分页 -->
+                <div class="report_page">
+                    <span>总记录:<i class="complete_total3"></i>条</span>
+                    <div class="pagination complete_page3">
+                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/lqz/js/froala_editor.min.js"></script>
+<script src="js/lqz/js/langs/zh_cn.js"></script>
+<script src="js/lqz/js/plugins/tables.min.js"></script>
+<script src="js/lqz/js/plugins/colors.min.js"></script>
+<script src="js/lqz/js/plugins/media_manager.min.js"></script>
+<script src="js/lqz/js/plugins/font_family.min.js"></script>
+<script src="js/lqz/js/plugins/font_size.min.js"></script>
+<script src="js/lqz/js/plugins/block_styles.min.js"></script>
+<script src="js/lqz/js/plugins/video.min.js"></script>
+
+</html>

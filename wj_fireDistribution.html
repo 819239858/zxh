@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#hot_city').html(city);
+    </script>
+    <script src="js/WJ/wj_fireDistribution.js"></script>
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script src="js/imgPlugin.js"></script>
+    <script src="js/videoPlugin.js"></script>
+
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+                区域：<select name="fireArea" id="hot_city" class="remove_disabled" onchange="callback(value,this)">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id="city" class="remove_disabled" onchange="callback(value,this)">
+                </select>
+                <select id="area" class="remove_disabled"></select>
+                类型：<select id='fire_type' style="width:100px">
+                    <option value="all">全部</option>
+                    <option value="FireOffice">防火办公室</option>
+                    <option value="FireBarrier">防火隔离带</option>
+                    <option value="FireWatchtower">瞭望塔</option>
+                    <option value="FireMaterialReserve">物资储备室</option>
+                    <option value="FireControlTeam">消防队伍</option>
+                </select>
+                资源条数:
+                <input type="text" id="numberBySearch" value="100">
+                <input id="search_btn"  style="width: 100px;height:25px;background-color:#01dacf;border:none;color:#fff;" value="查询" type="button" onclick="showFireHot_two()" />
+            </div>
+        </div> 
+        <div id="distributionMap" tabindex="0"></div>
+        <div class="button-group">
+          <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
+          <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
+      </div>
+    </div>
+
+</body>
+<style>
+    .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:60px;right: 10px;left: 250px;}
+    .search_area{height:40px;border:1px solid #e6e6e6;}
+    .search_container{margin-top:5px;margin-left:30px;}
+    #distributionMap{height:100%;width:100%;}
+    #imgBox img,#imgBox1 img,#imgBox2 img{width:80px;height: 80px;}
+    .form_sub_release select{width:50px;}
+    .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+    .add_office{width:330px;margin:20px;display:inline-block}
+    .add_office li{margin-bottom:14px;height:30px;}
+    .add_office li label:first-child{width:120px;text-align:right;}
+    .add_office li select{width:63px;}
+    .add_office li input[type="text"]{width:190px;padding-left: 5px;}
+    .file{position: relative;text-align:center;width:190px;display: inline-block;background: #fff;border: 1px solid #8b9cae;padding: 4px 12px;
+          color: #01dacf;text-decoration: none;text-indent: 0;line-height: 20px;
+         }
+    .file input {height:30px;position: absolute;font-size: 100px;right: 0;top: 0;opacity: 0;}
+    .upFileBtn{position:absolute;bottom:15px;left:120px;z-index:-1;width:80px;height:80px;opacity:0;}
+    .fileInput{padding:30px;width:80px;height:80px;border:1px solid #e5e5e5;}
+    .bottom_btn{height:100px;text-align:center;margin-top:95px;}
+    .bottom_btn input:first-child{width:80px;height:30px;border:1px solid #01dacf;background: #fff;color:#01dacf;border-radius:4px;}
+    .bottom_btn input:nth-child(2){width:80px;height:30px;border:1px solid #01dacf;background: #01dacf;color:#fff;border-radius:4px;}
+    .add_material{height:570px;margin:15px;display:inline-block}
+    .add_material li{margin-bottom:10px;height:30px;}
+    .add_material li label:first-child{width:120px;text-align:right;}
+    .add_material li input[type="text"]{width:50px;text-align: center;}
+    #imgBox1 img{width:80px;height:80px;}
+    .background_user_information{width:1000px;text-align:center;}
+    .background_user_information input{margin-left: 40px;width: 70px;border: solid 1px #01dacf;    border-radius: 2px;background: #01dacf;color: #fff;}
+    .hide_it{display:none}
+
+    .form_sub_release .upFileBtn{position:absolute;bottom:75px;left:120px;z-index:-1;width:80px;height:80px;opacity:0;}
+    .form_sub_release .upFileBtn1{display:inline-block;opacity:0;}
+    .form_sub_release .upload{position:relative;display:inline-block;height:25px;border:solid 1px #cfdadd;}
+    .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:30px;width:80px;height:80px;border:1px solid #e5e5e5;}
+    .form_sub_release .fileInput1{position:absolute;top:3px;left:75px;}
+</style>
+</html>

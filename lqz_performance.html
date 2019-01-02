@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/simple-calendar.css">
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script type="text/javascript" src="js/lqz/tableExport.min.js"></script>
+    <script>
+        // 回显地图
+        function echo_map(latLngs,pointTpye) {
+            console.log(latLngs);
+            console.log(pointTpye);
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-molv', //样式类名
+                closeBtn: 1, //关闭按钮
+                anim: 2,
+                btnAlign: 'c',
+                area: ['600px', '440px;'],
+                title:"地图信息",
+                shadeClose: true, //开启遮罩关闭
+                content:"<div id=\"container1\" style=\"width:600px;height:400px\"></div>",
+                success:function(){
+                    var map = new AMap.Map("container1",{
+                        resizeEnable: true,
+                        zoom:11
+                    });
+                    var type= new AMap.MapType({
+                        defaultType:1,
+                        showRoad:true
+                    });
+                    map.addControl(type);
+                    map.clearMap();
+                    var lnglatXY=[];
+                    if (pointTpye=="1" ||pointTpye=="") {
+                        var lnglat=latLngs.split(";");
+                        lnglat=lnglat[0].split(",");
+                        var marker = new AMap.Marker({
+                            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                            position: lnglat,
+                            map: map
+                        });
+                        marker.setMap(map);
+                    }
+                }
+            })
+        };
+    </script>
+    <script type="text/javascript" src="js/lqz/simple-calendar.js"></script>
+    <style type="text/css">
+    .tableDiv_fire,.calendar_fire{background-color:#fff;position:fixed;top:80px;right:0;left:250px;z-index:19;overflow:auto;height:100%;width: 82%;}
+    .calendar_fire{z-index: 10;background-color: #333;opacity: 0.8;display: none;}
+    .search_area{height:50px;padding-top: 10px;}
+    .search_area .search_container{margin-top:5px;margin-left:30px;}
+    .search_container .user{margin-right:10px;padding-left:5px;width:100px;height:25px;border:1px solid #aaa;border-radius:3px;}
+    .search_area .search_container select{width:100px;border-radius:3px;}
+    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .container_box{background-color:#fff;}
+    .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .report_table{padding-left:30px;width:95%;}
+    .report_page{margin-bottom:80px;text-align:center;}
+    #complete_report .audit{color:red;}
+    #complete_report .audit_ok{color:#969696;}
+    #calendar{display:none;width:90%;position: absolute;top:43%;left:50%;transform: translate(-50%, -50%);z-index: 20;background-color: #fff;}
+    #user_query1{position:absolute;top:32px;left:380px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+    .lunar-day_two:hover{color: #01dacf;}
+        .ulText label{width: 80px;text-align: right;}
+</style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+                区域：
+                <select id='hot_city' onchange="callback(value,this)">
+                    <!--<option value="43">省</option>-->
+                    <!--<option value="4301">长沙市</option>-->
+                    <!--<option value="4302">株洲市</option>-->
+                    <!--<option value="4303">湘潭市</option>-->
+                    <!--<option value="4304">衡阳市</option>-->
+                    <!--<option value="4305">邵阳市</option>-->
+                    <!--<option value="4306">岳阳市</option>-->
+                    <!--<option value="4307">常德市</option>-->
+                    <!--<option value="4308">张家界市</option>-->
+                    <!--<option value="4309">益阳市</option>-->
+                    <!--<option value="4311">永州市</option>-->
+                    <!--<option value="4310">郴州市</option>-->
+                    <!--<option value="4312">怀化市</option>-->
+                    <!--<option value="4313">娄底市</option>-->
+                    <!--<option value="4331">湘西自治州</option>-->
+                </select>
+                <select id="city_sx" onchange="callback(value,this)"></select>
+                <select id="area" class="remove_disabled"></select>
+                用户名： <input type="text" class="user"/>
+                日期：<input  style="width: 110px" id="start_time"  class="Wdate" type="text" onclick="WdatePicker()">
+                至：<input style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time\',{d:1});}'})" >
+                <button  id="search_btn" class="ButtonSearch"  onclick="refresh1()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <button class="report_btn" onclick="layer.msg('查询数据为空')" id="outLine">
+                <i class="icon-upload"></i>导出表格</button>
+            <script>
+                var userLevel = sessionStorage.getItem("userLevel");
+                if (userLevel=="1") {
+                    $("#outLine").remove();
+                }
+            </script>
+            <div class="report_table">
+                <div class="card">
+                    <div class="tab-cont" style="display: block;">
+                        <table class="table table-bordered  mb-15" id="tables">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>用户名</th>
+                                    <th>所属区域</th>
+                                    <th>巡护长度</th>
+                                    <th>巡护面积</th>
+                                    <th>任务接受数</th>
+                                    <th>任务完成数</th>
+                                    <th>任务完成率</th>
+                                    <th>打卡次数</th>
+                                    <th>统计天数</th>
+                                    <th>出勤率</th>
+                                    <th class="remove">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                            <span>总记录:<i class="complete_total"></i>条</span>
+                            <div class="pagination complete_page">
+                                <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="calendar_fire"></div>
+        <div id="calendar"></div>
+    </div>
+</body>
+
+<script>
+
+
+    var city=localStorage.getItem('Public_city');
+    $('#hot_city').html(city);
+    callback1();
+    //请求用户列表
+    function refresh1(){
+        var city=$("#city_sx").val()==''||$("#city_sx").val()==undefined?$("#hot_city").val():($("#area").val()==''||$("#area").val()==undefined?$("#city_sx").val():$("#area").val());
+        var userName=$(".user").val();
+        var startTime=$("#start_time").val();
+        var endTime=$("#end_time").val();
+        var start_date = new Date(Date.parse(startTime.replace(/-/g,"/"))).getTime();
+        var endtime = new Date(Date.parse(endTime.replace(/-/g,"/"))).getTime();     
+        var nTime = endtime - start_date;  
+        var day_time =Math.floor(nTime/86400000);
+        if (startTime!=''&&endTime!='') {
+            sendAjax({
+                "url":"fire/on_work/hlyAppraiseList",
+                "data":{"current_page": 1, "region":city,"tel": userName, "start_time":startTime,"per_page":20,"end_time":endTime},"callback":function(result){
+                    if (result.code="s_ok") {
+                        $("#complete_report").html('');var num = '';
+                        if (result.var.total==0) {
+                            $(".complete_total").html(0);layer.msg('查询数据为空');
+                            num = 1;
+                        } else {
+                            num=result.var.total;$(".complete_total").html(result.var.total);
+                            var result=result.var.data;
+                            //分页
+                            $(".complete_page").createPage({
+                                pageCount:Math.ceil(num/20),
+                                current:1,
+                                backFn:function(p){
+                                    sendAjax({
+                                        "url":"fire/on_work/hlyAppraiseList",
+                                        "data":{"current_page": p, "region":city,"tel": userName, "start_time":startTime,"per_page":20,"end_time":endTime},"callback":function(result){
+                                            $("#complete_report").html('');
+                                            for(var i=0;i<result.length;i++){
+                                                var completion=(result[i].count_task_complete/result[i].count_task_recv*100).toFixed(2);
+                                                if (result[i].count_task_recv=="0"||result[i].count_task_complete=="0") {var completion="0";}
+                                                $("#complete_report").append("<tr><td>" + startTime + "-" + endTime + "</td><td class=\"lt\">" + result[i].name + "</td><td>" + result[i].region_name + "</td><td>" + (result[i].length).toFixed(2) + "千米</td><td>" + (result[i].length/4*1500).toFixed(2) + "亩</td><td>" + result[i].count_task_recv + "</td><td>" + result[i].count_task_complete + "</td><td>" + completion + "%</td><td>" + result[i].count_work + "</td><td>" + day_time + "天</td><td>" + (result[i].count_work/day_time*100).toFixed(2) + "%</td><td><a title=\"查看考勤\" class=\"mr-5 remove\" onclick=\"report_index(" + result[i].tel + ",'" + result[i].uid + "',"+endTime.split("-")+")\">查看考勤</a> </td></tr>");
+                                            }
+                                        }
+                                    })
+                                }
+                            });                
+                            $(".report_btn").attr("onclick","export_form()");
+                            for(var i=0;i<result.length;i++){
+                                var completion=(result[i].count_task_complete/result[i].count_task_recv*100).toFixed(2);
+                                if (result[i].count_task_recv=="0"||result[i].count_task_complete=="0") {var completion="0";}
+                                $("#complete_report").append("<tr><td>" + startTime + "-" + endTime + "</td><td class=\"lt\">" + result[i].name + "</td><td>" + result[i].region_name + "</td><td>" + (result[i].length).toFixed(2) + "千米</td><td>" + (result[i].length/4*1500).toFixed(2) + "亩</td><td>" + result[i].count_task_recv + "</td><td>" + result[i].count_task_complete + "</td><td>" + completion + "%</td><td>" + result[i].count_work + "</td><td>" + day_time + "天</td><td>" + (result[i].count_work/day_time*100).toFixed(2) + "%</td><td><a title=\"查看考勤\" class=\"mr-5 remove\" onclick=\"report_index(" + result[i].tel + ",'" + result[i].uid + "',"+endTime.split("-")+")\">查看考勤</a> </td></tr>");
+                            }
+                        };
+                    }else{
+
+                    }
+                },
+                error:function(result){
+                    layer.msg("网络出错");
+                }
+            });
+        }else{
+            layer.alert("时间不能为空！", {
+              skin: 'layui-layer-molv' 
+              ,closeBtn: 0,anim: 4,btnAlign: 'c'
+            });
+        };
+    };
+    //导出表格
+    function export_form() {
+        $("#tables").tableExport({type:"excel",escape:"false"});  
+    }
+    // 考勤日历表
+    function report_index(tel,uid,year,month) {
+        sessionStorage.setItem("month",month);
+        sessionStorage.setItem("year",year);
+        sendAjax({
+            "url":"fire/on_work/getWorkListByCondition",
+            "data":{"uid":uid,"year":year,"month":month},
+            "callback":function(data){
+                if (data.code="s_ok") {
+                    layer.msg('查询成功');
+                    var result=data.var;
+                    var options = {
+                      language: 'CH', //语言
+                      showLunarCalendar: true, //阴历
+                      showHoliday: false, //休假
+                      showFestival: false, //节日
+                      showLunarFestival: false, //农历节日
+                      showSolarTerm: false, //节气
+                      showMark: true, //标记
+                      time:true,
+                      timeRange: {
+                        startYear: 2000,
+                        endYear: 2049
+                      },
+                      mark:[],
+                    };
+                    sessionStorage.setItem("kquserName",uid);
+                    sessionStorage.setItem("kqusertel",tel);
+                    $(".calendar_fire").show();
+                    $("#calendar").show();
+                    // 考勤记录
+                    sendAjax({
+                        "url":"fire/level/findLevelByCondition",
+                        "data":{"current_page":1,"per_page":100,"apply_tel":tel},"callback":function(data){
+                            var data=data.var.data;
+                            if (data!='') {
+                                for (var i = 0; i < data.length; i++) {
+                                    var key1=data[i].apply_start_time.substr(0,10);
+                                    var data1=data[i].apply_start_time.substr(0,10);
+                                    var key2=data[i].apply_start_time.substr(0,10)+'_';
+                                    var data2=data[i].apply_reason;
+                                    var key3=data[i].apply_start_time.substr(0,10)+'__';
+                                    var data3=data[i].apply_end_time.substr(0,10);
+
+                                    options.mark[key1]=data1;
+                                    options.mark[key2]=data2;
+                                    options.mark[key3]=data3;
+                                };
+                            }
+                        }
+                    });
+                    // 打卡记录
+                    for (var i = 0; i < result.length; i++) {
+                        var key1=result[i].record_date;
+                        var data1=result[i].record_time;
+                        var key2=result[i].record_date+'_';
+                        var data2=result[i].address;
+                        var key3=result[i].record_date+'__';
+                        var data3=result[i].latlng;
+                        var all={
+                            data:key1,time:data1,position:data2,location:data3
+                        };
+                        options.mark.push(all);
+                    };
+                    var myCalendar = new SimpleCalendar('#calendar',options);
+                    console.log(options);
+                }else{
+                    layer.alert("网络不好，请刷新试试！", {
+                      skin: 'layui-layer-molv' 
+                      ,closeBtn: 0,anim: 4,btnAlign: 'c'
+                    });
+                }
+                
+            }
+        });
+    }
+
+    // 关闭
+    $('#calendar').on('click','.layui-layer-setwin',function() {
+        $(".calendar_fire").hide();
+        $("#calendar").hide();
+    });
+    $('.calendar_fire').on('click',function() {
+        $(".calendar_fire").hide();
+        $("#calendar").hide();
+    })
+    // 模糊查询
+    $("body").on('keyup','.user',function(){
+      var key =$(".user").val();
+      if (key!="") {
+        $.ajax({
+          url:"getUserLikeList.htm",
+          type:"post",
+          data:{"key":key},
+          dataType : "json",
+          success:function(data){
+            $("#user_query1").children('span').remove();
+            $("#user_query1").show();
+            for (var i = 0; i < data.length; i++) {
+              $("#user_query1").append("<span onclick=\"selected_two(this)\" data-name=\""+data[i].userName+"\">" + data[i].name + "</span>");
+            }
+          }
+        });
+      }else{
+        $("#userName").attr("data-name", '');
+      }
+    })
+    function selected_two(event) {
+      $("#user_query1").hide();
+      $(".user").val($(event).html());
+      var name = $(event).attr("data-name");
+      $(".user").attr("data-name",name);
+    }
+</script>
+</html>

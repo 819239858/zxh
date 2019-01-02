@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script src="javascript/public.js"></script>
+    <script src="javascript/plug-ins/threePage.js"></script>
+    <style type="text/css">
+    .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:80px;right: 10px;left: 250px;background: #fff;}
+    .top_box{width:95%;height:55px;border:1px solid #e5e5e5;border-right:none;font-size:18px; padding-left:30px;}
+    .top_box p{line-height:55px;}
+    .top_box p span{color:#01dacf;height:100%;}
+    .container_box{}
+    .report_btn{background-color:#01dacf;color:#fff;width:110px;height:35px;border:none;margin:10px 0 20px 30px;}
+    .report_table{width:95%; padding-left:30px;}
+    .report_page{text-align:center;margin-bottom:80px;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+              火灾编号： <input type="text" class="userByNumber"/>
+              区域：<select id='hot_city' onchange="callback(value,this)">
+                <!--<option value="43">省</option>-->
+                <!--<option value="4301">长沙市</option>-->
+                <!--<option value="4302">株洲市</option>-->
+                <!--<option value="4303">湘潭市</option>-->
+                <!--<option value="4304">衡阳市</option>-->
+                <!--<option value="4305">邵阳市</option>-->
+                <!--<option value="4306">岳阳市</option>-->
+                <!--<option value="4307">常德市</option>-->
+                <!--<option value="4308">张家界市</option>-->
+                <!--<option value="4309">益阳市</option>-->
+                <!--<option value="4311">永州市</option>-->
+                <!--<option value="4310">郴州市</option>-->
+                <!--<option value="4312">怀化市</option>-->
+                <!--<option value="4313">娄底市</option>-->
+                <!--<option value="4331">湘西自治州</option>-->
+              </select>
+              <select id="city_sx" onchange="callback(value,this)"></select>
+              <select id="area" class="remove_disabled"></select>
+              火灾发生时间：<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate remove_disabled form-control"  id="start_time" />
+              至：<input type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time\',{d:1});}'})" class="Wdate remove_disabled form-control" id="end_time"/>
+
+                <button  id="search_btn" class="search_btn ButtonSearch"  onclick="refresh3()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    <input class="data-ycl1" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <div class="report_table">
+                <!-- 表格切换 -->
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="tab-nav">
+                            <li class="active">未评估</li>
+                            <li class="">已评估</li>
+                        </ul>
+                    </div>
+                    <div class="tab-cont" style="display: block;">
+                        <!-- 已结束 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>火灾编号</th>
+                                    <th>区域</th>
+                                    <th>等级</th>
+                                    <th>种类</th>
+                                    <th>过火面积(亩)</th>
+                                    <th>火灾发生时间</th>
+                                    <th>上报人</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_end">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="end_total"></i>条</span>
+                                <div class="pagination end_page1">
+                                    <span class="disabled">上一页</span><span class="current">1</span>
+                                    <a href="javascript:;" class="tcdNumber">2</a>
+                                    <a href="javascript:;" class="tcdNumber">3</a>
+                                    <a href="javascript:;" class="tcdNumber">4</a>
+                                    <a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <!-- 已结束 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th>火灾编号</th>
+                                    <th>林木损失（万元）</th>
+                                    <th>生态损失（万元）</th>
+                                    <th>救灾费用投入（万元）</th>
+                                    <th>火灾总损失（万元）</th>
+                                    <th>评估人</th>
+                                    <th>评估时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_end_two">
+                               
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                                <span>总记录:<i class="end_total1"></i>条</span>
+                                <div class="pagination end_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>  
+<script>
+var city=localStorage.getItem('Public_city');
+$('#hot_city').html(city);
+//查询权限
+callback1();
+//进入页面请求已结束列表
+function refresh3(){
+    var userByNumber=$(".userByNumber").val();
+    var region=$("#hot_city").val();
+    $("#city_sx").val()==''||$("#city_sx").val()==undefined?region=$("#hot_city").val():$("#area").val()==''||$("#area").val()==undefined?region=$("#city_sx").val():region=$("#area").val();
+    var begin_time=$("#start_time").val();
+    var end_time=$("#end_time").val();
+    
+    // (已评估详情)结束火情列表
+    sendAjax({
+        "url":"fire/fire/getFireUploadList",
+        "data":{"current_page": 1, "status":"3","per_page":10,"region":region,"start_time":begin_time,"assess":0,
+            "end_time":end_time,"fire_id":userByNumber},
+        "callback":function(result){
+            var num = '';$("#complete_end").html('');
+            if (result.code!="s_ok") {
+                num=1;$(".end_total").html(0);layer.msg('查询数据为空');
+            }else{
+                num=result.var.total;$(".end_total").html(result.var.total);
+                var result=result.var.data;
+                //分页
+                $(".end_page1").createPage({
+                    pageCount:Math.ceil(num/10),
+                    current:1,
+                    backFn:function(p){
+                        $("#complete_end").html('');
+                        sendAjax({
+                            "url":"fire/fire/getFireUploadList",
+                            "data":{"current_page":p, "status":"3","per_page":10,"region":region,"start_time":begin_time,"assess":0,
+                                "end_time":end_time,"fire_id":userByNumber},
+                            "callback":function(result){
+                                var result=result.var.data;
+                                for(var i=0;i<result.length;i++){
+                                    $("#complete_end").append(
+                                        "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].fire_area + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a><a onclick=\"report_index(2," + result[i].id + ",1)\">去评估</a></td></tr>"
+                                    );
+                                }
+                                var character = sessionStorage.getItem("userLevel");
+                                if (character=="1") {
+                                $("#complete_end .mr-5").siblings().hide();
+                                }
+                            }
+                        })
+                    }
+                });
+                for(var i=0;i<result.length;i++){
+                    $("#complete_end").append(
+                        "<tr><td>HZ" + result[i].id + "</td><td>" + result[i].region_name + "</td><td>" + fireMaps.get(result[i].fire_level) + "</td><td>" + fireTypeMaps.get(result[i].fire_type) + "</td><td>" + result[i].fire_area + "</td><td>" + result[i].happen_time + "</td><td>" + result[i].name + "</td><td><a class=\"mr-5\" onclick=\"report_index(" + result[i].status + "," + result[i].id + ")\">详情</a><a onclick=\"report_index(2," + result[i].id + ",1)\">去评估</a></td></tr>"
+                    );
+                };
+                var userLevel = sessionStorage.getItem("userLevel");
+                if (userLevel=="1") {
+                    $("#complete_end .mr-5").siblings().hide();
+                }
+            }
+        },
+        error:function(result){
+            layer.msg(result);
+        }
+    });
+    // 评估详情
+    sendAjax({
+        "url":"fire/fire_assess/getFireAssessList",
+        "data":{"current_page": 1, "region":region,"per_page":10,"fire_id":userByNumber,
+            "begin_time":begin_time,"end_time":end_time},
+        "callback":function(data){
+            //总页数
+            var num='';
+            if(data.code!="s_ok"){
+                num=1;$(".end_total1").html(0);$("#complete_end_two").html('');
+            }else{
+                $("#complete_end_two").html('');
+                num=data.var.total;$(".end_total1").html(data.var.total);
+                var result=data.var.data;
+                //分页
+                $(".end_page").createPage({
+                    pageCount:Math.ceil(num/10),
+                    current:1,
+                    backFn:function(p){
+                        sendAjax({
+                            "url":"fire/fire_assess/getFireAssessList",
+                            "data":{"current_page": p, "region":region,"per_page":10,"fire_id":userByNumber,
+                                "begin_time":begin_time,"end_time":end_time},
+                            "callback":function(result){
+                                var result=result.var.data;
+                                $("#complete_end_two").html('');
+                                for(var i=0;i<result.length;i++){
+                                    $("#complete_end_two").append("<tr><td>HZ" + result[i].fire_id + "</td><td>" + result[i].treeTotal + "</td><td>" + result[i].ecologicalLoss + "</td><td>" + result[i].jzCostInput + "</td><td>" + result[i].fireTotalLoss + "</td><td>" + result[i].user_name + "</td><td>" + result[i].create_time + "</td><td><a class='mr-5' onclick=\"report_index(2," + result[i].fire_id + ",2)\">详情</a> </td></tr>");
+                                }
+                            }
+                        })
+                    }
+                });
+                for(var i=0;i<result.length;i++){
+                    $("#complete_end_two").append("<tr><td>HZ" + result[i].fire_id + "</td><td>" + result[i].treeTotal + "</td><td>" + result[i].ecologicalLoss + "</td><td>" + result[i].jzCostInput + "</td><td>" + result[i].fireTotalLoss + "</td><td>" + result[i].user_name + "</td><td>" + result[i].create_time + "</td><td><a class='mr-5' onclick=\"report_index(2," + result[i].fire_id + ",2)\">详情</a> </td></tr>");
+                }
+            }
+       },
+       error:function(result){
+            layer.msg(result);
+       }
+    });
+};
+refresh3();
+
+function report_index(index,id,assessment) {
+    $("#index_main_context").load("lqz_assessment.html");
+    $("#index_titel").html("灾害评估");
+    localStorage.setItem("index_xq",index);
+    localStorage.setItem("fireId_xq",id);
+    localStorage.setItem("assessment",assessment);
+    //隐藏地图
+    stopInterval();
+    refresh3();
+}
+</script>
+</html>

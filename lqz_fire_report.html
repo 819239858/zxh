@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/lqz_man.css">
+<script type="text/javascript" src="js/styleMaps.js"></script>
+<!-- 上传 -->
+<script src="js/videoPlugin.js"></script>
+<script src="js/imgPlugin.js"></script>
+
+<script src="js/lqz/lqz_man.js"> </script>
+</head>
+<body>
+	<div class="tableDiv_fire">
+		<div class="top_box">
+            <p>当前位置:<span class="on" onclick="back()">火情信息 &gt;</span><span style="color:#01dacf;">火情录入</span></p>
+        </div>
+		<div class="panel-bd">
+			<div class="serial-number">
+				<ul>
+					<li class="progressing">
+						<span>火情上报</span>
+					</li>
+					<li class="">
+						<span>火情追踪</span>
+					</li>
+					<li class="">
+						<span>火情结束</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="tab_form_sub">
+		<div id="container"></div>
+			<div id="result"></div>
+			<form id="form1" method="post" action="" enctype="multipart/form-data">
+				<ul class="form_sub" style="display:block;padding-left: 34px;">
+					<li style="display: none;">
+						<label>火灾编号</label>
+						<input type="text" value="" class="form-control form-boxed" disabled id="bianhao" >
+					</li>
+					<li>
+						<label>火灾发生时间<i style="color:red">*</i></label>
+						<!--onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time\',{d:0});}'})"-->
+						<input type="text" id="creactTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-%d'})" class="Wdate remove_disabled form-control" name="creactTime" />
+					</li>
+					<li>
+						<label>区域<i style="color:red">*</i></label>
+						<select name="fireArea" id="province" class="remove_disabled" onchange="callback(value,this)">
+							<!--<option value="">城市</option>-->
+							<!--<option value="4301">长沙市</option>-->
+							<!--<option value="4302">株洲市</option>-->
+							<!--<option value="4303">湘潭市</option>-->
+							<!--<option value="4304">衡阳市</option>-->
+							<!--<option value="4305">邵阳市</option>-->
+							<!--<option value="4306">岳阳市</option>-->
+							<!--<option value="4307">常德市</option>-->
+							<!--<option value="4308">张家界市</option>-->
+							<!--<option value="4309">益阳市</option>-->
+							<!--<option value="4311">永州市</option>-->
+							<!--<option value="4310">郴州市</option>-->
+							<!--<option value="4312">怀化市</option>-->
+							<!--<option value="4313">娄底市</option>-->
+							<!--<option value="4331">湘西自治州</option>-->
+						</select>
+						<select id="city" class="remove_disabled" onchange="callback(value,this)">
+						</select>
+						<select id="area" class="remove_disabled"></select>
+					</li>
+
+					<li>
+						<label>地图位置<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed " disabled id="latLngs" name="latLngs">
+						<input class="enter_map" type="button" value="进入地图" onclick="layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#latLngs').val(localStorage.getItem('site'));}})" />
+					</li>
+					<li>
+						<label>等级</label>
+						<select name="fireLeve" id="fireLeve" class="xla_k remove_disabled" > 
+							<option value="0">一般</option>
+							<option value="1">较大</option>
+							<option value="2">重大</option>
+							<option value="3">特别重大</option>
+						</select>
+					</li>
+					<li>
+						<label>种类</label>
+						<select name="fireKind" id="fireKind" class="xla_k remove_disabled"> 
+							<option value="0">地表火</option>
+							<option value="1">林冠火</option>
+							<option value="2">地下火</option>
+						</select>
+					</li>
+					<li>
+						<label>过火面积(亩)</label>
+						<input type="text" name="fireMj" id="fireMj" class="form-control form-boxed remove_disabled">
+					</li>
+					<li>
+						<label>火灾原因</label>
+						<select name="fireCause" id="fireCause" class="xla_k remove_disabled"> 
+							<option value="0">人为因素</option>
+							<option value="1">自然因素</option>
+							<option value="2">其他</option>
+						</select>
+					</li>
+					<li>
+						<label>现场环境</label>
+						<textarea class="form-control form-boxed remove_disabled" name="fireHj" id="fireHj"></textarea>
+					</li>
+					<li>
+						<label>图片上传</label>
+						<input type="file" name="photoName1" id="photoName1" class="upFileBtn"  accept="image/png,image/jpg,image/gif,image/JPEG"/>
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#photoName1').click()" />
+		           		<div id="imgBox"></div>
+					</li>
+					<li>
+						<label>正射图上传</label>
+						<input type="file" id="videoName1" class="upFileBtn" />
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName1').click()" />
+		           		<span class="videoname"></span>
+					</li>
+					<li>
+						<label>正射图描述</label>
+						<textarea class="form-control form-boxed remove_disabled" id="describe"></textarea>
+					</li>
+					<li>
+						<input type="button" value="取消" class="cancel" onclick="back()"/>
+						<input type="button" value="上报" class="report submit" id="btn1" onclick="fsubmit()"/>
+					</li>
+				</ul>
+			</form>
+			<form id="form2" method="post" action="" enctype="multipart/form-data">
+				<ul class="form_sub form_sub_two">
+					<li >
+						<label>跟踪时间<i style="color:red">*</i></label>
+						<input type="text" id="creactTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-%d'})" class="Wdate remove_disabled form-control"  name="creactTime" />
+						<label style="width: 70px;">天气情况</label>
+						<input type="text" value="" class="form-control form-boxed remove_disabled" id="weather" name="weather">
+					</li>
+					<li>
+						<label>林地面积</label>
+						<select name="select" id="woodLandArea" class="xla_k remove_disabled" name="woodLandArea"> 
+							<option value="0">小于五十亩</option>
+							<option value="1">50-200亩</option>
+							<option value="2">200-500亩</option>
+							<option value="3">500-1000亩</option>
+							<option value="4">1000亩以上</option>
+						</select>
+					</li>
+					<li>
+						<label>主要树种</label>
+						<select name="mainTree" id="mainTree" class="xla_k remove_disabled"> 
+							<option value="0">针叶林</option>
+							<option value="1">阔叶林</option>
+							<option value="2">杂灌木</option>
+							<option value="3">混交林</option>
+							<option value="4">草地</option>
+							<option value="5">其他</option>
+						</select>
+					</li>
+					<li>
+						<label>林地与火点位置关系</label>
+						<select name="woodLandFirePostion" id="woodLandFirePostion" class="xla_k remove_disabled"> 
+							<option value="0">顶风（0-30度）</option>
+							<option value="1">前迎风（30-60度）</option>
+							<option value="2">后迎风（60-80度）</option>
+							<option value="3">横风（80-100度）</option>
+							<option value="4">顺风（100-170度）</option>
+							<option value="5">尾风（170-180度）</option>
+						</select>
+					</li>
+					<li>
+						<label>火情发展阶段</label>
+						<select name="fireStep" id="fireStep" class="xla_k remove_disabled"> 
+							<option value="0">初期</option>
+							<option value="1">发展</option>
+							<option value="2">猛烈</option>
+							<option value="3">下降</option>
+							<option value="4">熄灭</option>
+						</select>
+					</li>
+					<li>
+						<label>指挥长<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="姓名" name="chiefName" id="chiefName">
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="职务" name="chiefJob" id="chiefJob">
+					</li>
+					<li class="add_comm_add">
+						<label>指挥组成员</label>
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="姓名">
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="职务">
+						<img class="comm_add" src="img/LK/tjtp.png">
+					</li>
+
+					<li>
+						<label>消防员</label>
+						<input type="text" class="form-control form-boxed remove_disabled" placeholder="队伍名称" name="truckmanTeamName" id="truckmanTeamName">
+						<input type="text" class="form-control form-boxed remove_disabled number" placeholder="消防队伍人数" name="truckmanNo" id="truckmanNo">
+					</li>
+					<li class="input_wz">
+						<label >消防物资调拔情况</label>
+						<div class="right_move">
+							<label>1.监控设备</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称" id="materialSupply" name="materialSupply">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>2.灭火装备</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>3.防护装备</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>4.通信设备</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>5.油&nbsp;&nbsp;料</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>6.食物和水</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+						<div class="right_move">
+							<label>7.其他物资</label>
+							<input type="text" class="form-control form-boxed remove_disabled" placeholder="名称">
+							<input type="text" class="form-control form-boxed remove_disabled number" placeholder="数量">
+						</div>
+					</li>
+					<li>
+						<label>预计灭火时间</label>
+						<select name="estimatedFireTime" id="estimatedFireTime" class="xla_k remove_disabled min_xla" > 
+							<option value="0">一小时内</option>
+							<option value="1">1-2小时</option>
+							<option value="2">2-5小时</option>
+							<option value="3">5小时以上</option>
+						</select>
+						<label style="width:70px;">地图位置</label>
+						<input type="text" class="form-control form-boxed" disabled id="lnglat1" >
+					</li>
+					<li>
+						<label>图片上传</label>
+						<input type="file" name="photoName1" id="photoName2" class="upFileBtn"  accept="image/png,image/jpg,image/gif,image/JPEG"/>
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#photoName2').click()" />
+		           		<div id="imgBox1"></div>
+					</li>
+					<li>
+						<label>正射图上传</label>
+						<input type="file" id="videoName2" class="upFileBtn" />
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName2').click()" />
+		           		<span class="videoname1"></span>
+					</li>
+					<li>
+						<label>正射图描述</label>
+						<textarea class="form-control form-boxed remove_disabled" id="describe1"></textarea>
+					</li>
+					<li>
+						<input type="button" value="取消" class="cancel" onclick="back()"/>
+						<input type="button" value="上报" class="report submit" id="btn2" onclick="fsubmit_chase()"/>
+					</li>
+				</ul>
+			</form>
+			<form id="form3" method="post" action="" enctype="multipart/form-data">
+				<ul class="form_sub form_sub_three">
+					<li >
+						<label>火灾结束时间<i style="color:red">*</i></label>
+						<input type="text" id="creactTime2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-%d'})" class="Wdate remove_disabled form-control"  name="creactTime" />
+					</li>
+					<li>
+						<label>地图位置<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed" disabled id="lnglat2" >
+					</li>
+					
+					<li>
+						<label>火灾扑灭时间（小时）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="keepTime" id="keepTime">
+					</li>
+					<li>
+						<label>过火面积（亩）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="fireArea" id="firearea">
+					</li>
+					<li>
+						<label>破坏建筑（间）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="destroyBuild" id="destroyBuild">
+					</li>
+					<li>
+						<label>死亡人数（人）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="death" id="death">
+					</li>
+					<li>
+						<label>受伤人数（人）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="injured" id="injured">
+					</li>
+					<li>
+						<label>经济损失（万元）<i style="color:red">*</i></label>
+						<input type="text" class="form-control form-boxed remove_disabled" name="economicLoss" id="economicLoss">
+					</li>
+					<li>
+						<label>安全隐患</label>
+						<select name="hiddenDanger" id="hiddenDanger" class="xla_k remove_disabled"> 
+							<option value="0">是</option>
+							<option value="1" selected>否</option>
+						</select>
+					</li>
+					<li>
+						<label>隐患原因</label>
+						<textarea class="form-control form-boxed textarea remove_disabled" name="reason" id="reason"></textarea>
+					</li>
+					<li>
+						<label>经验总结</label>
+						<textarea class="form-control form-boxed textarea remove_disabled" name="experience" id="experience"></textarea>
+					</li>
+					<li>
+						<label>图片上传</label>
+						<input type="file" name="photoName1" id="photoName3" class="upFileBtn"  accept="image/png,image/jpg,image/gif,image/JPEG"/>
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#photoName3').click()" />
+		           		<div id="imgBox2"></div>
+					</li>
+					<li>
+						<label>正射图上传</label>
+						<input type="file" id="videoName3" class="upFileBtn" />
+		           		<img class="fileInput" src="img/lqz/sc.png" onclick="$('#videoName3').click()" />
+		           		<span class="videoname2"></span>
+					</li>
+					<li>
+						<label>正射图描述</label>
+						<textarea class="form-control form-boxed remove_disabled" id="describe2"></textarea>
+					</li>
+					<li>
+						<input type="button" value="取消" class="cancel" onclick="back()"/>
+						<input type="button" value="上报" class="report submit" id="btn3" onclick="fsubmit_over()"/>
+					</li>
+				</ul>
+			</form>
+			
+		</div>
+	</div>
+	<script>
+        var city=localStorage.getItem('all_city');
+        $('#province').html(city);
+	</script>
+
+</body>
+</html>

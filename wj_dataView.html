@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <!--湖南-->
+    <script src="js/WJ/wj_dataView.js"></script>
+    <!--福建-->
+    <!--<script src="js/WJ/fujian_dataView.js"></script>-->
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <style>
+        .tableDiv_fire{color:#000;z-index:19;position:fixed;height:100%;overflow: auto;top:50px;right: 0px;left: 230px;}
+        .top_box{margin:2% 3% 0 3%;height:320px;}
+        .side_box div{float:left;margin-bottom:20px;width:21%;height:130px;background-color:#fff;text-align:center;}
+        .side_box div:not(:last-child){margin-right:2%;}
+        .topBox1{width:13px;height:14px;background-image:url("img/wj/up1.png");display:inline-block;}
+        .topBox2{width:13px;height:14px;background-image:url("img/wj/up2.png");display:inline-block;}
+        .topBox3{width:13px;height:14px;background-image:url("img/wj/down3.png");display:inline-block;}
+        .topBox4{width:13px;height:14px;background-image:url("img/wj/down1.png");display:inline-block;}
+        .topBox5{width:13px;height:14px;background-image:url("img/wj/down2.png");display:inline-block;}
+        .topBox6{width:13px;height:14px;background-image:url("img/wj/up3.png");display:inline-block;}
+        .top_title{font-size:15px;}
+        .middle_num1,.middle_num4{font-size:50px;color:#f91b0e;}
+        .middle_num2,.middle_num5{font-size:50px;color:#fac215;}
+        .middle_num3,.middle_num6{font-size:50px;color:#5fb574;}
+        .middle_wen1,.middle_wen4{color:#f91b0e;}
+        .middle_wen2,.middle_wen5{color:#fac215;}
+        .middle_wen3,.middle_wen6{color:#5fb574;}
+        .look_btn{position:relative;top:-13px;font-size:14px;}
+        .look_btn a{display:inline-block;margin-right:8px;width:70px;border:1px solid #01dacf;border-radius:10px;color:#01dacf;}
+        .top_side{overflow:hidden;}
+        .newlist{position:absolute;top:0;right:4%;margin:3% 3% 0 3%;width:25%;height:87%;background:#fff;overflow:hidden;}
+        .newlist h2{margin:10px 0;padding-left:10px;border-left:2px solid #01dacf;font-size:20px;background-color: #fff;position: relative;z-index: 5}
+        .newlist .more{float:right;margin-right:10px;color:#aaa;font-size:14px;line-height:22px;}
+        .newlist ul li{overflow:hidden;margin:5px;cursor:pointer;}
+        .newlist ul li .newslia{display:inline-block;overflow:hidden;margin-left:5px;width:75%;text-overflow:ellipsis;white-space:nowrap;font-size:14px;}
+        .newlist ul li .newslitime{float:right;margin-right:5px;color:#aaa;font-size:14px;line-height:20px;}
+        .scroll{position:absolute;width:100%;left:0;top:155px;}
+        #lunbobox{position:relative;padding:5px;width:100%;height:100px;border-top:1px dashed#b5b5b5;}
+        .lunbo{width:100%;height:100px;}
+        .lunbo li{position:relative;display:none;width:100%;height:100%;list-style:none;}
+        .lunbo img{position:relative;top:0;display:block;margin:0 auto;height:100px;max-width:100%;text-align:center;}
+        #lunbobox ul{position:absolute;right:0;bottom:-20px;z-index:5;text-align: right;width:100%;background-color:rgba(0,0,0,0.3);}
+        #lunbobox .lunbo_text{position:absolute;bottom:-10px;left:10px;z-index:6;display:block;width:65%;}
+        #lunbobox .lunbo_d li{display: inline-block;margin:0 5px 0 0;width:10px;height:10px;border:1px solid #fff;border-radius:50%;background:#ccc;text-align:center;cursor:pointer;}
+        #lunbobox .lunbo_d li.on{background-color:#01dacf;}
+        #lunbobox .lunbo_text span{display:none;color:#fff;vertical-align:middle;font-size: 14px;line-height: 21px;width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 上部数字框 -->
+        <div class="top_box">
+            <div class="side_box top_side">
+                <div class="box1">
+                        <p>
+                            <p class="top_title" style="position:relative;top:10px;" onclick="send()">今日上报火情</p>
+                            <p style="position:relative;bottom:4px;">
+                                <span class="middle_num1"></span>
+                                <span class="middle_wen1">起</span>
+                            </p>
+                            <p style="position:relative;bottom:15px;">
+                                <span class="rate1"></span>
+                                <span class="topBox1"></span>
+                            </p>
+                            <p class="look_btn">
+                                <a class="lookCount1" href="javascript:;">查看统计</a>
+                                <a href="javascript:;" onclick="sshq(4)">查看详情</a>
+                            </p>
+                        </p>
+                </div>
+                <div class="box5">
+                    <p>
+                        <p class="top_title" style="position:relative;top:10px;">今日正在追踪的火情</p>
+                        <p style="position:relative;bottom:4px;">
+                            <span class="middle_num5"></span>
+                            <span class="middle_wen5">起</span>
+                        </p>
+                        <p style="position:relative;bottom:15px;">
+                            <span class="rate5"></span>
+                            <span class="topBox5"></span>
+                        </p>
+                        <p class="look_btn">
+                            <a class="lookCount5" href="javascript:;">查看统计</a>
+                            <a href="javascript:;" onclick="sshq(2)">查看详情</a>
+                        </p>
+                    </p>
+                </div>
+                <div class="box6">
+                    <p>
+                        <p class="top_title" style="position:relative;top:10px;">今日已扑灭火情</p>
+                        <p style="position:relative;bottom:4px;">
+                            <span class="middle_num6"></span>
+                            <span class="middle_wen6">起</span>
+                        </p>
+                        <p style="position:relative;bottom:15px;">
+                            <span class="rate6"></span>
+                            <span class="topBox6"></span>
+                        </p>
+                        <p class="look_btn">
+                            <a class="lookCount6" href="javascript:;">查看统计</a>
+                            <a href="javascript:;" onclick="sshq(3)">查看详情</a>
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div class="side_box top_side">
+                <div class="box4">
+                    <p>
+                        <p class="top_title" style="position:relative;top:10px;">其他情况上报</p>
+                        <p style="position:relative;bottom:4px;">
+                            <span class="middle_num4"></span>
+                            <span class="middle_wen4">起</span>
+                        </p>
+                        <p style="position:relative;bottom:15px;">
+                            <span class="rate4"></span>
+                            <span class="topBox4"></span>
+                        </p>
+                        <p class="look_btn">
+                            <a class="lookCount4" href="javascript:;">查看统计</a>
+                            <a href="javascript:;" onclick="hlysb(1)">查看详情</a>
+                        </p>
+                    </p>
+                </div>
+                <div class="box2">
+                    <p>
+                        <p class="top_title" style="position:relative;top:10px;">今日护林员上报火情</p>
+                        <p style="position:relative;bottom:4px;">
+                            <span class="middle_num2"></span>
+                            <span class="middle_wen2">起</span>
+                        </p>
+                        <p style="position:relative;bottom:15px;">
+                            <span class="rate2"></span>
+                            <span class="topBox2"></span>
+                        </p>
+                        <p class="look_btn">
+                            <a class="lookCount2" href="javascript:;">查看统计</a>
+                            <a href="javascript:;"  onclick="hlysb(0)">查看详情</a>
+                        </p>
+                    </p>
+                </div>
+                <div class="box3">
+                    <p>
+                        <p class="top_title" style="position:relative;top:10px;">今日卫星监测热点发布</p>
+                        <p style="position:relative;bottom:4px;">
+                            <span class="middle_num3"></span>
+                            <span class="middle_wen3">起</span>
+                        </p>
+                        <p style="position:relative;bottom:15px;">
+                            <span class="rate3"></span>
+                            <span class="topBox3"></span>
+                        </p>
+                        <p class="look_btn">
+                            <a class="lookCount3" href="javascript:;">查看统计</a>
+                            <a href="javascript:;" onclick="wxrd()">查看详情</a>
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div class="newlist">
+                <h2>新闻中心 <a href="javascript:;" class="more" onclick="report_index_fh()">更多&gt;</a></h2>
+                <div id="lunbobox">
+                    <div class="lunbo scroll_news">
+                    </div>
+                    <ul class="lunbo_d">
+                    </ul>
+                    <span class="lunbo_text"></span>
+                </div>
+                <ul class="scroll scroll_news">
+                </ul>
+            </div>
+        </div>
+        <!-- 下部折线图 -->
+        <div class="bottom_box">
+            <!-- 火情上报数量统计图 -->
+            <section class="count1" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;">
+                <button class="fire_day_btn" onclick="change_day('#fire_report','.fire_day_btn','#fire_report_year','.fire_year_btn')" style="margin-top:10px;height: 24px;width: 70px;border:1px solid #e3e3e3;background-color: #01dacf;color: #fff;border-radius: 4px;">本月</button>
+                <button class="fire_year_btn" onclick="change_year('#fire_report','.fire_day_btn','#fire_report_year','.fire_year_btn')" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                <div id="fire_report" style="width:750px;height:300px;margin-top:45px;">
+                </div>
+                <div id="fire_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                </div>
+            </section>
+            <!-- 护林员上报火情数量统计图 -->
+            <section class="count2" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;display:none;">
+                    <button onclick="change_day('#forest_report','.forest_day_btn','#forest_report_year','.forest_year_btn')" class="forest_day_btn" style="margin-top:10px;height: 24px;width: 70px;background-color: #01dacf;border:1px solid #e3e3e3;color: #fff;border-radius: 4px;">本月</button>
+                    <button onclick="change_year('#forest_report','.forest_day_btn','#forest_report_year','.forest_year_btn')" class="forest_year_btn" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                    <div id="forest_report" style="width:750px;height:300px;margin-top:45px;">
+                    </div>
+                    <div id="forest_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                    </div>
+            </section>
+            <!-- 卫星监测热点发布数量统计图 -->
+            <section class="count3" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;display:none;">
+                    <button class="hotspot_day_btn" onclick="change_day('#hotspot_report','.hotspot_day_btn','#hotspot_report_year','.hotspot_year_btn')" style="margin-top:10px;height: 24px;width: 70px;background-color: #01dacf;border:1px solid #e3e3e3;color: #fff;border-radius: 4px;">本月</button>
+                    <button class="hotspot_year_btn" onclick="change_year('#hotspot_report','.hotspot_day_btn','#hotspot_report_year','.hotspot_year_btn')" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                    <div id="hotspot_report" style="width:750px;height:300px;margin-top:45px;">
+                   </div>
+                   <div id="hotspot_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                   </div>
+            </section>
+            <!-- 其他情况上报数量统计图 -->
+            <section class="count4" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;display:none;">
+                    <button class="other_day_btn" onclick="change_day('#other_report','.other_day_btn','#other_report_year','.other_year_btn')" style="margin-top:10px;height: 24px;width: 70px;background-color: #01dacf;border:1px solid #e3e3e3;color: #fff;border-radius: 4px;">本月</button>
+                    <button class="other_year_btn" onclick="change_year('#other_report','.other_day_btn','#other_report_year','.other_year_btn')" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                    <div id="other_report" style="width:750px;height:300px;margin-top:45px;">
+                    </div>
+                   <div id="other_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                   </div>
+            </section>
+            <!-- 正在发生火情数量统计图 -->
+            <section class="count5" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;display:none;">
+                    <button class="happing_day_btn" onclick="change_day('#happing_report','.happing_day_btn','#happing_report_year','.happing_year_btn')" style="margin-top:10px;height: 24px;width: 70px;background-color: #01dacf;border:1px solid #e3e3e3;color: #fff;border-radius: 4px;">本月</button>
+                    <button class="happing_year_btn" onclick="change_year('#happing_report','.happing_day_btn','#happing_report_year','.happing_year_btn')" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                    <div id="happing_report" style="width:750px;height:300px;margin-top:45px;">
+                    </div>
+                    <div id="happing_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                    </div>
+            </section>
+            <!-- 已扑灭火情数量统计图 -->
+            <section class="count6" style="width:62%;height:350px;margin:0 6.5% 0 4%;background-color:#fff;display:none;">
+                    <button class="out_day_btn" onclick="change_day('#out_report','.out_day_btn','#out_report_year','.out_year_btn')" style="margin-top:10px;height: 24px;width: 70px;background-color: #01dacf;border:1px solid #e3e3e3;color: #fff;border-radius: 4px;">本月</button>
+                    <button class="out_year_btn" onclick="change_year('#out_report','.out_day_btn','#out_report_year','.out_year_btn')" style="height: 24px;width: 70px;background-color: #fff;border:1px solid #e3e3e3;color: #000;border-radius: 4px;">本年</button>
+                    <div id="out_report" style="width:750px;height:300px;margin-top:45px;">
+                    </div>
+                    <div id="out_report_year" style="width:750px;height:300px;display:none;margin-top:45px;">
+                    </div>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

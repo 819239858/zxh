@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript">
+	var publishName = $.cookie('publishName'); // 读取 cookie 
+	Public_address="222.247.57.142";
+	$(function(){
+		var html = "<object width='380' height='230' id='SampleMediaPlayback' "+
+	"name='SampleMediaPlayback' type='application/x-shockwave-flash' "+ 
+	"classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' > "+
+	"<param name='movie' value='swfs/SampleMediaPlayback.swf' />  "+
+	"<param name='quality' value='high' /> "+ 
+	"<param name='bgcolor' value='#000000' /> "+ 
+	"<param name='allowfullscreen' value='true' />  "+
+	"<param name='flashvars'  "+
+	"value= '&src=rtmp://"+Public_address+"/live/"+publishName+"&autoHideControlBar=true&streamType=live&autoPlay=true&verbose=true'/> "+
+	"<embed src='swfs/SampleMediaPlayback.swf' width='380' height='230' "+ 
+	"id='SampleMediaPlayback' quality='high' bgcolor='#000000' "+ 
+	"name='SampleMediaPlayback' allowfullscreen='true'  "+
+	"pluginspage='http://www.adobe.com/go/getflashplayer'  "+
+	"flashvars='&src=rtmp://"+Public_address+"/live/"+publishName+"&autoHideControlBar=true&streamType=live&autoPlay=true&verbose=true'  "+
+	"type='application/x-shockwave-flash'> </embed> "+
+	"</object>";
+		$("#vedio").html(html);
+	});
+</script>
+<body>
+	<div id="vedio">
+	
+	</div>
+</body>
+</html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script src="javascript/public.js"></script>
+    <script src="js/textPlugin.js"></script>
+    <script src="javascript/plug-ins/threePage.js"></script>
+    <style>
+    .tableDiv_fire{z-index:19;position:fixed;height:89%;overflow: auto;top:80px;right: 10px;left: 250px;background: #fff;}
+    .search_area{height:40px;border:1px solid #e6e6e6;border-left:none;}
+    .search_container{margin-top:5px;margin-left:30px;}
+    .report_btn{background-color:#01dacf;color:#fff;width:110px;height:28px;border:none;margin:10px 0 20px 30px;}
+    .report_table{width:95%; padding-left:30px;}
+    .report_page{text-align:center;margin-bottom:50px;}
+    .form_sub_release{width:648px;}
+    .form_sub_release select{width:175px;}
+    .form_sub input{width:175px;}
+    .form_sub_release .upFileBtn{position:absolute;bottom:75px;left:120px;z-index:-1;width:80px;height:80px;opacity:0;}
+    .form_sub_release .upFileBtn1{display:inline-block;opacity:0;}
+    .form_sub_release .upload{position:relative;display:inline-block;height:25px;border:solid 1px #cfdadd;}
+    .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:30px;width:80px;height:80px;border:1px solid #e5e5e5;}
+    .form_sub_release .fileInput1{position:absolute;top:3px;left:75px;}
+    #office_latLngs{margin-right:2px;width:140px;height:25px;}
+    #wjadd_map{width:70px;height:25px;border:none;background-color:#01dacf;color:#fff;text-align:center;cursor:pointer;}
+    #imgBox img{width:80px;height:80px;}
+    .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+    /* 文章发布 */
+    #editor_two{margin:20px auto;padding:20px;width:65%;text-align:left;}
+    #editor_two h2{text-align:center;font-weight:bold;width: 90%;}
+    #editor_two p{text-indent:2em;}
+    #editor_two .author{margin-bottom:20px;color:#999;text-align:center;}
+    #editor_two .content_article img{padding:5px 0;width:100%;}
+    #editor_two .btn_return{margin:20px auto;width:100px;border:solid 1px #666;border-radius:2px;text-align:center;cursor:pointer;}
+    .return_top{position:fixed;right:20px;bottom:100px;}
+    .doc_dow{float:right;color:#01dacf;width:80px;height:20px;border:1px solid #01dacf;border-radius:6px;text-align:center;margin-top:-30px;}
+    .doc_dow:hover{color:#01dacf;}
+    #user_query1{position:absolute;top:32px;left:30px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
+    #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
+    .container{width: 100%!important;}
+    .btn-block{display: none!important;}
+    .selectDiv{width: 280px;height: 80px;border: 1px solid #333;position: absolute;z-index: 1000;left: 360px;
+        top: 25px;background-color: #fff;border-radius: 5px;padding: 5px 10px;overflow:scroll;display: none;}
+    .selectDiv span{margin-right: 15px;}
+    .showTime{display: block;}
+    .report_btn1 {background-color: #01dacf;color: #fff;border: none;padding:4px 5px;margin-left: 5px;border-radius: 4px;}
+    .report_btn2{background-color: #01dacf;color: #fff;border: none;padding:4px 8px;margin-left: 30px;border-radius: 4px;}
+    </style>
+</head>
+<body>
+    <div class="tableDiv_fire">
+        <!-- 头部查询区域 -->
+        <div class="search_area">
+            <div class="search_container">
+                发文标题：<input type="text" class="user_name" id="userTitle"/>
+                发文文号: <input type="text" class="user_name" id="userNumber"/>
+                上传时间：<input placeholder="" style="width: 110px" id="start_time"  class="Wdate" type="text"  onclick="WdatePicker()">
+                至 <input placeholder="" style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time\',{d:0});}'})" >
+                <button  id="search_btn" class="ButtonSearch"  onclick="video_list()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    <input class="data-ycl1" type="hidden" value="0">
+                    <input class="data-ycl2" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <div class="container_box">
+            <button class="report_btn" id="uploadDocument" onclick="new_file()">撰写公文</button>
+        
+            <div class="report_table">
+                <!-- 表格切换 -->
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="tab-nav">
+                            <li class="active">已接公文</li>
+                            <li class="">已发公文</li>
+                        </ul>
+                    </div>
+                    <div class="tab-cont" style="display: block;">
+                        <!-- 已上报 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 250px;">公文标题</th>
+                                    <!-- <th>发文单位</th> -->
+                                    <th>发文文号</th>
+                                    <th>公文浏览等级</th>
+                                    <th>公文类别</th>
+                                    
+                                    <th>上传时间</th>
+                                    <th>签收信息</th>
+                                    <th style="min-width:110px">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report">
+                                
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                        <div class="report_page">
+                                <span>总记录:<i class="complete_total">4</i>条</span>
+                                <div class="pagination complete_page">
+                                    <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-cont" style="display: none;">
+                        <!-- 已追踪 -->
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 250px;">公文标题</th>
+                                    <!-- <th>发文单位</th> -->
+                                    <th>发文文号</th>
+                                    <th>公文浏览等级</th>
+                                    <th>签收信息</th>
+                                    <th>公文类别</th>
+                                    
+                                    <th>上传时间</th>
+                                    <th style="min-width:110px">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_track">
+                                
+                            </tbody>
+                        </table>
+                         <!-- 分页 -->
+                         <div class="report_page">
+                            <span>总记录:<i class="track_total">4</i>条</span>
+                            <div class="pagination track_page">
+                                <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <div id="article" style="display:none;">
+            <section id="editor_two">
+                <h2></h2>
+                 <a class="doc_dow" href="javascript:;"><img src="img/dowload.png">导出文档</a>
+                 <a class="doc_dow" href="javascript:;" >公文签收</a>
+                <div class="author">上传者：<span></span></div>
+                <div class="content_article">
+                    
+                </div>
+                <div onclick="report_index_fh()" class="btn_return">返回上一页</div>
+            </section>
+            <a href="#editor_two"><img src="img/lqz/top.png" class="return_top"></a>
+            <!-- <ul class="list_up_dom">
+                <li><a href="#">上一篇：<span>业建设上森林是保</span></a></li>
+                <li><a href="#">下一篇：<span>物及其与环境的综合体</span></a></li>
+            </ul> -->
+        </div>
+    </div>                                             
+</body>
+<script>
+     var userLevel = sessionStorage.getItem("userLevel");
+     if(userLevel =='1'){
+         $('#uploadDocument').remove();
+     }
+                
+//查询
+function video_list() {
+    var type = $("#county").val();
+    var begin_time=$("#start_time").val();
+    var end_time=$("#end_time").val();
+   
+    var number=$("#userNumber").val(); //发文文号
+    var title=$("#userTitle").val(); //发文文号
+    // 已接受公文
+    sendAjax({
+        "url":"fire/office_doc/getSignOfficeDocList",
+        "data":{"current_page":1,"per_page":20,"same_number":number,"begin_time":begin_time,"end_time":end_time,
+            "doc_title":title},
+        "callback":function(data){
+            if (data.code=="s_ok") {
+                $("#complete_report").html('');
+                //总条数
+                if(data.var.total==0){
+                    $(".complete_total").html(0);
+                }else{
+                    $("#complete_report").html('');
+                    var num=data.var.total;$(".complete_total").html(data.var.total);
+                    
+                    var result=data.var.data;
+                    for(var i=0;i<result.length;i++){
+                        // <a onclick=\"delete_data(" + result[i].id + ")\">删除</a>
+                        if(result[i].name==''){
+                            $("#complete_report").append(
+                                // "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>"  +seenLevel.get(result[i].doc_type) + "</td><td>" + result[i].create_time +"</td><td>" +'未签收'+ "</td><td><a class='mr-5'>详情</a> <a onclick=\"delete_data(" + result[i].id + ")\">删除</a> <a onclick=\"get_file(" + result[i].id + ")\">签收</a></td></tr>"
+                                "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>"  +seenLevel.get(result[i].doc_type) + "</td><td>" + result[i].create_time +"</td><td>" +'未签收'+ "</td><td><a class='mr-5'>详情</a>  <a onclick=\"get_file(" + result[i].id + ")\">签收</a></td></tr>"
+                            );
+                        }else{
+                            $("#complete_report").append(
+                                "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>"  +seenLevel.get(result[i].doc_type) +  "</td><td>" + result[i].create_time +"</td><td>" +result[i].name+'-'+result[i].tel+ "</td><td><a class='mr-5'>详情</a>  </td></tr>"
+                            );
+                        }
+                        
+                        
+                    }
+                    $("#complete_report .mr-5").click(function() {
+                    var index=$("#complete_report .mr-5").index(this);
+                        //article(result[index]);
+                        allInfor1(result[index]);
+                        //window.open(Public_address+'uploads/'+result[index].path);
+                    });
+                    var userLevel = sessionStorage.getItem("userLevel");
+                    if (userLevel=="1") {
+                        $("#complete_report .address_remove").hide();
+                    };
+                    $(".complete_page").createPage({
+                        pageCount:Math.ceil(num/20),
+                        current:1,
+                        backFn:function(p){
+                            //$(".complete_page").html();
+                            sendAjax({
+                                "url":"fire/office_doc/getOfficeDocList",
+                                "data":{"current_page":p,"per_page":20,"begin_time":begin_time,"end_time":end_time,"doc_region":0,"doc_title":title,"same_number":number},
+                                "callback":function(result){
+                                    if(result.code=='s_ok'){
+                                        $("#complete_report").html('');
+                                        var result=result.var.data;
+                                        for(var i=0;i<result.length;i++){
+                                            // <a onclick=\"delete_data(" + result[i].id + ")\">删除</a>
+                                            if(result[i].name==''){
+                                                $("#complete_report").append(
+                                                    "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>"  + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>"  +seenLevel.get(result[i].doc_type) + "</td><td>"  + result[i].create_time +"</td><td>" +'未签收'+ "</td><td><a class='mr-5'>详情</a>  <a onclick=\"get_file(" + result[i].id + ")\">签收</a></td></tr>"
+                                                );
+                                            }else{
+                                                $("#complete_report").append(
+                                                    "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>"  + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>"  +seenLevel.get(result[i].doc_type) + "</td><td>" + result[i].create_time +"</td><td>" +result[i].name+'-'+result[i].tel+ "</td><td><a class='mr-5'>详情</a>  </td></tr>"
+                                                );
+                                            }
+                                        }
+                                        var userLevel = sessionStorage.getItem("userLevel");
+                                        if (userLevel=="1") {
+                                            $("#complete_report .address_remove").hide();
+                                        }
+                                        $("#complete_report .mr-5").click(function() {
+                                            var index=$("#complete_report .mr-5").index(this);
+                                            // article(result[index]);
+                                            allInfor1(result[index]);
+                                            //window.open(Public_address+'uploads/'+result[index].doc_html);
+                                        });
+                                    }else{
+                                        console.log('错误');
+                                    }
+                                }
+                            })
+                        }
+                    });
+                    return false;
+                }
+            }else{
+                layer.msg(data.var);
+            }
+        },
+        error:function(result){
+            layer.alert("网络不好，请刷新试试！", {
+              skin: 'layui-layer-molv' 
+              ,closeBtn: 0,anim: 4,btnAlign: 'c'
+            });
+        }
+    });
+    // 已发公文
+    sendAjax({
+        "url":"fire/office_doc/getSendOfficeDocList",
+        "data":{"current_page":1,"per_page":20,"same_number":number,"begin_time":begin_time,"end_time":end_time,
+            "doc_title":title},
+        "callback":function(data){
+            if (data.code=="s_ok") {
+                $("#complete_track").html('');
+                //总条数
+                if(data.var.total==0){
+                    $(".track_total").html(0);
+                }else{
+                    $("#complete_track").html('');
+                    var num=data.var.total;$(".track_total").html(data.var.total);
+                    //分页
+                    var result=data.var.data;
+                    $(".track_page").createPage({
+                        pageCount:Math.ceil(num/20),
+                        current:1,
+                        backFn:function(p){
+                            sendAjax({
+                                "url":"fire/office_doc/getOfficeDocList",
+                                "data":{"current_page":p,"per_page":20,"same_number":number,"begin_time":begin_time,"end_time":end_time,"doc_region":1,"doc_title":title},
+                                "callback":function(result){
+                                    $("#complete_track").html('');
+                                    var result=result.var.data;
+                                    for(var i=0;i<result.length;i++){
+                                        $("#complete_track").append(
+                                            "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>"  + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>" +result[i].name+'-'+result[i].tel+ "</td><td>" +seenLevel.get(result[i].doc_type) + "</td><td>" + result[i].create_time + "</td><td><a class='mr-5'>详情</a> <a onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                                        );
+                                    }
+                                    var userLevel = sessionStorage.getItem("userLevel");
+                                    if (userLevel=="1") {
+                                        $("#complete_track .address_remove").hide();
+                                    }
+                                    $("#complete_track .mr-5").click(function() {
+                                        var index=$("#complete_track .mr-5").index(this);
+                                        // article(result[index]);
+                                        allInfor(result[index]);
+                                        //window.open(Public_address+'uploads/'+result[index].doc_html);
+                                    });
+                                }
+                            })
+                        }
+                    });
+                    for(var i=0;i<result.length;i++){
+                        $("#complete_track").append(
+                            "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].same_number + "</td><td>" + file_type.get(result[i].doc_level) + "</td><td>" +result[i].name+'-'+result[i].tel+ "</td><td>" +seenLevel.get(result[i].doc_type) + "</td><td>"  + result[i].create_time + "</td><td><a class='mr-5'>详情</a> <a onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+                        );
+                    }
+                    $("#complete_track .mr-5").click(function() {
+                        var index=$("#complete_track .mr-5").index(this);
+                        // article(result[index]);
+                        allInfor(result[index]);
+                    });
+                    var userLevel = sessionStorage.getItem("userLevel");
+                    if (userLevel=="1") {
+                        $("#complete_track .address_remove").hide();
+                    }
+                }
+            }else{
+                layer.msg(data.var);
+            }
+        },
+        error:function(result){
+            layer.alert("网络不好，请刷新试试！", {
+              skin: 'layui-layer-molv' 
+              ,closeBtn: 0,anim: 4,btnAlign: 'c'
+            });
+        }
+    });
+    // // 县
+    // sendAjax({
+    //     "url":"fire/office_doc/getOfficeDocList",
+    //     "data":{"current_page":1,"per_page":20,"name":name,"begin_time":begin_time,"end_time":end_time,"doc_region":2},
+    //     "callback":function(data){
+    //         if (data.code=="s_ok") {
+    //             $("#complete_end").html('');
+    //             //总条数
+    //             if(data.var.total==0){
+    //                 $(".end_total").html(0);
+    //             }else{
+    //                 $("#complete_end").html('');
+    //                 var num=data.var.total;$(".end_total").html(data.var.total);
+    //                 //分页
+    //                 var result=data.var.data;
+    //                 $(".end_page").createPage({
+    //                     pageCount:Math.ceil(num/20),
+    //                     current:1,
+    //                     backFn:function(p){
+    //                         sendAjax({
+    //                             "url":"fire/office_doc/getOfficeDocList",
+    //                             "data":{"current_page":p,"per_page":20,"name":name,"begin_time":begin_time,"end_time":end_time,"doc_region":2},"callback":function(result){
+    //                                 $("#complete_end").html('');
+    //                                 var result=result.var.data;
+    //                                 for(var i=0;i<result.length;i++){
+    //                                     $("#complete_end").append(
+    //                                         "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].department+ "</td><td>" + file_type.get(result[i].doc_region) + "</td><td>" + level.get(result[i].doc_level) + "</td><td>" + sign.get(result[i].doc_sign) + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td>" + result[i].create_time + "</td><td><a class='mr-5'>详情</a> <a onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+    //                                     );
+    //                                 }
+    //                                 var userLevel = sessionStorage.getItem("userLevel");
+    //                                 if (userLevel=="1") {
+    //                                     $("#complete_end .address_remove").hide();
+    //                                 }
+    //                                 $("#complete_end .mr-5").click(function() {
+    //                                     var index=$("#complete_end .mr-5").index(this);
+    //                                     // article(result[index]);
+    //                                     window.open(Public_address+'uploads/'+result[index].doc_html);
+    //                                 });
+    //                             }
+    //                         })
+    //                     }
+    //                 });
+    //                 for(var i=0;i<result.length;i++){
+    //                     $("#complete_end").append(
+    //                         "<tr><td style=\"max-width: 250px;\">" + result[i].doc_title + "</td><td>" + result[i].department+ "</td><td>" + file_type.get(result[i].doc_region) + "</td><td>" + level.get(result[i].doc_level) + "</td><td>" + sign.get(result[i].doc_sign) + "</td><td>" + result[i].name + "</td><td>" + result[i].tel + "</td><td>" + result[i].create_time + "</td><td><a class='mr-5'>详情</a> <a onclick=\"delete_data(" + result[i].id + ")\">删除</a></td></tr>"
+    //                     );
+    //                 }
+    //                 $("#complete_end .mr-5").click(function() {
+
+    //                     var index=$("#complete_end .mr-5").index(this);
+    //                     //article(result[index]);
+    //                     window.open(Public_address+'uploads/'+result[index].doc_html);
+    //                 });
+    //                 var userLevel = sessionStorage.getItem("userLevel");
+    //                 if (userLevel=="1") {
+    //                     $("#complete_end .address_remove").hide();
+    //                 }
+    //             }
+    //         }else{
+    //             layer.msg(data.var);
+    //         }
+    //     },
+    //     error:function(result){
+    //         layer.alert("网络不好，请刷新试试！", {
+    //           skin: 'layui-layer-molv' 
+    //           ,closeBtn: 0,anim: 4,btnAlign: 'c'
+    //         });
+    //     }
+    // })
+};
+video_list();
+
+//已发公文--点击详情
+function allInfor(data){
+    
+    data.no_sign_region_name=data.no_sign_region_name=='undefined'?'':data.no_sign_region_name;
+    data.sign_region_name=data.sign_region_name=='undefined'?'':data.sign_region_name;
+    var details="<ul class=\"form_sub form_sub_release\"><li><label>公文标题:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.doc_title+"\">"+
+        "<label>公文类型:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.sign_region+"\"></li>"+
+        "<li><label>发文文号:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.same_number+"\">"+
+        "<label>公文浏览等级:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+file_type.get(data.doc_level)+"\"></li>"+
+        "<li><label>公文类别:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+seenLevel.get(data.doc_type)+"\">"+
+        "<label>上传时间:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.update_time+"\"></li>"+
+        "<li><label>已签收区域:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.sign_region_name+"\">"+
+        "<label>未签收区域:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.no_sign_region_name+"\"></li>"+
+        "</ul>";
+    layer.confirm(''+details+'', {
+          type: 1,
+          skin: 'layui-layer-molv', //样式类名
+          closeBtn: 1, //关闭按钮
+          anim: 2,
+          btn: ['公文查看','公文下载','关闭'],
+          btnAlign: 'c',
+          area: ['650px', '300px;'],
+          title:"公文详情",
+          shadeClose: true, //开启遮罩关闭
+        }, function(){
+          window.open(Public_address+'uploads/'+data.doc_html);
+        }, function(){
+          window.open(Public_address+'uploads/'+data.path);
+        },function(){
+            layer.closeAll('page');
+        });
+}
+//已接公文--点击详情
+function allInfor1(data){
+    if(data.name==''){
+        //没有签收
+        var details="<ul class=\"form_sub form_sub_release\"><li><label>公文标题:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.doc_title+"\">"+
+        "<label>公文类型:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.sign_region+"\"></li>"+
+        "<li><label>发文文号:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.same_number+"\">"+
+        "<label>公文浏览等级:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+file_type.get(data.doc_level)+"\"></li>"+
+        "<li><label>公文类别:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+seenLevel.get(data.doc_type)+"\">"+
+        "<label>上传时间:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.update_time+"\"></li>"+
+        "<li><label>签收信息:</label><span>未签收</span></li>"+
+        "</ul>";
+
+    }else{
+        var details="<ul class=\"form_sub form_sub_release\"><li><label>公文标题:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.doc_title+"\">"+
+        "<label>公文类型:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.sign_region+"\"></li>"+
+        "<li><label>发文文号:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.same_number+"\">"+
+        "<label>公文浏览等级:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+file_type.get(data.doc_level)+"\"></li>"+
+        "<li><label>公文类别:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+seenLevel.get(data.doc_type)+"\">"+
+        "<label>上传时间:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.update_time+"\"></li>"+
+        "<li><label>签收信息:</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\""+data.name+'-'+data.tel+"\"></li>"+
+        "</ul>";
+    }
+    layer.confirm(''+details+'', {
+          type: 1,
+          skin: 'layui-layer-molv', //样式类名
+          closeBtn: 1, //关闭按钮
+          anim: 2,
+          btn: ['公文查看','公文下载','关闭'],
+          btnAlign: 'c',
+          area: ['650px', '280px;'],
+          title:"公文详情",
+          shadeClose: true, //开启遮罩关闭
+        }, function(){
+          window.open(Public_address+'uploads/'+data.doc_html);
+        }, function(){
+          window.open(Public_address+'uploads/'+data.path);
+        },function(){
+            layer.closeAll('page');
+        });
+
+}
+
+
+var text=[];
+//新增
+function new_file() {
+  //var add_resources ="<ul class=\"form_sub form_sub_release\"><li><label>文献标题<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id='title'><label>发文单位</label><input type=\"text\" id='department'></li><li><label>文献类别</label><select id='type'><option value='0'>省</option><option value='1'>市</option><option value='2'>县</option></select><label>浏览等级</label><select id='Level'><option value='0'>高</option><option value='1'>中</option><option value='2'>低</option></select></li><li><label>文献签收</label><select id='sign'><option value='0'>是</option><option value='1'>否</option></select><label>上传附件<i style='color:red'>*</i></label><a href=\"javascript:;\" class=\"upload\"><img class=\"fileInput1\" src=\"img/LK/tjtp.png\"><input type=\"file\" id=\"photoName4\" class=\"upFileBtn1\"></a><i style='color:red;font-size:12px;'>*限docx文档</i></li><li><label>重名文献</label><select id='rename'><option value='0'>否</option><option value='1'>是</option></select><span class=\"videoname\" id='fileNameText' style='margin-left:25px;'></span></li></ul>"
+  text=[];
+  var add_resources ="<ul class=\"form_sub form_sub_release\"><li><label>公文标题<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id='title'>"+
+    //"<label>发文单位</label><input type=\"text\" id='department'></li>"+
+    
+    "<label>发文文号</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id='textNumber'/></li>"+
+    "<li><label>公文重名</label><select id='rename'><option value='0'>否</option><option value='1'>是</option></select>"+
+    "<label>浏览等级</label><select id='textLevel'><option value='0'>省</option><option value='1'>市</option><option value='2'>县</option></select></li>"+
+    "<li><label>发文时间</label><input  style='width:175px' id='textTime'  class='Wdate' type='text'  onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-%d'})\" />"+
+    "<label>上传附件<i style='color:red'>*</i></label><a href=\"javascript:;\" class=\"upload\"><img class=\"fileInput1\" src=\"img/LK/tjtp.png\"><input type=\"file\" id=\"photoName4\" class=\"upFileBtn1\"></a><i style='color:red;font-size:12px;'>*限docx文档</i></li>"+
+    "<li><label>公文类别</label><select id='selectLevel'><option value='1'>湖南省森林防灭火指挥部发文</option><option value='2'>湖南省森林防灭火指挥部办公室发文</option><option value='3'>新闻发布</option><option value='4'>森林防火简报</option><option value='5'>森林火情专报</option><option value='6'>天气预报 预警信息</option><option value='7'>湖南省应急管理厅</option></select><button class=\"report_btn2\"  onclick=\"makeTextDown()\">模版下载</button></li>"+
+    
+    "<li class='label1'><label>公文级别</label><div type=\"text\" id='type' class='spanDiv'></div>"+
+    "<label>筛选</label><select onchange=\"user_query(value,this)\" id=\"hot_city\" style=\"width:60px;\"></select><select onchange=\"user_query(value,this)\" id=\"city_sx\" style=\"width:60px;\"></select><select id=\"area\" style=\"width:60px;\"></select><button class=\"report_btn1\" onclick=\"makeSureCity()\">筛选</button></li>"+
+    "<li><span class=\"videoname\" id='fileNameText'></span></li>"+
+    "</ul>"
+  layer.confirm(''+add_resources+'', {
+    type: 1,
+    closeBtn: 1, //关闭按钮
+    anim: 2,
+    skin: 'layui-layer-molv', 
+    btn: ['保存','取消'],
+    btnAlign: 'c',
+    area: ['650px', '400px;'],
+    title:'撰写公文',
+    shadeClose: true, //开启遮罩关闭
+  }, function(){
+    layer.msg('正在发布中', {
+      icon: 16,shade: 0.01,time:false
+    });
+    // var doc_title=$('#title').val(); //文献标题
+    // var department=$('#department').val();
+    // var doc_region=$('#type').val();
+    // var doc_level=$('#Level').val();
+    // var same_name=$('#rename').val();
+    // var doc_sign=$('#sign').val();
+    
+    var doc_title=$('#title').val();       //文献标题
+    //var department=$('#department').val(); //发文单位
+    var doc_region=text.join(",");       //文献级别
+    var doc_level=$('#textTime').val();    //发文时间
+    var same_name=$('#textNumber').val();  //发文编号
+    var textLevel=$('#textLevel').val();   //文献等级
+    var rename=$('#rename').val();   //文献重名
+    var textNumberByTeach=$('#textNumberByTeach').val();   //文献文件编号
+    var selectLevel=$('#selectLevel').val();   //文献类别
+
+    // var doc_sign=$('#sign').val();
+    var doc_file=videoName.pop();
+    if (doc_file!=''&&doc_title!=''){
+        // $.ajax({
+        //     "url":Public_address+"fire/office_doc/addOfficeDoc",
+        //     "data":{"doc_title":doc_title,"department":department,"doc_region":doc_region,
+        //         "doc_level":doc_level,"doc_sign":doc_sign,"doc_file":doc_file,
+        //         "same_name":same_name},
+        //     type:'POST',
+        //     "callback":function(data){
+        //         if (data.code=="s_ok") {
+        //             layer.closeAll('dialog');
+        //             layer.closeAll('page');
+        //             layer.msg('发布成功');
+        //             video_list();
+        //         }else{
+        //             layer.msg(data.var);
+        //             $('#fileNameText').html('');
+        //         }
+        //     },
+        //     timeout: 10000,
+        // }).fail(function() {
+        //     $('#fileNameText').html('');
+        //     layer.msg('文件必须是docx格式并且文件中不包含表格！！！');
+        // });
+        var s_token = sessionStorage.getItem("s_token");
+        $.ajax({
+            url:Public_address+"fire/office_doc/addOfficeDoc"+'?s_token='+s_token,
+            type:'post',
+            data:{"doc_title":doc_title,"sign_region":doc_region,
+                "doc_level":textLevel,"same_name":rename,"doc_file":doc_file,
+                "same_number":same_name,"doc_type":selectLevel,"write_time":doc_level},
+            success:function(data){
+                console.log(data);
+                if (data.code=="s_ok") {
+                    layer.closeAll('dialog');
+                    layer.closeAll('page');
+                    layer.msg('发布成功');
+                    video_list();
+                }else{
+                    layer.msg(data.var);
+                    $('#fileNameText').html('');
+                }
+            },
+            timeout: 10000,
+        }).fail(function() {
+            $('#fileNameText').html('');
+            layer.msg('文件必须是docx格式并且文件中不包含表格！！！');
+        });
+    }else{
+      layer.alert("请完善公文撰写", {
+        skin: 'layui-layer-molv',
+        title:'温馨提示',
+        closeBtn: 0,anim: 4,btnAlign: 'c'
+      });
+    }
+  }, function(){
+    layer.closeAll('page');
+  });
+
+  var all_citys=localStorage.getItem('Public_city');
+  $('#hot_city').html(all_citys);
+
+
+    $("#photoName4").takungaevideoup({
+        formData: {
+            "path": "doc",
+            "file_ext":"other"
+        },
+        url:"fire/upload/fileUpload",
+        id:"videoname"
+    });
+}
+//文献的区域选择
+function user_query(id,e){
+    $(".selectDiv").addClass('showTime');
+    var dom = $(e).next();
+    id=id==''?43:id;
+    sendAjax({
+        "url":"fire/region/getRegion",
+        "data":{"parentId":id},
+        "callback":function(data){
+            $(dom).children('option').remove();
+            $(dom).next("#city_sx").children('option').remove();
+            $(dom).next("#area").children('option').remove();
+            $(dom).append("<option></option>");
+            $('.selectDiv').html('');
+            if (data.code=="s_ok") {
+                $.each(data.var, function(i, element) {
+                    var op = $("<option></option>").attr({'value': element.id, }).html(element.name);
+                    $(dom).append(op);
+                });
+                // if(id==43){
+                //     $(".selectDiv").append("<span onclick=\"selectedCity(this)\" data-city=\"湖南省\">湖南省</span>")
+                // }
+                // for (var i = 0; i < data.var.length; i++) {
+                //     $(".selectDiv").append("<span onclick=\"selectedCity(this)\" data-city=\""+data.var[i].name+"\">" + data.var[i].name + "</span>");
+                // }
+            }
+        },
+        error: function(e) {
+            layer.msg("错误！");
+        }
+    });
+}
+
+//文献中点击确定按钮，添加城市
+function makeSureCity(){
+    //hot_city city_sx area
+    var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area option:selected').text()==''?$('#city_sx option:selected').text():$('#area option:selected').text());
+    if(city=='省'){
+        city='湖南省'
+    }
+    if(text.length<1){
+        var html="<div class='setBoxSpanDel' onclick='delThis(this)'><span>"+city+"</span><i >x</i></div>";
+        text.push(city);
+        $('#type').append(html);
+    }else{
+        if(text.indexOf(city) == -1){
+            var html="<div class='setBoxSpanDel' onclick='delThis(this)'><span>"+city+"</span><i >x</i></div>";
+            text.push(city);
+            $('#type').append(html);
+        }
+    } 
+}
+//文献中点击城市，删除
+function delThis(e){
+    e.remove();
+    var city=e.firstElementChild.innerHTML;
+    text.splice(text.indexOf(city),1); 
+}
+//根据公文类别，下载不同的空白模版
+function makeTextDown(){
+    console.log('120');
+    var text=$('#selectLevel').val();
+    console.log(text);
+    if(text=='2'){
+        window.open(Public_address+'/doc/湖南省森林防火指挥部办公室发文稿纸.docx');
+    }else if(text=='1'){
+        window.open(Public_address+'/doc/湖南省森林防火指挥部发文稿纸.docx');
+    }else if(text=='4'){
+        window.open(Public_address+'/doc/森林防火简报稿纸.docx');
+    }else if(text=='5'){
+        window.open(Public_address+'/doc/森林火情专报.docx');
+    }else{
+        layer.alert("暂时无该公文模版", {
+        skin: 'layui-layer-molv',
+        title:'温馨提示',
+        closeBtn: 0,anim: 4,btnAlign: 'c'
+      });
+    }
+}
+
+
+
+//签收公文
+function get_file(id){
+    layer.confirm('确定签收吗？', {
+        btn: ['确定', '取消'],
+        skin: 'layui-layer-molv',
+        title: '提示',
+        btnAlign: 'c'
+    }, function() {
+        sendAjax({
+            "url":"fire/office_doc/signOfficeDoc",
+            "data":{"id":id},
+            "callback":function(result){
+                if(result.code=='s_ok'){
+                    video_list();
+                    var all=$("#tongz").text();
+                    var number=$(".tz3 span").text();
+                    if(number>0){
+                        number=Number(number)-1;
+                        all=Number(all)-1;
+                    }
+                    $(".tz3 span").html(number);
+                    $("#tongz").html(all);
+                    layer.alert(result.var, {
+                        skin: 'layui-layer-molv',
+                        closeBtn: 0,
+                        anim: 4,
+                        btnAlign: 'c'});
+
+                }else{
+                    layer.alert(result.var, {
+                        skin: 'layui-layer-molv',
+                        closeBtn: 0,
+                        anim: 4,
+                        btnAlign: 'c'});
+                }
+            },
+            error: function(e) {
+                layer.alert("网络不好，请刷新试试！", {
+                    skin: 'layui-layer-molv',
+                    closeBtn: 0,
+                    anim: 4,
+                    btnAlign: 'c'
+                });
+            }
+        });
+    }, function() {
+        layer.closeAll();
+    });
+}
+
+// 删除视频
+function delete_data(id) {
+    layer.confirm('确定要删除吗？', {
+        btn: ['确定', '取消'],
+        skin: 'layui-layer-molv',
+        title: '提示',
+        btnAlign: 'c'
+    }, function() {
+        sendAjax({
+            "url":"fire/office_doc/removeOfficeDoc",
+            "data":{"id":id},"callback":function(result){
+                if (result.code=="s_ok"){
+                    layer.msg('删除成功');
+                    video_list();
+                } else {
+                    layer.msg('删除失败');
+                }
+            },
+            error: function(e) {
+                layer.alert("网络不好，请刷新试试！", {
+                    skin: 'layui-layer-molv',
+                    closeBtn: 0,
+                    anim: 4,
+                    btnAlign: 'c'
+                });
+            }
+        });
+    }, function() {
+        layer.closeAll();
+    });
+}
+//详情
+function article(result) {
+    $("#editor_two h2").html(result.doc_title);
+    $("#editor_two .author span").html(result.nane);
+    $("#editor_two .doc_dow").attr("href",Public_address+"uploads/"+result.path);
+    $(".content_article").load("http://www.xdocin.com/xdoc?_func=form&_format=html&_cache=true&_xdoc="+Public_address+"uploads/"+result.path);
+    $("#article").show();
+    $("#editor").hide();
+    $(".container_box").hide();
+    $("#index_titel").html("文献详情");
+};
+//返回
+function report_index_fh(){
+    $(".container_box").css('display','block');
+    $("#article").css("display","none");
+}
+</script>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <script src="javascript/plug-ins/pagination.js"></script>
+    <script type="text/javascript" src="js/styleMaps.js"></script>
+    <script src="js/videoPlugin.js"></script>
+    <script>
+        var city=localStorage.getItem('Public_city');
+        $('#fireArea').html(city);
+    </script>
+    <script src="js/lqz/lqz_user.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link href="js/lqz/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+    <style>
+        .tableDiv_fire{color:#000;z-index:19;position:fixed;height:89%;overflow: auto;top:80px;right: 10px;left: 250px;background: #fff;}
+        .top_box{margin:2% 3% 0 3%;}
+        .side_box div{display:inline-block;width:30%;height:130px;background-color:#01dacf;text-align:center;}
+        .side_box div:not(:last-child){margin-right:3%;}
+        .topBox1{width:13px;height:14px;background-image:url("img/wj/up1.png");display:inline-block;}
+        .top_num{color:#2381f5;font-size:60px;}
+        .container_count{margin:2% 6.5% 0 4%;}
+        .table_count{width:100%;background-color:#fff;}
+        .count_title{font-size:18px;width:100%;height:70px;background-color:#fff;}
+        .count_title a{background-color:#9ad084;color:#fff;width:130px;height:25px;display:inline-block;text-align:center;margin:25px 15px 0 15px;font-size:16px;}
+        .count_title a img{padding-right:5px;}
+        .office_page{text-align:center;margin-bottom:50px;}
+        .form_sub_release{width:648px;}
+        .form_sub_release select{width:175px;}
+
+        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+        .report_btn_two{margin:0;width: 100px;margin-left:10px;}
+        .report_table,.report_table1{padding-left:30px;width:95%;margin-top:30px;}
+        .report_page{margin-bottom:50px;text-align:center;}
+        #complete_report .audit{color:red;}
+        #complete_report .audit_ok{color:#969696;}
+        .form_sub_release select{width:70px;}
+        .form_sub li{position:relative;}
+        
+        .checkbox,.radio{display:inline-block;}
+        .checkbox+.checkbox,.radio+.radio{margin-top:10px;}
+        #user_query{position:fixed;top:80px;right:70px;z-index:2;display:none;overflow:scroll;padding:10px;width:280px;height:100px;border:solid 1px #e5e5e5;border-top:none;background-color:#fff;}
+        #userphone,#usertitle{width:40%;margin-right: 20px;}
+        tr img{padding:0 5px;}
+        tr .imgbig{height:30px;}
+        #qx_yh{background-color: #fff;border: 1px solid #ddd;width:71%;display:inline-block;text-align: center;vertical-align:middle;}
+        #qx_yh li{margin:0px;cursor: pointer;display:inline-block;padding: 5px;}
+        input[type=checkbox], input[type=radio]{width: 15px;vertical-align: -3px;margin: 0 5px;}
+        #qx_yh input[type=checkbox], input[type=radio]{vertical-align: -8px;}
+        .form_sub li i{position: relative;}
+        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+        #complete_report .audit{color:red;}
+        .card .tab-cont{padding:0;}
+        #edit{padding: 0 30px;}
+        .form_sub_release .upFileBtn{position:absolute;width:70px;height:30px;opacity:0;top: 0;left: 100px;z-index: 1;}
+        .form_sub input{border-bottom: 1px solid #ccc;width:75%;}
+        .form_sub input:focus {border:none;outline:none;}
+        .fileInput{display: inline-block;background: #01dacf;color: #fff;padding: 5px;}
+    </style>
+</head>
+
+<body>
+    <div class="tableDiv_fire">
+        <div class="search_area">
+            <div class="search_container">
+                区域：
+                <select onchange="callback(value,this)" id="fireArea">
+                    <!--<option data-value="省">省</option>-->
+                    <!--<option value="4301" data-value="长沙市">长沙市</option>-->
+                    <!--<option value="4302" data-value="株洲市">株洲市</option>-->
+                    <!--<option value="4303" data-value="湘潭市">湘潭市</option>-->
+                    <!--<option value="4304" data-value="衡阳市">衡阳市</option>-->
+                    <!--<option value="4305" data-value="邵阳市">邵阳市</option>-->
+                    <!--<option value="4306" data-value="岳阳市">岳阳市</option>-->
+                    <!--<option value="4307" data-value="常德市">常德市</option>-->
+                    <!--<option value="4308" data-value="张家界市">张家界市</option>-->
+                    <!--<option value="4309" data-value="益阳市">益阳市</option>-->
+                    <!--<option value="4311" data-value="永州市">永州市</option>-->
+                    <!--<option value="4310" data-value="郴州市">郴州市</option>-->
+                    <!--<option value="4312" data-value="怀化市">怀化市</option>-->
+                    <!--<option value="4313" data-value="娄底市">娄底市</option>-->
+                    <!--<option value="4331" data-value="湘西自治州">湘西自治州</option>-->
+                </select>
+                <select onchange="callback(value,this)" id="city_two"></select>
+                <select id="area"></select>
+                用户名： <input type="text" class="user_name" id="userName" />
+                用户类型：<select id="mold">
+                    <option></option>
+                    <option value="1">后台用户</option>
+                    <option value="3">消防员</option>
+                </select>
+                <button id="search_btn" class="ButtonSearch" onclick="refresh1()">
+                    <input class="data-ycl" type="hidden" value="0">
+                    查询
+                </button>
+            </div>
+        </div>
+        <!-- 上部数字框 -->
+        <div class="top_box">
+            <div class="side_box top_side">
+                <div class="box1">
+                    <p class="top_num">523</p>
+                    <p>总人数</p>
+                </div>
+                <div class="box5">
+                    <p class="top_num">264</p>
+                    <p>上线人数</p>
+                </div>
+                <div class="box6">
+                    <p class="top_num">65%</p>
+                    <p>上线率</p>
+                </div>
+            </div>
+        </div>
+        <!-- 表格 -->
+        <div class="container_box">
+            <!-- <button class="report_btn">通讯录名单</button> -->
+            <div class="report_table1">
+                <div class="card">
+                    <div class="tab-cont1" style="display: block;">
+                        <table class="table table-bordered  mb-15">
+                            <thead>
+                                <tr>
+                                    <!-- <th>头像</th> -->
+                                    <th>用户名</th>
+                                    <th>手机</th>
+                                    <th>管辖地区</th>
+                                    <th>职位</th>
+                                    <th>类型</th>
+                                    <th>用户级别</th>
+                                    <th>角色</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complete_report">
+
+                            </tbody>
+                        </table>
+                        <!-- 分页 -->
+                        <div class="report_page">
+                            <span>总记录:<i class="complete_total"></i>条</span>
+                            <div class="pagination complete_page">
+                                <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;"
+                                    class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;"
+                                    class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script src="js/lqz/js/froala_editor.min.js"></script>
+<script src="js/lqz/js/langs/zh_cn.js"></script>
+<script src="js/lqz/js/plugins/tables.min.js"></script>
+<script src="js/lqz/js/plugins/colors.min.js"></script>
+<script src="js/lqz/js/plugins/media_manager.min.js"></script>
+<script src="js/lqz/js/plugins/font_family.min.js"></script>
+<script src="js/lqz/js/plugins/font_size.min.js"></script>
+<script src="js/lqz/js/plugins/block_styles.min.js"></script>
+<script src="js/lqz/js/plugins/video.min.js"></script>
+
+</html>

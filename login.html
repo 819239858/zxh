@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>登录-后台管理系统</title>
+<meta name="keywords"  content="设置关键词..." />
+<meta name="description" content="设置描述..." />
+<meta name="author" content="DeathGhost" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name='apple-touch-fullscreen' content='yes'>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="address=no">
+<link rel="icon" href="img/timg.png" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<script src="javascript/jquery.js"></script>
+<script src="javascript/pages/login.js"></script>
+<style>
+.login-page{overflow:hidden;height:100%;background:url(img/lqz/bj.png);background-size:cover;}
+.login-contain{position:relative;top:50%;left:70%;overflow:hidden;width:450px;height:500px;background:url(img/lqz/login.png);background-size:cover;transform:translate(-50%,-50%);}
+.login-contain header{padding:30px 0;border-bottom:1px #01dacf solid;color:#97a4b1;text-align:center;letter-spacing:5px;font-size:14px;}
+.login-contain header h1{margin-bottom:5px;color:#4f5f6f;font-weight:400;}
+.login-contain header p{color:#d7dde4;text-transform:uppercase;font-size:12px;}
+.login-contain .form-content{margin:206px 105px;width:257px;}
+.login-contain .form-content li{overflow:hidden;}
+.login-contain .form-content li:last-child{margin:0;}
+.login-contain .form-content li .form-control{margin-left:72px;width:70%;height:28px;border:none;background:0 0;color:#fff;font-size:16px!important;}
+.login-contain .form-content li .btm-info{margin-top:10px;margin-left:10px;color:#d7dde4;color:#fff;text-align:center;text-align:center;font-size:12px;}
+.login-contain .form-content li .tips{display:none;margin-top:5px;color:#9ca2a8;font-size:12px;}
+.login-contain .form-content li .tips mark{color:inherit;}
+#entry{display:block;margin:0 auto;margin-top:10px;padding-left:10px;width:80%;}
+.yzm{width:95px;height:30px;vertical-align:-10px;}
+
+</style>
+</head>
+<body class="login-page">
+	<section class="login-contain">
+		<div class="form-content">
+			<ul>
+				<li>
+					<div class="form-group">
+						<input type="text" class="form-control form-underlined" id="adminName" autofocus/>
+					</div>
+				</li>
+				<li style="margin-top:18px;">
+					<div class="form-group">
+						<input type="password" class="form-control form-underlined" id="adminPwd"/>
+					</div>
+				</li>
+				<li style="margin-top:18px;">
+					<div class="form-group">
+						<input type="text" class="form-control form-underlined" id="adminyzm" style="width:32%" />
+						<img src="#" class="yzm" onclick="reimg()" />
+					</div>
+				</li>
+				<li>
+					<label >
+						<span id="error_msg" style="color:red"></span>
+					</label>
+				</li>
+				<li>
+					<img src="img/lqz/login_btn.png" id="entry" alt="login" onclick="login()">
+				</li>
+				<!-- <li>
+					<p class="btm-info">©Copyright 2017<a href="#" target="_blank" title="DeathGhost">quantum system</a></p>
+					<address class="btm-info">湖南省林科达信息科技 技术支持</address>
+				</li> -->
+				<li>
+					<p class="btm-info">版本号:v1.4.1</a></p>
+				</li>
+			</ul>
+		</div>
+	</section>
+<div class="mask"></div>
+
+</body>
+</html>
