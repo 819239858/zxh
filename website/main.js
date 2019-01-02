@@ -102,6 +102,19 @@ function menu4() {
     $("#main").load("website/fire_knowledge.html");
     $(".nav_link").show().find("span").html("防火知识");
 };
+//返回
+function returnMenu(){
+    var str = $(".nav_link").show().find("span").html();
+    if (str=="防火新闻") {
+        $("#main").load("website/fire_information.html");
+    }else if (str=="火险预报") {
+        $("#main").load("website/fire_forecast.html");
+    }else if (str=="当前火情") {
+        $("#main").load("website/fire_current.html");
+    }else if (str=="防火知识") {
+        $("#main").load("website/fire_knowledge.html");
+    }
+}
 // 跳转详情
 function disable(result) {
     $("#main").load("website/information_details.html",function(){

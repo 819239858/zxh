@@ -169,10 +169,10 @@ $("#tzlist .list_listtz li").click(function() {
 	return false;
 });
 //公共地址   Public_address+"/"+ uploads
-//Public_address="http://192.168.8.56:8800/";   //本地访问谢勇服务器
-// Public_address="http://112.35.44.168:92/";  //陆望辉地址
+//  Public_address="http://192.168.8.56:8800/";   //本地访问谢勇服务器
+//Public_address="http://112.35.44.168:92/";  //陆望辉地址
 // Public_address="http://218.77.104.15:20010/";  //服务器地址
- Public_address="http://134.175.247.171:88/";
+Public_address="http://134.175.247.171:88/";
 
 
 
@@ -190,8 +190,9 @@ Public_city=`<option value="43">省</option>
     <option value="4310">郴州市</option>
     <option value="4312">怀化市</option>
     <option value="4313">娄底市</option>
-    <option value="4331">湘西自治州</option>`;
-all_city=`<option value="">城市</option>
+	<option value="4331">湘西自治州</option>`;
+//邮件/卫星热点/地面监控任务的时候---城市带43	
+all_city=`<option value="43">城市</option>
     <option value="4301">长沙市</option>
     <option value="4302">株洲市</option>
     <option value="4303">湘潭市</option>
@@ -221,17 +222,21 @@ list_city=`<li data-value="4301">长沙市</li>
 		<li data-value="4313">娄底市</li>
 		<li data-value="4331">湘西自治州</li>`;
 
+		
 //1，ld_fireStatic.js的57行 99行等无法动态改变，只能手动改（后台传值）
 //2, zdzxqk.js 中的24行传的是地区名字，所以只要改了判断（all_city的第一项的html是否是城市，是就不用改）
 //3, lqz_hly_statistical.js  529行（all_city的第一项的html是否是城市，是就不用改）
 //4, wj_dataView.html链接的js文件不一样   wj_dataView(湖南)  fujian_dataView(福建)
-//5, lqz_mail.js 426行
+//5, lqz_mail.js 460行/465
 //6, wj_weather.html  链接的天气预报的位置，要进气象官网上查到响应地区的网页地址
-//7, main.css的5行 和  index2.html的10行 index.html的12行  lqz_mail.js的374行 更换logo
-//8，index.js    430行显示省级地区渲染
+//7, main.css的5行 和  index2.html的10行 index.html的12行  
+//8，index.js    430行显示省级地区渲染  412
 //9，javascript/pages/login.js  中的二維碼請求接口要改  写死的
 //10,  上面132行退出登录
 //11, ld_taskSatic.js  13行
+//12,  map.html   56行
+//13, wj_document.html  508行
+//14， login.js  50行  是否登录的时候跳转一个新的页面(本地的与线上的不一致)
 
 
 
@@ -266,9 +271,6 @@ list_city=`<li data-value="4301">长沙市</li>
 // 	<li data-value="3509">宁德市</li>`;
 
 
-
-
-
 first_cities='长沙市';
 first_number='4301';
 pro_setItem='湖南省';
@@ -284,9 +286,3 @@ localStorage.setItem('all_city',all_city);
 localStorage.setItem('first_city',first_cities);
 localStorage.setItem('first_number',first_number);
 localStorage.setItem('pro_setItem',pro_setItem);
-
-
-
-
-
-

@@ -15,28 +15,28 @@
     </script>
     <script src="js/lqz/lqz_hly_statistical.js"></script>
     <style>
-    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+    .tableDiv_fire{position:fixed;top:50px;right:0;left:230px;z-index:19;overflow:auto;height:100%;background-color:#fff;}
     .search_area{height:40px;border:1px solid #e6e6e6;}
     .search_container{margin-top:5px;margin-left:30px;}
     .search_container input,.search_container select{width:100px;}
-    .search_container .search_btn{height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .search_container .search_btn{height:25px;border:none;border-radius:3px;background-color:#addc9d;color:#fff;}
     .search_container .search_user{margin-right:10px;padding-left:5px;width:100px;height:21px;border:1px solid #aaa;border-radius:3px;}
     #container_map{width:100%;height:100%;}
-    .menu{position:fixed;top:125px;left:260px;z-index:100;}
-    .menu .btn_anliu{width:100px;height:40px;border:none;background-color:#01dacf;color:#fff;}
+    .menu{position:fixed;top:115px;left:260px;z-index:100;}
+    .menu .btn_anliu{width:100px;height:40px;border:none;background-color:#addc9d;color:#fff;}
     .menu .btn_img{position:relative;top:-2px;left:20px;}
-    .menu .btn_none{display:none;background:#01dacf;}
+    .menu .btn_none{display:none;background:#addc9d;}
     .container_table{width:100%;}
     .container_table .tab-cont{padding-left:30px;width:95%;}
-    .container_table .office_page{margin-bottom:80px;text-align:center;}
+    .container_table .office_page{margin-bottom:50px;text-align:center;}
     .card-header{margin-top:50px;margin-left:30px;}
-    .card-header .btn_none{margin:5px 0 0 10px;background:#01dacf;}
+    .card-header .btn_none{margin:5px 0 0 10px;background:#addc9d;}
     .card-header .btn_img{position:relative;top:-1px;left:15px;}
-    .card-header .btn_anliu{width:85px;height:30px;border:none;background-color:#01dacf;color:#fff;}
+    .card-header .btn_anliu{width:85px;height:30px;border:none;background-color:#addc9d;color:#fff;}
     .form_sub_release textarea{width:150px;}
     .form_sub_release .upFileBtn{position:absolute;width:70px;height:70px;opacity:0;top: 0;left: 105px;}
     .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:20px;width:70px;height:70px;border:1px solid #e5e5e5;}
-    .statistical_figure{display:none;margin-top:80px;padding:20px;width:1100px;height:500px;background: #fff;}
+    .statistical_figure{display:none;margin:40px;margin-top:80px;padding:20px;width:1100px;height:500px;background-color:#fff;}
     .form_sub_release select{width:50px;}
     #imgBox1 img{width:70px;height:70px;}
     </style>
@@ -45,7 +45,7 @@
 <body>
     <div class="tableDiv_fire">
         <!-- 头部查询区域 -->
-        <div class="search_area" style="margin-top:0px;">
+        <div class="search_area">
             <div class="search_container origin">
                 区域：<select id='hot_city' onchange="callback(value,this)">
                     <!--<option value="43">省</option>-->
@@ -109,22 +109,22 @@
             </div>
         </div>
         <div class="menu">
-            <div style="background: #01dacf;display:inline-block;">
+            <div style="background: #addc9d;display:inline-block;">
                 <img src="img/add.png" alt="" class="btn_img">
                 <input type="button" class="add btn_anliu" onclick="add_resources()" value="上报">
             </div>
-            <div style="background: #01dacf;display:inline-block;">
+            <div style="background: #addc9d;display:inline-block;">
                 <img src="img/add.png" alt="" class="btn_img">
                 <input type="button" class="add btn_anliu" onclick="statistics()" value="数据统计">
             </div>
-            <div style="background: #01dacf;display:inline-block;">
+            <div style="background: #addc9d;display:inline-block;">
                 <img src="img/change.png" alt="" class="btn_img">
                 <input id="modeSwitch" type="button" class="btn_anliu" style="width: 160px;" value="切换成列表模式">
             </div>
         </div>
         <!-- 下部地图区域 -->
         <div id="container_map" tabindex="0"></div>
-        <div class="button-group" style="bottom:80px;">
+        <div class="button-group">
             <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
             <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
         </div>

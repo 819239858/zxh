@@ -74,10 +74,10 @@ function new_office() {
 		var describe=$("#desc").val();
 		var admin=$("#manage").val();
 		var admin_tel=$("#phone").val();
-		if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(admin_tel))) {                      
-			layer.msg("手机号填写的格式不对，请正确填写");
-			return false;
-		}
+		// if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(admin_tel))) {                      
+		// 	layer.msg("手机号填写的格式不对，请正确填写");
+		// 	return false;
+		// }
 		var team_name=$("#teamName").val();
 		var team_num=$("#teamNo").val();
 		var team_nature=$("#teamLevel").val();
@@ -126,7 +126,7 @@ function new_office() {
 var list=[];
 // 详情
 function report_index(fireid) {
-    console.log(fireid);
+    
     sendAjax({
         "url":"fire/fire_Control_Team/getFireControlTeamInfo",
         "data":{"id": fireid.id},
@@ -183,7 +183,7 @@ function report_index(fireid) {
                         list.push(images[i].id);
 					}
 				}
-                console.log('10');
+                
 				$("#province option[value='" +(result.region).substr(0,4)+ "']").prop("selected", "selected");
 				callback((result.region).substr(0,4),$("#province"));
 				$("#city_two option[value='" +(result.region).substr(0,6)+ "']").prop("selected", "selected");
@@ -312,16 +312,12 @@ function delete_data(fireid) {
 query();
 var num='';
 function query() {
-	var region = $("#hot_city").val();
-	region=$("#city").val()==''||$("#city").val()==undefined?$("#hot_city").val():($("#village").val()==''||$("#village").val()==undefined?$("#city").val():$("#village").val());
-	var  per_page=listMap;
-	
 	var region = $("#city").val()==''||$("#city").val()==undefined?$("#hot_city").val():($("#village").val()==''||$("#village").val()==undefined?$("#city").val():$("#village").val());
+	var  per_page=listMap;
 	addBeiJing();
 	sendAjax({
 		"url":"fire/fire_Control_Team/getFireControlTeamList",
 		"data":{"current_page": 1, "region":region,"per_page":per_page,},"callback":function(data){
-			
 			map.clearMap();
 			if (data.code=="s_ok") {
 				$("#complete_report").html('');

@@ -1,296 +1,254 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-	<meta charset="utf-8" />
-	<title>湖南省森林防火信息平台</title>
-	<meta name="keywords" content="设置关键词..." />
-	<meta name="description" content="设置描述..." />
-	<meta name="author" content="DeathGhost" />
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-	<link rel="icon" href="img/timg.png" type="image/x-icon">
-	<!--<link rel="icon" href="img/fujian.png" type="image/x-icon">-->
+<meta charset="utf-8"/>
+<title>湖南省森林防火信息平台</title>
+<meta name="keywords"  content="设置关键词..." />
+<meta name="description" content="设置描述..." />
+<meta name="author" content="DeathGhost"/>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<link rel="icon" href="img/timg.png" type="image/x-icon">
+<!--<link rel="icon" href="img/fujian.png" type="image/x-icon">-->
 
-	<link rel="stylesheet" type="text/css" href="css/style.css?v=1.4.1" />
-	<link rel="stylesheet" href="css/main1119.css" type="text/css" />
-	<link href="css/table/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-	<script type="text/javascript" src="js/Map.js"></script>
-	<script src="javascript/jquery.js"></script>
-	<script type=text/javascript src=js/My97DatePicker/WdatePicker.js> </script> <script src="javascript/plug-ins/echarts.min.js"></script>
-	<script src="javascript/plug-ins/layerUi/layer.js"></script>
-	<script src="javascript/public.js?v=1.4.0"></script>
-	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.5&key=28fa7c04f0cbde10109ace9c20d272a2&plugin=AMap.MapType,AMap.Geocoder,AMap.DistrictLayer"></script>
-	<script type="text/javascript" src="js/index.js?v=1.4.0"></script>
-	<script type="text/javascript" src="js/styleMaps.js"></script>
-	<script src="js/imgPlugin.js"></script>
-	<script src="js/recorder.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css?v=1.4.1" />
+<link rel="stylesheet" href="css/main1119.css" type="text/css" />
+<link href="css/table/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+<script type="text/javascript" src="js/Map.js"></script>
+<script src="javascript/jquery.js"></script>
+<script type=text/javascript src=js/My97DatePicker/WdatePicker.js></script>
+<script src="javascript/plug-ins/echarts.min.js"></script>
+<script src="javascript/plug-ins/layerUi/layer.js"></script>
+<script src="javascript/public.js?v=1.4.0"></script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.5&key=28fa7c04f0cbde10109ace9c20d272a2&plugin=AMap.MapType,AMap.Geocoder,AMap.DistrictLayer"></script>
+<script type="text/javascript" src="js/index.js?v=1.4.0"></script>
+<script type="text/javascript" src="js/styleMaps.js"></script>
+<script src="js/imgPluginPersonCenter.js"></script>
+<script src="js/recorder.js"></script>
 	<style>
-		.styleCss p {
-			margin: 0px;
-		}
+		.styleCss p{margin:0px;}
 	</style>
 </head>
 <script>
 	// WebSocket
-	var websocket = null;
-	var message_arr = [];
-	var isFire = true;
-	var duration = 0;
-	//判断当前浏览器是否支持WebSocket
-	if ('WebSocket' in window) {
-		//		websocket = new WebSocket("ws://134.175.247.171:99"); // ws://218.77.104.15:8080
-		websocket = new WebSocket("ws://192.168.8.56:1234"); //ws://192.168.8.56:1234
-	} else {
-		alert('当前浏览器不支持websocket，请使用最新的浏览器');
-	}
+    var websocket = null;var message_arr=[];var isFire=true;var duration = 0;
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+		websocket = new WebSocket("ws://134.175.247.171:99"); // ws://218.77.104.15:8080
+        // websocket = new WebSocket("ws://192.168.8.56:1234"); //ws://192.168.8.56:1234
+    } else {
+        alert('当前浏览器不支持websocket，请使用最新的浏览器');
+    }
 
-	//连接发生错误的回调方法
-	websocket.onerror = function () {
-		setMessageInnerHTML("WebSocket连接发生错误");
-	};
+    //连接发生错误的回调方法
+    websocket.onerror = function() {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
 
-	//连接成功建立的回调方法
-	websocket.onopen = function () {
-		var uid = {
-			"tel": sessionStorage.getItem('uname'),
-			"client": "1"
-		};
+    //连接成功建立的回调方法
+    websocket.onopen = function() {
+		var uid={"tel":sessionStorage.getItem('uname'),"client":"1"};
 		websocket.send(JSON.stringify(uid));
-	};
+    };
 
-	//接收到消息的回调方法
-	websocket.onmessage = function (event) {
-		console.log(event);
-		//聊天
-		JSON.parse(event.data).code == 's_ok' ? console.log("聊天连接成功") : '';
+    //接收到消息的回调方法
+    websocket.onmessage = function(event) {
+        console.log(event);
+        //聊天
+		JSON.parse(event.data).code=='s_ok'?console.log("聊天连接成功"):'';
 		//发生火灾的时候
-		if (JSON.parse(event.data).code != 's_ok') {
+		if(JSON.parse(event.data).code!='s_ok'){
 			setMessageInnerHTML(JSON.parse(event.data));
-		}
+		}	
 		//发送信息的时候
-		if (JSON.parse(event.data).type == 'mail' || JSON.parse(event.data).type == 'doc') {
+		if(JSON.parse(event.data).type=='mail' || JSON.parse(event.data).type=='doc'){
 			setMessageInnerHTML(JSON.parse(event.data));
-		}
-	};
-	//连接关闭的回调方法
-	websocket.onclose = function () {};
-	//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-	window.onbeforeunload = function () {
-		closeWebSocket();
-	};
-	//将消息显示在网页上
-	function setMessageInnerHTML(data) {
-		if (data.type == "fire") {
-			layer.confirm("<div style='padding:15px;font-weight: bold;'>" + data.happen_time + " " + data.region_name +
-				"发生火灾，请立即派人前往灭火！</div>", {
-					btn: ['查看详情', '取消'],
-					skin: 'layui-layer-molv',
-					closeBtn: 0,
-					anim: 4,
-					btnAlign: 'c',
-					title: '警告'
-				},
-				function () {
-					localStorage.setItem("index_xq", 1);
-					localStorage.setItem("fireId_xq", data.percent);
-					console.log("火情：" + data.percent);
-					$("#index_main_context").load("lqz_fire_details.html");
-					$("#index_titel").html("火情上报详情");
-					layer.closeAll();
-				},
-				function () {});
+		}	
+    };
+    //连接关闭的回调方法
+    websocket.onclose = function() {
+    };
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function() {
+        closeWebSocket();
+    };
+    //将消息显示在网页上
+    function setMessageInnerHTML(data) {
+		if (data.type=="fire") {
+			layer.confirm("<div style='padding:15px;font-weight: bold;'>" + data.happen_time + " " + data.region_name + "发生火灾，请立即派人前往灭火！</div>", {
+				btn: ['查看详情','取消'],skin: 'layui-layer-molv' ,closeBtn: 0,anim: 4,btnAlign: 'c',title:'警告'
+			}, function(){
+				localStorage.setItem("index_xq",1);
+				localStorage.setItem("fireId_xq",data.percent);
+				console.log("火情："+data.percent);
+				$("#index_main_context").load("lqz_fire_details.html");
+				$("#index_titel").html("火情上报详情");
+				layer.closeAll();
+			}, function(){
+			});
 			var myVideo = document.getElementById("audio");
 			myVideo.play();
-		} else if (data.type == "mail") {
+		}else if (data.type=="mail") {
 			tz();
-		} else if (data.type == "doc") {
-
+		}else if(data.type=="doc"){
+		
 			tz();
 		}
-		if (data.type == 'chat') {
-			message(data.msg_from_uid, data.msg_from_name, data.msg_from_tel);
-			layer.title('与' + data.msg_from_name + '聊天中', 0);
-			if (data.msg_type == "3") {
-				$("#record").append("<li style='margin: 10px 0;'>" + data.msg_from_name + "：<audio src='" + Public_address +
-					"uploads/" + data.message + "' controls=''></li>");
-			} else if (data.msg_type == "2") {
-				$("#record").append("<li style='margin: 10px 0;'>" + data.msg_from_name + "：<img src='" + Public_address +
-					"uploads/" + data.message + "' width='100px' class='img_yl'/></li>");
-			} else {
-				$("#record").append("<li style='margin: 10px 0;'>" + data.msg_from_name + "：<span>" + data.message + "</span></li>");
+		if(data.type=='chat'){
+			message(data.msg_from_uid,data.msg_from_name,data.msg_from_tel);
+			layer.title('与'+data.msg_from_name+'聊天中',0);
+			if (data.msg_type=="3") {
+				$("#record").append("<li style='margin: 10px 0;'>"+data.msg_from_name+"：<audio src='"+Public_address+"uploads/"+data.message+"' controls=''></li>");
+			}else if (data.msg_type=="2"){
+				$("#record").append("<li style='margin: 10px 0;'>"+data.msg_from_name+"：<img src='"+Public_address+"uploads/"+data.message+"' width='100px' class='img_yl'/></li>");
+			}else{
+				$("#record").append("<li style='margin: 10px 0;'>"+data.msg_from_name+"：<span>"+data.message +"</span></li>");
 			}
-			$("#record").animate({
-				scrollTop: "3000px"
-			}, 50);
+			$("#record").animate({scrollTop:"3000px"}, 50);
 		}
 	}
 	// 录制
-	$(document).on('click', '#start', function () {
-		$(this).css("color", "#01dacf");
+	$(document).on('click','#start',function() {
+		$(this).css("color","#addc9d");
 		var audio = document.querySelectorAll('audio');
-		for (var i = 0; i < audio.length; i++) {
-			if (!audio[i].paused) {
+		for(var i = 0; i < audio.length; i++){
+			if(!audio[i].paused){
 				audio[i].pause();
 			}
 		}
 		$('#js_record_time').html("录音时间：0秒");
 		//开始录音时计时器开始计时
-		timer = setInterval(function () {
+		timer = setInterval(function(){
 			duration++;
-			$('#js_record_time').html("录音时间：" + duration + "秒");
+			$('#js_record_time').html("录音时间："+duration+"秒");
 			return duration
-		}, 1000);
-		$(".btn_s").css("visibility", "visible");
+		},1000);
+		$(".btn_s").css("visibility","visible");
 		recorder.start();
 	});
 	// 发送
-	$(document).on('click', '#stop', function () {
-		clearInterval(timer); //清除录音计时器
-		$("#start").css("color", "#000");
-		$(".btn_s").css("visibility", "hidden");
+	$(document).on('click','#stop',function() {
+		clearInterval(timer);//清除录音计时器
+		$("#start").css("color","#000");
+		$(".btn_s").css("visibility","hidden");
 		$('#js_record_time').html('');
 		recorder.stop();
-		recorder.getBlob(function (blob) {
+		recorder.getBlob(function(blob){
 			var audio = document.createElement('audio');
 			audio.src = URL.createObjectURL(blob);
 			audio.controls = true;
-			$("#record").append("<li class='name'><audio src='" + URL.createObjectURL(blob) +
-				"' controls=''></audio>：我</li>");
+			$("#record").append("<li class='name'><audio src='"+URL.createObjectURL(blob)+"' controls=''></audio>：我</li>");
 			var formData = new FormData();
-			formData.append('chatFile', blob, Date.parse(new Date()) + ".mp3");
-			formData.append('msg_type', 3);
-			formData.append('msg_to_uid', $(".message_left .on").attr('data-name'));
-			formData.append('msg_from_headimage', sessionStorage.getItem("imageHead"));
-			formData.append('msg_from_name', sessionStorage.getItem("name"));
-			formData.append('msg_tiem', getNowFormatDate());
-			formData.append('msg_from_uid', sessionStorage.getItem("s_uid"));
-			formData.append('msg_from_tel', sessionStorage.getItem("uname"));
-			formData.append('msg_to_tel', $(".message_left .on").attr('data-tel'));
-			formData.append('voice_time', String(duration * 1000));
-
+            formData.append('chatFile',blob, Date.parse(new Date())+".mp3");
+			formData.append('msg_type',3);
+			formData.append('msg_to_uid',$(".message_left .on").attr('data-name'));
+			formData.append('msg_from_headimage',sessionStorage.getItem("imageHead"));
+			formData.append('msg_from_name',sessionStorage.getItem("name"));
+			formData.append('msg_tiem',getNowFormatDate());
+			formData.append('msg_from_uid',sessionStorage.getItem("s_uid"));
+			formData.append('msg_from_tel',sessionStorage.getItem("uname"));
+			formData.append('msg_to_tel',$(".message_left .on").attr('data-tel'));
+			formData.append('voice_time',String(duration*1000));
+			
 			var s_token = sessionStorage.getItem("s_token");
 			$.ajax({
 				type: 'POST',
-				url: Public_address + "fire/user/chat" + '?s_token=' + s_token,
+				url: Public_address+"fire/user/chat"+'?s_token='+s_token,
 				data: formData,
-				processData: false,
-				contentType: false,
+				processData: false, 
+				contentType: false, 
 				dataType: 'json',
-				cache: false,
-				success: function (json) {
+				cache: false, 
+				success: function (json){
 					duration = 0;
-					$("#record").animate({
-						scrollTop: "3000px"
-					}, 50);
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					alert('Error! ' + textStatus + ' - ' + errorThrown + '\n\n' + jqXHR.responseText);
+					$("#record").animate({scrollTop:"3000px"}, 50);
+				}, error: function (jqXHR, textStatus, errorThrown){
+					alert('Error! '+ textStatus + ' - ' + errorThrown + '\n\n' + jqXHR.responseText);
 				}
 			});
 		});
 	});
 	//取消
-	$(document).on('click', '#cancel', function () {
-		clearInterval(timer); //清除录音计时器
+	$(document).on('click','#cancel',function() {
+		clearInterval(timer);//清除录音计时器
 		duration = 0;
-		$("#start").css("color", "#000");
-		$(".btn_s").css("visibility", "hidden");
+		$("#start").css("color","#000");
+		$(".btn_s").css("visibility","hidden");
 		$('#js_record_time').html('');
 		recorder.stop();
 	});
 	//发送图片
-	$(document).on('change', '#photoName2', function () {
+	$(document).on('change','#photoName2',function() {
 		var file = document.getElementById("photoName2");
 		var blob = file.files[0]; // 获取的图片文件
-		console.log('1');
-		if (window.createObjectURL != undefined) {
-			$("#record").append("<li class='name'><img src='" + window.createObjectURL(blob) +
-				"' width='100px' class='img_yl'/></audio>：我</li>");
-		} else if (window.URL != undefined) {
-			$("#record").append("<li class='name'><img src='" + window.URL.createObjectURL(blob) +
-				"' width='100px' class='img_yl'/></audio>：我</li>");
-		} else if (window.webkitUrl != undefined) {
-			$("#record").append("<li class='name'><img src='" + window.webkitUrl.createObjectURL(blob) +
-				"' width='100px' class='img_yl'/></audio>：我</li>");
-		}
+
+        if(window.createObjectURL != undefined){
+            $("#record").append("<li class='name'><img src='"+window.createObjectURL(blob)+"' width='100px' class='img_yl'/></audio>：我</li>");
+        }else if(window.URL != undefined){
+            $("#record").append("<li class='name'><img src='"+window.URL.createObjectURL(blob)+"' width='100px' class='img_yl'/></audio>：我</li>");
+        }else if(window.webkitUrl != undefined){
+            $("#record").append("<li class='name'><img src='"+window.webkitUrl.createObjectURL(blob)+"' width='100px' class='img_yl'/></audio>：我</li>");
+        }
 		var formData = new FormData();
-		formData.append('chatFile', blob);
-		formData.append('msg_type', 2);
-		formData.append('msg_to_uid', $(".message_left .on").attr('data-name'));
-		formData.append('msg_from_headimage', sessionStorage.getItem("imageHead"));
-		formData.append('msg_from_name', sessionStorage.getItem("name"));
-		formData.append('msg_tiem', getNowFormatDate());
-		formData.append('msg_from_uid', sessionStorage.getItem("s_uid"));
-		formData.append('msg_from_tel', sessionStorage.getItem("uname"));
-		formData.append('msg_to_tel', $(".message_left .on").attr('data-tel'));
-		formData.append('voice_time', '');
+		formData.append('chatFile',blob);
+		formData.append('msg_type',2);
+		formData.append('msg_to_uid',$(".message_left .on").attr('data-name'));
+		formData.append('msg_from_headimage',sessionStorage.getItem("imageHead"));
+		formData.append('msg_from_name',sessionStorage.getItem("name"));
+		formData.append('msg_tiem',getNowFormatDate());
+		formData.append('msg_from_uid',sessionStorage.getItem("s_uid"));
+		formData.append('msg_from_tel',sessionStorage.getItem("uname"));
+		formData.append('msg_to_tel',$(".message_left .on").attr('data-tel'));
+		formData.append('voice_time','');
 		var s_token = sessionStorage.getItem("s_token");
 		$.ajax({
 			type: 'POST',
-			url: Public_address + "fire/user/chat" + '?s_token=' + s_token,
+			url: Public_address+"fire/user/chat"+'?s_token='+s_token,
 			data: formData,
-			processData: false,
-			contentType: false,
+			processData: false, 
+			contentType: false, 
 			dataType: 'json',
-			cache: false,
-			success: function (json) {
-				$("#record").animate({
-					scrollTop: "3000px"
-				}, 50);
+			cache: false, 
+			success: function (json){
+				$("#record").animate({scrollTop:"3000px"}, 50);
 				//因为事件是change,传图片结束以后把#photoName2清空掉
-				$('#photoName2').val('');
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				alert('Error! ' + textStatus + ' - ' + errorThrown + '\n\n' + jqXHR.responseText);
+                $('#photoName2').val('');
+			}, error: function (jqXHR, textStatus, errorThrown){
+				alert('Error! '+ textStatus + ' - ' + errorThrown + '\n\n' + jqXHR.responseText);
 			}
 		});
 	});
 	//预览图片
-	$(document).on("click", ".img_yl", function (event) {
-		var src = $(this).attr("src");
-		var $h1 = "<img src=\"" + src + "\" style='height:99%;width:99%'>";
+	$(document).on( "click", ".img_yl",function(event) {
+		var src=$(this).attr("src");
+		var $h1="<img src=\"" +src+ "\" style='height:99%;width:99%'>";
 		layer.open({
 			skin: 'layui-layer-molv',
-			title: '图片预览',
+			title:'图片预览',
 			type: 1,
 			area: ['570px', '480px;'],
 			shadeClose: true,
 			btnAlign: 'c',
-			tipsMore: true,
-			zIndex: layer.zIndex,
-			content: $h1
+			tipsMore : true,
+            zIndex : layer.zIndex,
+			content:$h1
 		});
 	});
 	//回车键发送事件
-	$(document).keypress(function (e) {
-		if (e.which == 13) {
-			e.cancelBubble = true;
+	$(document).keypress(function(e) { 
+		if(e.which == 13) {
+			e.cancelBubble=true;
 			e.preventDefault();
 			e.stopPropagation();
-			var content = $("#content").val();
-			if (content != '') {
+			var content=$("#content").val();
+			if (content!='') {
 				sendAjax({
-					"url": "fire/user/chat",
-					"data": {
-						"msg_to_uid": sessionStorage.getItem("message_name"),
-						"message": content,
-						"msg_type": 1,
-						"msg_from_headimage": sessionStorage.getItem("imageHead"),
-						"msg_from_name": sessionStorage.getItem("name"),
-						"msg_tiem": getNowFormatDate(),
-						"msg_from_uid": sessionStorage.getItem("s_uid"),
-						"msg_from_tel": sessionStorage.getItem("uname"),
-						"msg_to_tel": $(".message_left .on").attr('data-tel'),
-						"voice_time": ''
-					},
-					"callback": function (data) {
-						if (data.code == 's_ok') {
-							$("#record").append("<li class='name'><span>" + content + "</span>：我</li>");
-							$("#record").animate({
-								scrollTop: "3000px"
-							}, 50);
-							if (data.var == 0) {
+					"url":"fire/user/chat",
+					"data":{"msg_to_uid":sessionStorage.getItem("message_name"),"message":content,"msg_type":1,"msg_from_headimage":sessionStorage.getItem("imageHead"),"msg_from_name":sessionStorage.getItem("name"),"msg_tiem":getNowFormatDate(),"msg_from_uid":sessionStorage.getItem("s_uid"),"msg_from_tel":sessionStorage.getItem("uname"),"msg_to_tel":$(".message_left .on").attr('data-tel'),"voice_time":''},"callback":function(data){
+						if (data.code=='s_ok') {
+							$("#record").append("<li class='name'><span>"+content+"</span>：我</li>"); 
+							$("#record").animate({scrollTop:"3000px"}, 50);
+							if (data.var==0) {
 								$("#record").append("<p style='text-align:center;font-size: 12px;'>对方不在线</p>");
 							}
 						}
@@ -298,30 +256,23 @@
 					}
 				})
 			}
-		}
+		}  
 	});
-	$(document).on("click", ".message_left p", function () {
+	$(document).on("click",".message_left p",function(){
 		var index = $(this).index();
 		$(this).addClass("on").siblings().removeClass("on");
-		var this_title = $(this).html();
-		layer.title('与' + this_title + '聊天中', 0);
+		var this_title=$(this).html();
+		layer.title('与'+this_title+'聊天中',0);
 		// message($(this).attr('data-name'),this_title);
-		var content = $("#content").val();
-		if (content != '') {
+		var content=$("#content").val();
+		if (content!='') {
 			sendAjax({
-				"url": "fire/user/chat",
-				"data": {
-					"msg_to_uid": $(this).attr('data-name'),
-					"message": content,
-					"msg_type": 1
-				},
-				"callback": function (data) {
-					if (data.code == 's_ok') {
-						$("#record").append("<li class='name'><span>" + content + "</span>：我</li>");
-						$("#record").animate({
-							scrollTop: "3000px"
-						}, 50);
-						if (data.var == 0) {
+				"url":"fire/user/chat",
+				"data":{"msg_to_uid":$(this).attr('data-name'),"message":content,"msg_type":1},"callback":function(data){
+					if (data.code=='s_ok') {
+						$("#record").append("<li class='name'><span>"+content+"</span>：我</li>"); 
+						$("#record").animate({scrollTop:"3000px"}, 50);
+						if (data.var==0) {
 							$("#record").append("<p style='text-align:center;font-size: 12px;'>对方不在线</p>");
 						}
 					}
@@ -330,31 +281,29 @@
 			})
 		}
 	});
-
-	function message(name, phone, tel) {
+	function message(name,phone,tel) {
 		if (isFire) {
-			isFire = false;
+			isFire=false;
 			start = document.querySelector('#start');
 			stop = document.querySelector('#stop');
 			recorder = new Recorder({
 				sampleRate: 44100, //采样频率，默认为44100Hz(标准MP3采样率)
 				bitRate: 128, //比特率，默认为128kbps(标准MP3质量)
-				success: function () { //成功回调函数
+				success: function(){ //成功回调函数
 					// start.disabled = false;
 				},
-				error: function (msg) { //失败回调函数
+				error: function(msg){ //失败回调函数
 					alert(msg);
 				},
-				fix: function (msg) { //不支持H5录音回调函数
+				fix: function(msg){ //不支持H5录音回调函数
 					alert(msg);
 				}
 			});
 		}
-		sessionStorage.setItem("message_name", name);
-		if ($.inArray(name, message_arr) < 0) {
-			if ($(".message_left").length == 0) {
-				layer.confirm(
-					`<div class='message_left'></div>
+		sessionStorage.setItem("message_name",name);
+		if($.inArray(name, message_arr)<0){
+			if($(".message_left").length==0){
+				layer.confirm(`<div class='message_left'></div>
 				<div class='message_right'>
 					<ul id='record'></ul>
 					<ul class='msg_type'>
@@ -367,558 +316,526 @@
 					</ul>
 					<textarea id='content' maxlength='1024'></textarea>
 				</div>`, {
-						btn: ['发送', '取消'],
-						skin: 'layui-layer-molv',
-						btnAlign: 'c',
-						shade: 0,
-						area: ['700px', '500px'],
-						zIndex: layer.zIndex,
-						cancel: function () {
-							message_arr = [];
-						}
-					},
-					function () {
-						var content = $("#content").val();
-						if (content != '') {
-							sendAjax({
-								"url": "fire/user/chat",
-								"data": {
-									"msg_to_uid": sessionStorage.getItem("message_name"),
-									"message": content,
-									"msg_type": 1,
-									"msg_from_headimage": sessionStorage.getItem("imageHead"),
-									"msg_from_name": sessionStorage.getItem("name"),
-									"msg_tiem": getNowFormatDate(),
-									"msg_from_uid": sessionStorage.getItem("s_uid"),
-									"msg_from_tel": sessionStorage.getItem("uname"),
-									"msg_to_tel": $(".message_left .on").attr('data-tel'),
-									"voice_time": ''
-								},
-								"callback": function (data) {
-									if (data.code == 's_ok') {
-										$("#record").append("<li class='name'><span>" + content + "</span>：我</li>");
-										$("#record").animate({
-											scrollTop: "3000px"
-										}, 50);
-										if (data.var == 0) {
-											$("#record").append("<p style='text-align:center;font-size: 12px;'>对方不在线</p>");
-										}
+					btn: ['发送','取消'],
+					skin: 'layui-layer-molv',
+					btnAlign: 'c',
+					shade:0,
+					area: ['700px','500px'],
+					zIndex : layer.zIndex,
+					cancel: function(){message_arr=[];} 
+				}, function(){
+					var content=$("#content").val();
+					if (content!='') {
+						sendAjax({
+							"url":"fire/user/chat",
+							"data":{"msg_to_uid":sessionStorage.getItem("message_name"),"message":content,"msg_type":1,"msg_from_headimage":sessionStorage.getItem("imageHead"),"msg_from_name":sessionStorage.getItem("name"),"msg_tiem":getNowFormatDate(),"msg_from_uid":sessionStorage.getItem("s_uid"),"msg_from_tel":sessionStorage.getItem("uname"),"msg_to_tel":$(".message_left .on").attr('data-tel'),"voice_time":''},"callback":function(data){
+								if (data.code=='s_ok') {
+									$("#record").append("<li class='name'><span>"+content+"</span>：我</li>"); 
+									$("#record").animate({scrollTop:"3000px"}, 50);
+									if (data.var==0) {
+										$("#record").append("<p style='text-align:center;font-size: 12px;'>对方不在线</p>");
 									}
-									$("#content").val('');
 								}
-							})
-						}
-					},
-					function () {
-						message_arr = [];
-					});
+								$("#content").val('');
+							}
+						})
+					}
+				}, function(){
+					message_arr=[];
+				});
 			};
 			$(".message_left p").removeClass("on");
-			$(".message_left").append("<p class='on' data-name=" + name + " data-tel=" + tel + ">" + phone + "</p>");
-			layer.title('与' + phone + '聊天中', 0);
-			$(".message_left").animate({
-				scrollTop: "3000px"
-			}, 50);
+			$(".message_left").append("<p class='on' data-name="+name+" data-tel="+tel+">"+phone+"</p>");
+			layer.title('与'+phone+'聊天中',0);$(".message_left").animate({scrollTop:"3000px"}, 50);
 			$("#record").html("");
-			findChatngo(name, tel);
-
+			findChatngo(name,tel);
+			
 			// 聊天记录
-			function findChatngo(uid, tel) {
+			function findChatngo(uid,tel){
 				sendAjax({
-					"url": "fire/user/getUserChatRecord",
-					"data": {
-						"uid": uid
-					},
-					"callback": function (data) {
-						if (data.code == "s_ok") {
-							var result = data.var;
+					"url":"fire/user/getUserChatRecord",
+					"data":{"uid":uid},"callback":function(data){
+						if (data.code=="s_ok") {
+							var result=data.var;
 							for (var i = 0; i < result.length; i++) {
-								if (tel == result[i].msg_to_tel) {
-									if (result[i].msg_type == "3") {
-										$("#record").append("<li  class='name'><audio src='" + Public_address + "uploads/" + result[i].message +
-											"' controls=''></audio>：我</li>");
-									} else if (result[i].msg_type == "2") {
-										$("#record").append("<li  class='name'><img src='" + Public_address + "uploads/" + result[i].message +
-											"' width='100px' class='img_yl'/>：我</li>");
-									} else {
-										$("#record").append("<li  class='name'><span>" + result[i].message +
-											"</span>：我</li>");
+								if (tel==result[i].msg_to_tel) {
+									if (result[i].msg_type=="3") {
+										$("#record").append("<li  class='name'><audio src='"+Public_address+"uploads/"+result[i].message+"' controls=''></audio>：我</li>");
+									}else if (result[i].msg_type=="2"){
+										$("#record").append("<li  class='name'><img src='"+Public_address+"uploads/"+result[i].message+"' width='100px' class='img_yl'/>：我</li>");
+									}else{
+										$("#record").append("<li  class='name'><span>"+result[i].message
+						+"</span>：我</li>");
 									}
-								} else {
-									if (result[i].msg_type == "3") {
-										$("#record").append("<li style='margin: 10px 0;'>" + result[i].msg_from_name + "：<audio src='" +
-											Public_address + "uploads/" + result[i].message + "' controls=''></li>");
-									} else if (result[i].msg_type == "2") {
-										$("#record").append("<li style='margin: 10px 0;'>" + result[i].msg_from_name + "：<img src='" +
-											Public_address + "uploads/" + result[i].message + "' width='100px' class='img_yl'/></li>");
-									} else {
-										$("#record").append("<li style='margin: 10px 0;'>" + result[i].msg_from_name + "：<span>" + result[i].message +
-											"</span></li>");
+								}else{
+									if (result[i].msg_type=="3") {
+										$("#record").append("<li style='margin: 10px 0;'>"+result[i].msg_from_name+"：<audio src='"+Public_address+"uploads/"+result[i].message+"' controls=''></li>");
+									}else if (result[i].msg_type=="2"){
+										$("#record").append("<li style='margin: 10px 0;'>"+result[i].msg_from_name+"：<img src='"+Public_address+"uploads/"+result[i].message+"' width='100px' class='img_yl'/></li>");
+									}else{
+										$("#record").append("<li style='margin: 10px 0;'>"+result[i].msg_from_name+"：<span>"+result[i].message
+						+"</span></li>");
 									}
 								}
 							}
-							$("#record").animate({
-								scrollTop: "3000px"
-							}, 50);
+							$("#record").animate({scrollTop:"3000px"}, 50);
 						}
 					},
-					error: function (e) {
+					error:function(e){
 						layer.msg("错误！！");
 					}
 				});
 			};
-		} else {
+		}else{
 			$(".message_left p").removeClass("on");
-			var leftp = $(".message_left p");
+			var leftp=$(".message_left p");
 			for (var i = 0; i < leftp.length; i++) {
-				if ($(leftp[i]).attr("data-name") == name) {
+				if($(leftp[i]).attr("data-name")==name){
 					$(leftp[i]).addClass("on");
 				}
 			}
-			layer.title(phone, 0);
+			layer.title(phone,0);
 		}
-		$(".layui-layer-content").css({
-			"min-height": "419px",
-			"overflow": "hidden"
-		});
+		$(".layui-layer-content").css({"min-height":"419px","overflow":"hidden"});
 		message_arr.push(name);
 	};
-</script>
 
+
+</script>
 <body>
-	<div class="main-wrap">
-		<div class="side-nav">
-			<div class="side-logo">
-				<div class="logo">
-					<h4>南山国家公园森</h4>
-					<h4>林防火信息平台</h4>
-					<!-- <strong><span class="setAddress"></span></strong> -->
-				</div>
+<div class="main-wrap">
+	<div class="side-nav">
+		<div class="side-logo">
+			<div class="logo">
+				<strong><span class="setAddress"></span>森林防灭火信息管理平台</strong>
 			</div>
-			<nav class="side-menu content mCustomScrollbar" data-mcs-theme="minimal-dark">
-				<ul>
-					<li>
-						<dl id="menu_1_1">
-							<dt>
-								<i class="icon-dashboard"></i>数据概况<i class="icon-angle-right"></i>
-							</dt>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-columns"></i>全局管理<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_2_6">
-								<a href="javascript:;">实时火情</a>
-							</dd>
-							<dd id="menu_2_1">
-								<a href="javascript:;">终端在线情况</a>
-							</dd>
-							<dd id="menu_2_2">
-								<a href="javascript:;">卫星监测热点</a>
-							</dd>
-							<dd id="menu_2_3">
-								<a href="javascript:;">突发事件</a>
-							</dd>
-							<dd id="menu_2_4">
-								<a href="javascript:;">轨迹回放</a>
-							</dd>
-							<dd id="menu_2_5">
-								<a href="javascript:;">地面监控点</a>
-							</dd>
-							<dd id="menu_2_7">
-								<a href="javascript:;">无人机上报数据</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-list-alt"></i>火情管理<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_3_1">
-								<a href="javascript:;">火情信息</a>
-							</dd>
-							<dd id="menu_3_2">
-								<a href="javascript:;">火情查询</a>
-							</dd>
-							<dd id="menu_3_3">
-								<a href="javascript:;">数据统计</a>
-							</dd>
-							<dd id="menu_3_4">
-								<a href="javascript:;">火情分布图</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-tasks"></i>任务管理<i class="icon-angle-right"></i>
-							</dt>
-							<!--<dd id="menu_4_1">-->
-							<!--<a href="javascript:;">航空监测任务</a>-->
-							<!--</dd>-->
-							<dd id="menu_4_2">
-								<a href="javascript:;">地面巡护任务</a>
-							</dd>
-							<dd id="menu_4_3">
-								<a href="javascript:;">数据统计</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-table"></i>森林消防资源分布<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_5_6">
-								<a href="javascript:;">分布示意图</a>
-							</dd>
-							<dd id="menu_5_1">
-								<a href="javascript:;">防火办公室</a>
-							</dd>
-							<dd id="menu_5_2">
-								<a href="javascript:;">物资储备库</a>
-							</dd>
-							<dd id="menu_5_3">
-								<a href="javascript:;">瞭望塔</a>
-							</dd>
-							<dd id="menu_5_4">
-								<a href="javascript:;">消防队伍</a>
-							</dd>
-							<dd id="menu_5_5">
-								<a href="javascript:;">防火隔离带</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-inbox"></i>火灾辅助决策<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_6_1">
-								<a href="javascript:;">火灾现场分时图</a>
-							</dd>
-							<dd id="menu_6_2">
-								<a href="javascript:;">扑火指挥</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt id="menu_9_1">
-								<i class="icon-bar-chart"></i>灾害评估<i class="icon-angle-right"></i>
-							</dt>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt id="hitstory_video">
-								<i class="icon-laptop"></i>历史视频数据<i class="icon-angle-right"></i>
-							</dt>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt>
-								<i class="icon-external-link"></i>护林员管理<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_8_1">
-								<a href="javascript:;">护林员基本资料</a>
-							</dd>
-							<script>
-								var userLevel = sessionStorage.getItem("userLevel");
-								if (userLevel == '1') {
-									$('#menu_8_1').remove();
-								}
-							</script>
-							<dd id="menu_8_2">
-								<a href="javascript:;">人员在线定位</a>
-							</dd>
-							<dd id="menu_8_3">
-								<a href="javascript:;">历史轨迹</a>
-							</dd>
-							<dd id="menu_8_4">
-								<a href="javascript:;">上报数据</a>
-							</dd>
-							<dd id="menu_8_5">
-								<a href="javascript:;">护林员任务完成统计</a>
-							</dd>
-							<dd id="menu_8_6">
-								<a href="javascript:;">绩效数据导出</a>
-							</dd>
-							<dd id="menu_8_7">
-								<a href="javascript:;">请假明细</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt id="menu_9">
-								<i class="icon-leaf"></i>典型案例<i class="icon-angle-right"></i>
-							</dt>
-						</dl>
-					</li>
-					<li id="user_">
-						<dl>
-							<dt>
-								<i class="icon-user"></i>用户管理<i class="icon-angle-right"></i>
-							</dt>
-							<dd id="menu_10_1">
-								<a href="javascript:">后台用户</a>
-							</dd>
-							<dd id="menu_10_2">
-								<a href="javascript:;">护林员用户</a>
-							</dd>
-							<dd id="menu_10_3">
-								<a href="javascript:;">无人机用户</a>
-							</dd>
-							<dd id="menu_10_4">
-								<a href="javascript:;">消防员用户</a>
-							</dd>
-							<dd id="menu_10_5">
-								<a href="javascript:;">载人机用户</a>
-							</dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt id="mobile_app_download">
-								<i class="icon-download"></i>App下载<i class="icon-angle-right"></i>
-							</dt>
-						</dl>
-					</li>
-				</ul>
-			</nav>
-			<footer class="side-footer">© <span class="setAddress"></span>林业局 版权所有</footer>
 		</div>
-		<div class="content-wrap">
-			<header class="top-hd">
-				<div class="hd-lt">
-					<span id="index_titel" style="font-size: 24px;margin-left: 10px;background: linear-gradient(to right, #04a8f0,#1eaed2,#4177ed);
-				-webkit-background-clip: text;
-				color: transparent;font-weight: bold;">数据概况</span>
-				</div>
-				<div class="hd-rt">
-					<ul style="margin-bottom: 0;">
-						<li style="padding-right: 30px;font-size: 14px;cursor: pointer;">
-							<a id="menu_7_141" href="javascript:;">
-								<img src="img/update/return.png" style="width:20px;vertical-align: -5px;margin-right: 5px;">
-								<span>返回首页</span>
-							</a>
-						</li>
-						<li id="tzlist">
-							<img src="img/update/warning.png" width="20"><span id="tongz">0</span>
-							<ul class="list_listtz">
-								<li class="tz1" onclick="tz1()"><a href="javascript:;"><img src="img/update/warning1.png"><span>0</span>条请假申请需要审批</a></li>
-								<li class="tz2" onclick="tz2()"><a href="javascript:;"><img src="img/update/warning1.png"><span>0</span>封未读邮件</a></li>
-								<li class="tz3" onclick="tz3()"><a href="javascript:;"><img src="img/update/warning1.png"><span>0</span>条公文要签收</a></li>
-								<!-- <li class="tz3"><a href="javascript:;"><img src="img/lqz/tongz.png"><span>0</span>条用户消息</a></li> -->
-							</ul>
-						</li>
-						<li><i class="icon-reorder"></i><a id="menu_2_8" href="javascript:" style="padding-left: 0;">森林火险及气象预报</a></li>
-						<li id="wsbg">
-							<span><i class="icon-desktop"></i>网上办公</span>
-							<ul>
-								<li><a id="menu_7_1" href="javascript:;">公文管理</a></li>
-								<li><a id="menu_7_2" href="javascript:;">邮件管理</a></li>
-								<li><a id="menu_7_6" href="javascript:;">新闻管理</a></li>
-								<li><a id="menu_7_3" href="javascript:;">内部通讯录</a></li>
-							</ul>
-						</li>
-						<li id="yqlj">
-							<span><i class="icon-star"></i>友情链接</span>
-							<ul>
-								<li><a id="menu_7_4" href="javascript:;">中国森林防火网</a></li>
-								<li id="huNanPro"><a id="menu_7_10" href="javascript:;">湖南省森林火险预警系统</a></li>
-								<li id="huNanPro2"><a id="menu_7_5" href="javascript:;">
-										<span class="setAddress"></span>林业厅官网</a>
-								</li>
-							</ul>
-						</li>
+		<nav class="side-menu content mCustomScrollbar" data-mcs-theme="minimal-dark">
+			<ul>
+				<li>
+					<dl id="menu_1_1">
+						<dt>
+							<i class="icon-dashboard"></i>数据概况<i class="icon-angle-right"></i>
+						</dt>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt>
+							<i class="icon-columns"></i>全局管理<i class="icon-angle-right"></i>
+						</dt>
+						<dd id="menu_2_6">
+							<a href="javascript:;">实时火情</a>
+						</dd>
+						<dd id="menu_2_1">
+							<a href="javascript:;">终端在线情况</a>
+						</dd>
+						<dd id="menu_2_2">
+							<a href="javascript:;">卫星监测热点</a>
+						</dd>
+						<dd id="menu_2_3">
+							<a href="javascript:;">突发事件</a>
+						</dd>
+						<dd id="menu_2_4">
+							<a href="javascript:;">轨迹回放</a>
+						</dd>
+						<dd id="menu_2_5">
+							<a href="javascript:;">地面监控点</a>
+						</dd>
+						<dd id="menu_2_7">
+							<a href="javascript:;">无人机上报数据</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+                        <dt>
+                        <i class="icon-list-alt"></i>火情管理<i class="icon-angle-right"></i>
+						</dt>
+						<dd id="menu_3_1">
+							<a href="javascript:;">火情信息</a>
+						</dd>
+                        <dd id="menu_3_2">
+							<a href="javascript:;">火情查询</a>
+						</dd>
+                        <dd id="menu_3_3">
+							<a href="javascript:;">数据统计</a>
+						</dd>
+						<dd id="menu_3_4">
+							<a href="javascript:;">火情分布图</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt>
+							<i class="icon-tasks"></i>任务管理<i class="icon-angle-right"></i>
+						</dt>
+						<!--<dd id="menu_4_1">-->
+							<!--<a href="javascript:;">航空监测任务</a>-->
+						<!--</dd>-->
+						<dd id="menu_4_2">
+							<a href="javascript:;">地面巡护任务</a>
+						</dd>
+						<dd id="menu_4_3">
+							<a href="javascript:;">数据统计</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt>
+							<i class="icon-table"></i>森林消防资源分布<i class="icon-angle-right"></i>
+						</dt>
+						<dd id="menu_5_6">
+							<a href="javascript:;">分布示意图</a>
+						</dd>
+						<dd id="menu_5_1">
+							<a href="javascript:;">防火办公室</a>
+						</dd>
+						<dd id="menu_5_2">
+							<a href="javascript:;">物资储备库</a>
+						</dd>
+						<dd id="menu_5_3">
+							<a href="javascript:;">瞭望塔</a>
+						</dd>
+						<dd id="menu_5_4">
+							<a href="javascript:;">消防队伍</a>
+						</dd>
+						<dd id="menu_5_5">
+							<a href="javascript:;">防火隔离带</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt>
+							<i class="icon-inbox"></i>火灾辅助决策<i class="icon-angle-right"></i>
+						</dt>
+                        <dd id="menu_6_1">
+							<a href="javascript:;">火灾现场分时图</a>
+						</dd>
+                        <dd id="menu_6_2">
+							<a href="javascript:;">扑火指挥</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt id="menu_9_1">
+							<i class="icon-bar-chart"></i>灾害评估<i class="icon-angle-right"></i>
+						</dt>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt id="hitstory_video">
+							<i class="icon-laptop"></i>历史视频数据<i class="icon-angle-right"></i>
+						</dt>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt>
+							<i class="icon-external-link"></i>护林员管理<i class="icon-angle-right"></i>
+						</dt>
+						<dd id="menu_8_1">
+							<a href="javascript:;">护林员基本资料</a>
+						</dd>
 						<script>
-							var pro = localStorage.getItem('pro_setItem');
-							if (pro != '湖南省') {
-								$('#huNanPro').remove();
-								$('#huNanPro2').remove();
+                            var userLevel = sessionStorage.getItem("userLevel");
+                            if(userLevel=='1'){
+                                $('#menu_8_1').remove();
 							}
 						</script>
-						<li id="grzx">
-							<a href='javascript:;' id="user_user"><i class="icon-user"></i><span></span></a>
-							<ul>
-								<li style="background-color:#01dacf;color: #fff;line-height: unset;">
-									<img src="" style="width:40px;height:40px;border-radius:50%;" onerror="javascript:this.src='img/timg.png'"
-									 class="edit_imgHead">
-									<span style="margin-left:15px;vertical-align: middle;" class="edit_name"></span>
-								</li>
-								<li>手机：<span class="edit_ipone"></span></li>
-								<li>角色：<span class="edit_role"></span></li>
-								<li>区域：<span class="edit_city"></span></li>
-								<li>级别：<span class="edit_character"></span></li>
-								<li>职务：<span class="edit_job"></span></li>
-								<li style="color: #01dacf;text-align: center;border-top: solid 1px #f3f3f3;">
-									<a href="javascript:;" onclick="edit_data()">编辑资料</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="javascript:void(0)" id="JsSignOut"><i class="icon-signout"></i>退出</a>
-						</li>
-					</ul>
-				</div>
-			</header>
-			<main class="main-cont content mCustomScrollbar" id="index_main_context">
-				<div></div>
-			</main>
-		</div>
+                        <dd id="menu_8_2">
+							<a href="javascript:;">人员在线定位</a>
+						</dd>
+                        <dd id="menu_8_3">
+							<a href="javascript:;">历史轨迹</a>
+						</dd>
+                        <dd id="menu_8_4">
+							<a href="javascript:;">上报数据</a>
+						</dd>
+						<dd id="menu_8_5">
+							<a href="javascript:;">护林员任务完成统计</a>
+						</dd>
+						<dd id="menu_8_6">
+							<a href="javascript:;">绩效数据导出</a>
+						</dd>
+						<dd id="menu_8_7">
+							<a href="javascript:;">请假明细</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt id="menu_9">
+							<i class="icon-leaf"></i>典型案例<i class="icon-angle-right"></i>
+                      	</dt>
+					</dl>
+				</li>
+				<li id="user_">
+					<dl>
+						<dt>
+							<i class="icon-user"></i>用户管理<i class="icon-angle-right"></i>
+                        </dt>
+						<dd id="menu_10_1">
+							<a href="javascript:">后台用户</a>
+						</dd>
+                        <dd id="menu_10_2">
+							<a href="javascript:;">护林员用户</a>
+						</dd>
+                        <dd id="menu_10_3">
+							<a href="javascript:;">无人机用户</a>
+						</dd>
+                        <dd id="menu_10_4">
+							<a href="javascript:;">消防员用户</a>
+						</dd>
+						<dd id="menu_10_5">
+							<a href="javascript:;">载人机用户</a>
+						</dd>
+						<dd id="menu_40">
+							<a href="javascript:;">登录记录</a>
+						</dd>
+						<script>
+							var user_level=sessionStorage.getItem('userLevel');
+							if(user_level != '2'){//3是超管,2是管理员
+								$('#menu_40').remove();
+							}
+						</script>
+					</dl>
+				</li>
+				<li>
+					<dl>
+						<dt id="mobile_app_download">
+						    <i class="icon-download"></i>App下载<i class="icon-angle-right"></i>
+						</dt>
+						<dd id="menu_31">
+							<a href="javascript:">护林员APP</a>
+						</dd>
+                        <dd id="menu_32">
+							<a href="javascript:;">消防员APP</a>
+						</dd>
+                        <dd id="menu_33">
+							<a href="javascript:;">无人机APP</a>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+		</nav>
+		<footer class="side-footer">© <span class="setAddress"></span>林业局 版权所有</footer>
 	</div>
-	<audio src="bj.mp3" preload="preload" id="audio"></audio>
+	<div class="content-wrap">
+		<header class="top-hd">
+			<div class="hd-lt">
+				<span id="index_titel" style="font-size: large;margin-left: 10px;color: #000;font-weight: bold;">数据概况</span>
+			</div>
+			<div class="hd-rt">
+				<ul style="margin-bottom: 0;">
+					<li style="padding-right: 30px;font-size: 14px;cursor: pointer;">
+						<a id="menu_7_141" href="javascript:;">
+							<img src="img/back.png" style="width:20px;vertical-align: -5px;margin-right: 5px;">
+							<span>返回首页</span>
+						</a>
+					</li>
+					<li id="tzlist">
+						<img src="img/lqz/tongz.png" width="20"><span id="tongz">0</span>
+						<ul class="list_listtz">
+							<li class="tz1" onclick="tz1()"><a href="javascript:;"><img src="img/lqz/tongz.png"><span>0</span>条请假申请需要审批</a></li>
+							<li class="tz2" onclick="tz2()"><a href="javascript:;"><img src="img/lqz/tongz.png"><span>0</span>封未读邮件</a></li>
+							<li class="tz3" onclick="tz3()"><a href="javascript:;"><img src="img/lqz/tongz.png"><span>0</span>条公文要签收</a></li>
+							<!-- <li class="tz3"><a href="javascript:;"><img src="img/lqz/tongz.png"><span>0</span>条用户消息</a></li> -->
+						</ul>
+					</li>
+					<li><i class="icon-reorder"></i><a id="menu_2_8" href="javascript:" style="padding-left: 0;">森林火险及气象预报</a></li>
+					<li id="wsbg">
+						<span><i class="icon-desktop"></i>网上办公</span>
+						<ul>
+							<li><a id="menu_7_1" href="javascript:;">公文管理</a></li>
+							<li><a id="menu_7_2" href="javascript:;">邮件管理</a></li>
+							<li><a id="menu_7_6" href="javascript:;">新闻管理</a></li>
+							<li><a id="menu_7_3" href="javascript:;">内部通讯录</a></li>
+						</ul>
+					</li>
+					<!-- <li id="yqlj">
+						<span><i class="icon-star"></i>友情链接</span>
+						<ul>
+							<li><a id="menu_7_4" href="javascript:;">中国森林防火网</a></li>
+							<li id="huNanPro"><a id="menu_7_10" href="javascript:;">湖南省森林火险预警系统</a></li>
+							<li id="huNanPro2"><a id="menu_7_5" href="javascript:;">
+								<span class="setAddress"></span>林业厅官网</a>
+							</li>
+						</ul>
+					</li> -->
+					<script>
+						var pro=localStorage.getItem('pro_setItem');
+						if(pro !='湖南省'){
+						    $('#huNanPro').remove();
+						    $('#huNanPro2').remove();
+						}
+					</script>
+					<li id="grzx">
+						<a href='javascript:;' id="user_user"><i class="icon-user"></i><span></span></a>
+						<ul>
+							<li style="background-color:#addc9d;color: #fff;line-height: unset;">
+								<img src="" style="width:40px;height:40px;border-radius:50%;" onerror="javascript:this.src='img/timg.png'" class="edit_imgHead">
+								<span style="margin-left:15px;vertical-align: middle;" class="edit_name"></span>
+							</li>
+							<li>手机：<span class="edit_ipone"></span></li>
+							<li>角色：<span class="edit_role"></span></li>
+							<li>区域：<span class="edit_city"></span></li>
+							<li>级别：<span class="edit_character"></span></li>
+							<li>职务：<span class="edit_job"></span></li>
+							<li style="color: #addc9d;text-align: center;border-top: solid 1px #f3f3f3;">
+								<a href="javascript:;" onclick="edit_data()">编辑资料</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:void(0)" id="JsSignOut"><i class="icon-signout"></i>退出</a>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<main class="main-cont content mCustomScrollbar" id="index_main_context" >
+			<div></div>
+		</main>
+	</div>
+</div>
+<audio src="bj.mp3" preload="preload" id="audio"></audio>
 </body>
 <script>
-	var address = localStorage.getItem('setAllAddress');
-	$('.setAddress').html(address);
-	document.title = address + '森林防火网';
 
-	function getUserByName() {
-		sendAjax({
-			"url": "fire/user/getUserByUid",
-			"data": {
-				"uid": sessionStorage.getItem("s_uid")
-			},
-			"callback": function (result) {
-				if (result.code == "s_ok") {
-					var result = result.var;
-					if (result.imgHeadUrl.length > 0) {
-						$(".edit_imgHead").attr('src', Public_address + "uploads/" + result.imgHeadUrl[0].path);
-					} else {
-						$(".edit_imgHead").attr('src', 'img/timg.png');
-					}
+    var address=localStorage.getItem('setAllAddress');
+    $('.setAddress').html(address);
+    document.title =address+'森林防灭火信息管理平台';
 
-					$(".edit_name").html(result.name);
-					$(".edit_ipone").html(result.tel);
-					if (result.level == '1') {
-						$(".edit_character").html('省');
-					} else if (result.level == '2') {
-						$(".edit_character").html('市');
-					} else if (result.level == '3') {
-						$(".edit_character").html('县');
-					} else {
-						$(".edit_character").html('街道');
-					}
-					$(".edit_city").html(result.region_name);
-					$(".edit_role").html(result.role);
-					$(".edit_job").html(result.job);
+function getUserByName(){
+	sendAjax({
+        "url":"fire/user/getUserByUid",
+        "data":{"uid":sessionStorage.getItem("s_uid")},"callback":function(result){
+			if (result.code == "s_ok") {
+				var result = result.var;
+				if(result.imgHeadUrl.length>0){
+                    $(".edit_imgHead").attr('src',Public_address+"uploads/"+result.imgHeadUrl[0].path);
+				}else{
+                    $(".edit_imgHead").attr('src','img/timg.png');
 				}
+
+				$(".edit_name").html(result.name);
+				$(".edit_ipone").html(result.tel);
+                if(result.level=='1'){
+                    $(".edit_character").html('省');
+				}else if(result.level=='2'){
+                    $(".edit_character").html('市');
+				}else if(result.level=='3'){
+                    $(".edit_character").html('县');
+				}else{
+                    $(".edit_character").html('街道');
+				}
+				$(".edit_city").html(result.region_name);
+				$(".edit_role").html(result.role);
+				$(".edit_job").html(result.job);
 			}
-		})
-	}
-	getUserByName();
-	//修改个人资料
-	function edit_data() {
-		layer.confirm(
-			"<ul class=\"form_sub\"><li><label style='text-align: right;width: 65px;'>头像：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\" accept=\"image/png,image/jpg,image/gif,image/JPEG\" style='position: absolute;width: 70px;height: 70px;opacity: 0;top: 0;left: 50px;z-index: 1;'> <img class=\"fileInput\" src=\"img/lqz/upimg.png\" style='padding: 20px;width: 70px;height: 70px;border: 1px solid #e5e5e5;background-color:#fff'><div id=\"imgBox\" style='display: inline-block;'></div></li><li><label style='width: 65px;text-align: right'>旧密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed\" value=''  id=\"old_password\"></li><li id=\"password\"><label style='width: 65px;text-align: right'>新密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed remove_disabled\" value=\"\" id=\"userpwd\" ></li><li><label style='width: 65px;text-align: right'>确认新密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed remove_disabled\" value=\"\"  id=\"userpwd1\"></li></ul>", {
-				type: 1,
-				btn: ['保存', '取消'],
-				skin: 'layui-layer-molv',
-				title: '更改个人资料',
-				btnAlign: 'c'
-			},
-			function () {
-				var pwd = $("#userpwd").val();
-				var pwd1 = $("#userpwd1").val();
-				var pwd2 = $("#old_password").val();
-				//var spaword=sessionStorage.getItem("paw");
-				if (pwd.length < 6 || pwd.length > 16) {
-					layer.msg('密码长度应在6-16位之间！');
-					return false;
+		}
+	})	
+}
+getUserByName();
+//修改个人资料
+function edit_data(){
+	layer.confirm("<ul class=\"form_sub\"><li><label style='text-align: right;width: 65px;'>头像：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\" accept=\"image/png,image/jpg,image/gif,image/JPEG\" style='position: absolute;width: 70px;height: 70px;opacity: 0;top: 0;left: 50px;z-index: 1;'> <img class=\"fileInput\" src=\"img/lqz/upimg.png\" style='padding: 20px;width: 70px;height: 70px;border: 1px solid #e5e5e5;background-color:#fff'><div id=\"imgBox\" style='display: inline-block;'></div></li><li><label style='width: 65px;text-align: right'>旧密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed\" value=''  id=\"old_password\"></li><li id=\"password\"><label style='width: 65px;text-align: right'>新密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed remove_disabled\" value=\"\" id=\"userpwd\" ></li><li><label style='width: 65px;text-align: right'>确认新密码<i style='color:red'>*</i></label><input type=\"password\" class=\"form-control form-boxed remove_disabled\" value=\"\"  id=\"userpwd1\"></li></ul>",{
+		type:1,
+		btn: ['保存', '取消'],
+		skin: 'layui-layer-molv',
+		title: '更改个人资料',
+		btnAlign: 'c'
+	}, function() {
+		var pwd=$("#userpwd").val();
+		var pwd1=$("#userpwd1").val();
+		var pwd2=$("#old_password").val();
+		//var spaword=sessionStorage.getItem("paw");
+		if(pwd.length<6||pwd.length>16){
+			layer.msg('密码长度应在6-16位之间！');return false;
+		}
+		// if(pwd2!=spaword){
+		// 	layer.msg('原密码不正确！');return false;
+		// }
+		var imgHead=imgName.pop();
+		if (pwd!=""&&pwd1!="") {
+			sendAjax({
+				"url":"fire/user/editUserPassword",
+				"data":{ "name": sessionStorage.getItem("name"),"newPassword":pwd,"imgHead":imgHead,'oldPassword':pwd2},
+				"callback":function(result){
+					if (result.code=="s_ok") {
+						layer.closeAll("page");
+						layer.msg('修改成功');
+					}else{
+                        layer.msg(result.var);
+					}
 				}
-				// if(pwd2!=spaword){
-				// 	layer.msg('原密码不正确！');return false;
-				// }
-				var imgHead = imgName.pop();
-				if (pwd != "" && pwd1 != "") {
-					sendAjax({
-						"url": "fire/user/editUserPassword",
-						"data": {
-							"name": sessionStorage.getItem("name"),
-							"newPassword": pwd,
-							"imgHead": imgHead,
-							'oldPassword': pwd2
-						},
-						"callback": function (result) {
-							if (result.code == "s_ok") {
-								layer.closeAll("page");
-								layer.msg('修改成功');
-							} else {
-								layer.msg(result.var);
-							}
-						}
-					})
-				} else {
-					layer.msg('请完善个人资料！');
-				}
-			},
-			function () {
-
-			});
-		$("#photoName1").takungaeImgup({
-			formData: {
-				"path": "user_image",
-				"file_ext": "image"
-			},
-			url: "fire/upload/fileUpload",
-			id: "imgBox"
-		});
-	}
-	//通知接口
-	tz();
-
-	function tz() {
-		var s_token = sessionStorage.getItem("s_token");
-		$.ajax({
-			url: Public_address + 'fire/inform/queryInform?s_token=' + s_token,
-			async: false,
-			data: {},
-			dataType: 'json',
-			type: 'get',
-			success: function (result) {
-				if (result.code = 's_ok') {
-					result.var.mail_result = result.var.mail_result == 'undefined' ? 0 : result.var.mail_result;
-					$(".tz2 span").html(result.var.mail_result);
-					result.var.doc_result = result.var.doc_result == 'undefined' ? 0 : result.var.doc_result;
-					$(".tz3 span").html(result.var.doc_result);
-					result.var.level_result = result.var.level_result == 'undefined' ? 0 : result.var.level_result;
-					$(".tz1 span").html(result.var.level_result);
-					$("#tongz").html(result.var.level_result + result.var.mail_result + result.var.doc_result);
-				} else {
-					layer.msg("直播发生错误！");
-				}
+			})
+		}else{
+			layer.msg('请完善个人资料！');
+		}
+	}, function() {
+		
+	});
+	$("#photoName1").takungaeImgup({
+		formData: {
+			"path": "user_image",
+			"file_ext":"image"
+		},
+		url:"fire/upload/fileUpload",
+		id:"imgBox"
+	});
+}
+//通知接口
+tz();
+function tz() {
+	var s_token = sessionStorage.getItem("s_token");
+	$.ajax({
+		url:Public_address+'fire/inform/queryInform?s_token='+s_token,
+		async:false,
+		data:{},
+		dataType: 'json',
+		type:'get',
+		success:function(result){
+			if(result.code='s_ok'){
+				result.var.mail_result=result.var.mail_result=='undefined'?0:result.var.mail_result;
+				$(".tz2 span").html(result.var.mail_result);
+				result.var.doc_result=result.var.doc_result=='undefined'?0:result.var.doc_result;
+				$(".tz3 span").html(result.var.doc_result);
+				result.var.level_result=result.var.level_result=='undefined'?0:result.var.level_result;
+				$(".tz1 span").html(result.var.level_result);
+				$("#tongz").html(result.var.level_result+result.var.mail_result+result.var.doc_result);
+			}else{
+				layer.msg("直播发生错误！");
 			}
-		})
-	}
+		}
+	})
+}
 
-	function tz2() {
-		$("#index_main_context").load("wj_mail.html");
-		$("#index_titel").html("邮件管理");
-	}
-
-	function tz1() {
-		$("#index_main_context").load("lqz_drawing.html");
-		$("#index_titel").html("请假明细");
-	}
-
-	function tz3() {
-		$("#index_main_context").load("wj_document.html");
-		$("#index_titel").html("公文管理");
-	}
-
+function tz2() {
+	$("#index_main_context").load("wj_mail.html");
+    $("#index_titel").html("邮件管理");
+}
+function tz1() {
+	$("#index_main_context").load("lqz_drawing.html");
+    $("#index_titel").html("请假明细");
+}
+function tz3() {
+	$("#index_main_context").load("wj_document.html");
+    $("#index_titel").html("公文管理");
+}
 
 
-	//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-	window.onbeforeunload = function () {
-		closeWebSocket();
-	}
+
+//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+window.onbeforeunload = function() {
+	closeWebSocket();
+}
+
+
 </script>
-
 </html>

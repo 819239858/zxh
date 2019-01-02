@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <script src="javascript/plug-ins/pagination.js"></script>
     <script type="text/javascript" src="js/styleMaps.js"></script>
@@ -15,9 +14,9 @@
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
     <link href="js/lqz/css/froala_editor.min.css" rel="stylesheet" type="text/css">
     <style>
-        .tableDiv_fire{color:#000;z-index:19;position:fixed;height:89%;overflow: auto;top:80px;right: 10px;left: 250px;background: #fff;}
+        .tableDiv_fire{color:#000;background-color:#eef3fa;z-index:19;position:fixed;height:100%;overflow: auto;top:50px;right: 0px;left: 230px;}
         .top_box{margin:2% 3% 0 3%;}
-        .side_box div{display:inline-block;width:30%;height:130px;background-color:#01dacf;text-align:center;}
+        .side_box div{display:inline-block;width:30%;height:130px;background-color:#fff;text-align:center;}
         .side_box div:not(:last-child){margin-right:3%;}
         .topBox1{width:13px;height:14px;background-image:url("img/wj/up1.png");display:inline-block;}
         .top_num{color:#2381f5;font-size:60px;}
@@ -30,7 +29,7 @@
         .form_sub_release{width:648px;}
         .form_sub_release select{width:175px;}
 
-        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#addc9d;color:#fff;}
         .report_btn_two{margin:0;width: 100px;margin-left:10px;}
         .report_table,.report_table1{padding-left:30px;width:95%;margin-top:30px;}
         .report_page{margin-bottom:50px;text-align:center;}
@@ -50,17 +49,16 @@
         input[type=checkbox], input[type=radio]{width: 15px;vertical-align: -3px;margin: 0 5px;}
         #qx_yh input[type=checkbox], input[type=radio]{vertical-align: -8px;}
         .form_sub li i{position: relative;}
-        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+        .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#addc9d;color:#fff;}
         #complete_report .audit{color:red;}
         .card .tab-cont{padding:0;}
         #edit{padding: 0 30px;}
         .form_sub_release .upFileBtn{position:absolute;width:70px;height:30px;opacity:0;top: 0;left: 100px;z-index: 1;}
         .form_sub input{border-bottom: 1px solid #ccc;width:75%;}
         .form_sub input:focus {border:none;outline:none;}
-        .fileInput{display: inline-block;background: #01dacf;color: #fff;padding: 5px;}
+        .fileInput{display: inline-block;background: #addc9d;color: #fff;padding: 5px;}
     </style>
 </head>
-
 <body>
     <div class="tableDiv_fire">
         <div class="search_area">
@@ -85,13 +83,9 @@
                 </select>
                 <select onchange="callback(value,this)" id="city_two"></select>
                 <select id="area"></select>
-                用户名： <input type="text" class="user_name" id="userName" />
-                用户类型：<select id="mold">
-                    <option></option>
-                    <option value="1">后台用户</option>
-                    <option value="3">消防员</option>
-                </select>
-                <button id="search_btn" class="ButtonSearch" onclick="refresh1()">
+                用户名： <input type="text" class="user_name" id="userName"/>
+                用户类型：<select id="mold"><option></option><option value="1">后台用户</option><option value="3">消防员</option></select>
+                <button  id="search_btn" class="ButtonSearch"  onclick="refresh1()">
                     <input class="data-ycl" type="hidden" value="0">
                     查询
                 </button>
@@ -135,23 +129,21 @@
                                 </tr>
                             </thead>
                             <tbody id="complete_report">
-
+                               
                             </tbody>
                         </table>
                         <!-- 分页 -->
                         <div class="report_page">
                             <span>总记录:<i class="complete_total"></i>条</span>
                             <div class="pagination complete_page">
-                                <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;"
-                                    class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;"
-                                    class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
+                                <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+       </div>
     </div>
 </body>
 <script src="js/lqz/js/froala_editor.min.js"></script>
@@ -163,5 +155,4 @@
 <script src="js/lqz/js/plugins/font_size.min.js"></script>
 <script src="js/lqz/js/plugins/block_styles.min.js"></script>
 <script src="js/lqz/js/plugins/video.min.js"></script>
-
 </html>

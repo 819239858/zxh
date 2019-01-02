@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <script type="text/javascript" src="js/styleMaps.js"></script>
-    <script src="js/imgPlugin.js"></script>
-    
-    <script src="javascript/plug-ins/pagination.js"></script>
-    <style>
-    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:100%;background: #fff;}
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <script type="text/javascript" src="js/styleMaps.js"></script>
+  <script src="js/imgPlugin.js"></script>
+
+  <script src="javascript/plug-ins/pagination.js"></script>
+  <style>
+    .tableDiv_fire{position:fixed;top:50px;right:0;left:230px;z-index:19;overflow:auto;height:100%;background-color:#fff;}
     .form_sub_release .upFileBtn{position:absolute;bottom:75px;left:120px;z-index:-1;width:80px;height:80px;opacity:0;}
     .form_sub_release .upFileBtn1{display:inline-block;opacity:0;}
     .form_sub_release .upload{position:relative;display:inline-block;height:25px;border:solid 1px #cfdadd;}
@@ -17,57 +18,59 @@
     .search_area{height:40px;border:1px solid #e6e6e6;}
     .search_container{margin-top:5px;margin-left:30px;}
     #container_map{width:100%;height:100%;}
-    .menu{position:fixed;top:135px;left:260px;z-index:100;}
+    .menu{position:fixed;top:115px;left:260px;z-index:100;}
     .container_table{width:100%;}
-    .table_cont{margin-top:50px;padding-left:10px;width:95%;}
-    .office_page{margin-bottom:80px;text-align:center;}
+    .table_cont{margin-top:50px;padding-left:30px;width:95%;}
+    .office_page{margin-bottom:50px;text-align:center;}
     .form_sub_release{width:648px;}
     .form_sub_release select{width:58px;}
     .form_sub input{width:175px;}
     #office_latLngs{margin-right:2px;width:140px;height:25px;}
-    #wjadd_map{width:70px;height:25px;border:none;background-color:#01dacf;color:#fff;text-align:center;cursor:pointer;}
+    #wjadd_map{width:70px;height:25px;border:none;background-color:#addc9d;color:#fff;text-align:center;cursor:pointer;}
     #imgBox img{width:80px;height:80px;}
-    .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+    .ml-5{display: block;width:120px;height:28px;background-color:#addc9d;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
     #user_query1{position:absolute;top:32px;left:385px;z-index:1;display:none;width:200px;border:solid 1px #e5e5e5;background-color:#fff;}
     #user_query1 span{display:inline-block;margin:5px;cursor:pointer;}
     #imgBox1 img{width:70px;height:70px;z-index: 11;position: relative;}
     </style>
 </head>
+
 <body>
-    <div class="tableDiv_fire">
-        <!-- 头部查询区域 -->
-        <div class="search_area">
-            <div class="search_container">
-                区域：<select name="fireArea" id="province" class="remove_disabled" onchange="callback(value,this)">
-                  <!--<option value="43">省</option>-->
-                  <!--<option value="4301">长沙市</option>-->
-                  <!--<option value="4302">株洲市</option>-->
-                  <!--<option value="4303">湘潭市</option>-->
-                  <!--<option value="4304">衡阳市</option>-->
-                  <!--<option value="4305">邵阳市</option>-->
-                  <!--<option value="4306">岳阳市</option>-->
-                  <!--<option value="4307">常德市</option>-->
-                  <!--<option value="4308">张家界市</option>-->
-                  <!--<option value="4309">益阳市</option>-->
-                  <!--<option value="4311">永州市</option>-->
-                  <!--<option value="4310">郴州市</option>-->
-                  <!--<option value="4312">怀化市</option>-->
-                  <!--<option value="4313">娄底市</option>-->
-                  <!--<option value="4331">湘西自治州</option>-->
-                </select>
-                <select id="city" class="remove_disabled" onchange="callback(value,this)">
-                </select>
-                <select id="area" class="remove_disabled"></select>
-                用户名：<input type="text" class="user_name" id="userName"/>
-                
-                时间：<input style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" >
-                <input id="search_btn"  style="width: 100px;height:25px;background-color:#01dacf;border:none;color:#fff;" value="查询" type="button" onclick="query()"/>
-            </div>
-        </div>
-        <div class="menu">
-            <!-- <div style="position:relative;display:inline-block;" id="input_hot_1">
+  <div class="tableDiv_fire">
+    <!-- 头部查询区域 -->
+    <div class="search_area">
+      <div class="search_container">
+        区域：<select name="fireArea" id="province" class="remove_disabled" onchange="callback(value,this)">
+          <!--<option value="43">省</option>-->
+          <!--<option value="4301">长沙市</option>-->
+          <!--<option value="4302">株洲市</option>-->
+          <!--<option value="4303">湘潭市</option>-->
+          <!--<option value="4304">衡阳市</option>-->
+          <!--<option value="4305">邵阳市</option>-->
+          <!--<option value="4306">岳阳市</option>-->
+          <!--<option value="4307">常德市</option>-->
+          <!--<option value="4308">张家界市</option>-->
+          <!--<option value="4309">益阳市</option>-->
+          <!--<option value="4311">永州市</option>-->
+          <!--<option value="4310">郴州市</option>-->
+          <!--<option value="4312">怀化市</option>-->
+          <!--<option value="4313">娄底市</option>-->
+          <!--<option value="4331">湘西自治州</option>-->
+        </select>
+        <select id="city" class="remove_disabled" onchange="callback(value,this)">
+        </select>
+        <select id="area" class="remove_disabled"></select>
+        用户名：<input type="text" class="user_name" id="userName" />
+
+        时间：<input style="width: 110px" id="end_time" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+        <input id="search_btn" style="width: 100px;height:25px;background-color:#addc9d;border:none;color:#fff;" value="查询"
+          type="button" onclick="query()" />
+      </div>
+    </div>
+    <div class="menu">
+      <!-- <div style="position:relative;display:inline-block;" id="input_hot_1">
               <img src="img/add.png" alt="" style="position:absolute;top:13px;left:10px;">
-              <input type="button" id="add_office" style="width: 100px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="导入文件" onclick="impot()">
+              <input type="button" id="add_office" style="width: 100px;height:40px;background-color:#addc9d;border:none;color:#fff;" value="导入文件" onclick="impot()">
             </div>
             <script>
               var character = sessionStorage.getItem("character");
@@ -75,500 +78,584 @@
                 $("#input_hot_1").remove();
               }
             </script> -->
-            <div style="position:relative;display:inline-block;top: 10px;">
-                    <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
-                    <input id="modeSwitch" type="button" style="width: 160px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="切换成列表模式">
-            </div>
+      <div style="position:relative;display:inline-block;">
+        <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
+        <input id="modeSwitch" type="button" style="width: 160px;height:40px;background-color:#addc9d;border:none;color:#fff;"
+          value="切换成列表模式">
+      </div>
+    </div>
+    <!-- 下部地图区域 -->
+    <div id="container_map" tabindex="0"></div>
+    <div class="button-group">
+      <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()" />
+      <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()" />
+    </div>
+    <div class="container_table" style="display:none">
+      <div class="table_cont">
+        <table class="table table-bordered  mb-15">
+          <thead>
+            <tr>
+              <th>用户名</th>
+              <th>手机</th>
+              <th>飞机序列号</th>
+              <th>管辖区域</th>
+              <th>目标位置</th>
+              <th>标注时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="complete_report">
+
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="office_page">
+          <span>总记录:<i class="complete_total"></i>条</span>
+          <div class="pagination complete_page">
+            <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a
+              href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;"
+              class="nextPage">下一页</a>
+          </div>
         </div>
-        <!-- 下部地图区域 -->
-        <div id="container_map" tabindex="0"></div>
-        <div class="button-group" style="bottom:80px;">
-            <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
-            <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
-        </div>
-        <div class="container_table" style="display:none">
-            <div class="table_cont">
-                <table class="table table-bordered  mb-15">
-                    <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>手机</th>
-                            <th>飞机序列号</th>
-                            <th>管辖区域</th>
-                            <th>目标位置</th>
-                            <th>标注时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="complete_report">
-                       
-                    </tbody>
-                </table>
-                 <!-- 分页 -->
-                <div class="office_page">
-                    <span>总记录:<i class="complete_total"></i>条</span>
-                    <div class="pagination complete_page">
-                        <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>                                             
+      </div>
+    </div>
+  </div>
 </body>
 <script>
+  var city = localStorage.getItem('Public_city');
+  $('#province').html(city);
 
-
-var city=localStorage.getItem('Public_city');
-$('#province').html(city);
-
-var infoWindow = new AMap.InfoWindow({
-  offset: new AMap.Pixel(16, -25)//窗体位置的偏移量
-});
-
-//基本地图加载
-var map = new AMap.Map("container_map", {
-    resizeEnable: true,
-    zoom:8
-});
-var type= new AMap.MapType({
-    defaultType:1,
-    showRoad:true
-});
-map.addControl(type);
-// 点击弹框
-function markerClick(marker,result){
-  marker.content='<div style="background-color:#fff;border-radius:6px;padding-left: 20px;">'+
-  '<p style="color:#030303;font-size:14px;line-height: 30px;">用户名:<span style="color:#999da8;margin-left:6px;">'+ result.user_name + '</span></p>'+
-  '<p style="color:#030303;font-size:14px;line-height: 30px;">手机号:<span style="color:#999da8;margin-left:6px;">'+result.phone+'</span></p>'+
-  '<p style="color:#030303;font-size:14px;line-height: 30px;">飞机型号:<span style="color:#999da8;margin-left:6px;">'+result.drone_type+'</span></p>'+
-  '<p style="color:#030303;font-size:14px;line-height: 30px;">管辖区域:<span style="color:#999da8;margin-left:6px;">'+ result.region_name + '</span></p>'+
-  '<a href="#" class=\"ml-5\">详情</a></div>'
-  AMap.event.addListener(marker, 'click', function() {
-    infoWindow.setContent(marker.content);
-    infoWindow.open(map, marker.getPosition());
-    $(".ml-5").click(function() {
-      report_index(result)
-    });
+  var infoWindow = new AMap.InfoWindow({
+    offset: new AMap.Pixel(16, -25) //窗体位置的偏移量
   });
-}
-var markers=[];
-function query() {
-  var city = $("#province").val();
-    $("#city").val()==''||$("#city").val()==undefined?city=$("#province").val():$("#area").val()==''||$("#area").val()==undefined?city=$("#city").val():city=$("#area").val();
-  var tel=$("#userName").val();
-  var time=$('#end_time').val();
-  if (time=='') {
-    var date = new Date();
-    var seperator1 = "-";
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentdate = year + seperator1 + month + seperator1 + strDate;
-    time = currentdate;
-  }else{
-    time = $('#end_time').val();
+
+  //基本地图加载
+  var map = new AMap.Map("container_map", {
+    resizeEnable: true,
+    zoom: 8
+  });
+  var type = new AMap.MapType({
+    defaultType: 1,
+    showRoad: true
+  });
+  map.addControl(type);
+  // 点击弹框
+  function markerClick(marker, result) {
+    marker.content = '<div style="background-color:#fff;border-radius:6px;padding-left: 20px;">' +
+      '<p style="color:#030303;font-size:14px;line-height: 30px;">用户名:<span style="color:#999da8;margin-left:6px;">' +
+      result.user_name + '</span></p>' +
+      '<p style="color:#030303;font-size:14px;line-height: 30px;">手机号:<span style="color:#999da8;margin-left:6px;">' +
+      result.phone + '</span></p>' +
+      '<p style="color:#030303;font-size:14px;line-height: 30px;">飞机型号:<span style="color:#999da8;margin-left:6px;">' +
+      result.drone_type + '</span></p>' +
+      '<p style="color:#030303;font-size:14px;line-height: 30px;">管辖区域:<span style="color:#999da8;margin-left:6px;">' +
+      result.region_name + '</span></p>' +
+      '<a href="#" class=\"ml-5\">详情</a></div>'
+    AMap.event.addListener(marker, 'click', function () {
+      infoWindow.setContent(marker.content);
+      infoWindow.open(map, marker.getPosition());
+      $(".ml-5").click(function () {
+        report_index(result)
+      });
+    });
   }
-  addBeiJing();
-  sendAjax({
-    "url":"fire/drone_update/getMarkerInfoByCondition",
-    "data":{"current_page": 1, "region":city,"time": time, "tel":tel,"per_page":20},
-    "callback":function(result){
-      if (result.code=="s_ok") {
-        if (result.var.total==0) {
-          num=1;layer.msg('查询数据为空');
-          map.remove(markers);
-          $("#complete_report tr").remove();
-          $(".complete_total").html(0);
-        }else{
-          $("#complete_report tr").remove();
-          map.remove(markers);
-          num=result.var.total;
-          $(".complete_total").html(result.var.total);
-          var result=result.var.data;
-          $(".complete_page").createPage({
-            pageCount:Math.ceil(num/20),
-            current:1,
-            backFn:function(p){
-              sendAjax({
-                "url":"fire/drone_update/getMarkerInfoByCondition",
-                "data":{"current_page": p, "region":city,"time": time, "tel":tel,"per_page":20},
-                "callback":function(result){
-                  var result=result.obj;
-                  $("#complete_report").html('');
-                  for(var i=0;i<result.length;i++){
-                    $("#complete_report").append("<tr><td>" + result[i].user_name + "</td><td>" + result[i].phone+
-                        "</td><td>" + result[i].drone_type + "</td><td>" + result[i].region_name + "</td><td>" + result[i].target_lat_lng.split("*").slice(0,1) + "</td><td>" + result[i].marker_time + "</td><td><a title=\"详情\" class=\"mr-5\">详情</a></td></tr>");
-                  }
-                  $("#complete_report .mr-5").click(function() {
-                    var index=$("#complete_report .mr-5").index(this);
-                    report_index(result[index])
-                  });
-                }
-              })
-            }
-          });
-          for(var i=0;i<result.length;i++){
-            $("#complete_report").append("<tr><td>" + result[i].user_name + "</td><td>" + result[i].phone+ "</td><td>" + result[i].drone_type + "</td><td>" + result[i].region_name +
-                "</td><td>" + result[i].target_lat_lng.split("*").slice(0,1) + "</td><td>" + result[i].marker_time + "</td><td><a title=\"详情\" class=\"mr-5\">详情</a> </td></tr>");
-            if(result[i].target_lat_lng!=''){
-              if (result[i].drone_lng!="113.8888888888"&&result[i].drone_lng!="") {
-                var lnglatXY=JSON.parse('[' + String(result[i].drone_lng+','+result[i].drone_lat) + ']');
-                //创建一个标记对象
-                var marker = new AMap.Marker({       
-                  icon: 'img/tag.png',
-                  position:lnglatXY,               
-                  map:map
-                });
-                markers.push(marker);
-                marker.setLabel({
-                  offset: new AMap.Pixel(-10, -20),
-                  content: result[i].region_name+"；"+result[i].user_name
-                });
-                markerClick(marker,result[i]);
-                var markxy=[];
-                var path =result[i].target_lat_lng.split("*");
-                path.pop();
-                var pointTpye=result[i].type;
-                if (pointTpye==0) {
-                  for(var j=0;j<path.length;j++){
-                    markxy.push(JSON.parse('[' + String(path[j]) + ']'));
-                  }
+  var markers = [];
 
+  function query() {
+    var city = $("#province").val();
+    $("#city").val() == '' || $("#city").val() == undefined ? city = $("#province").val() : $("#area").val() == '' || $(
+      "#area").val() == undefined ? city = $("#city").val() : city = $("#area").val();
+    var tel = $("#userName").val();
+    var time = $('#end_time').val();
+    if (time == '') {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      time = currentdate;
+    } else {
+      time = $('#end_time').val();
+    }
+    addBeiJing();
+    sendAjax({
+      "url": "fire/drone_update/getMarkerInfoByCondition",
+      "data": {
+        "current_page": 1,
+        "region": city,
+        "time": time,
+        "tel": tel,
+        "per_page": 20
+      },
+      "callback": function (result) {
+        if (result.code == "s_ok") {
+          if (result.var.total == 0) {
+            num = 1;
+            layer.msg('查询数据为空');
+            map.remove(markers);
+            $("#complete_report tr").remove();
+            $(".complete_total").html(0);
+          } else {
+            $("#complete_report tr").remove();
+            map.remove(markers);
+            num = result.var.total;
+            $(".complete_total").html(result.var.total);
+            var result = result.var.data;
+            $(".complete_page").createPage({
+              pageCount: Math.ceil(num / 20),
+              current: 1,
+              backFn: function (p) {
+                sendAjax({
+                  "url": "fire/drone_update/getMarkerInfoByCondition",
+                  "data": {
+                    "current_page": p,
+                    "region": city,
+                    "time": time,
+                    "tel": tel,
+                    "per_page": 20
+                  },
+                  "callback": function (result) {
+                    var result = result.obj;
+                    $("#complete_report").html('');
+                    for (var i = 0; i < result.length; i++) {
+                      $("#complete_report").append("<tr><td>" + result[i].user_name + "</td><td>" +
+                        result[i].phone +
+                        "</td><td>" + result[i].drone_type + "</td><td>" + result[i].region_name +
+                        "</td><td>" + result[i].target_lat_lng.split("*").slice(0, 1) + "</td><td>" +
+                        result[i].marker_time +
+                        "</td><td><a title=\"详情\" class=\"mr-5\">详情</a></td></tr>");
+                    }
+                    $("#complete_report .mr-5").click(function () {
+                      var index = $("#complete_report .mr-5").index(this);
+                      report_index(result[index])
+                    });
+                  }
+                })
+              }
+            });
+            for (var i = 0; i < result.length; i++) {
+              $("#complete_report").append("<tr><td>" + result[i].user_name + "</td><td>" + result[i].phone +
+                "</td><td>" + result[i].drone_type + "</td><td>" + result[i].region_name +
+                "</td><td>" + result[i].target_lat_lng.split("*").slice(0, 1) + "</td><td>" + result[i].marker_time +
+                "</td><td><a title=\"详情\" class=\"mr-5\">详情</a> </td></tr>");
+              if (result[i].target_lat_lng != '') {
+                if (result[i].drone_lng != "113.8888888888" && result[i].drone_lng != "") {
+                  var lnglatXY = JSON.parse('[' + String(result[i].drone_lng + ',' + result[i].drone_lat) + ']');
+                  //创建一个标记对象
                   var marker = new AMap.Marker({
-                    position: markxy[0],
-                    map: map,
-                    icon:'img/LK/zd_11.png'   //img/tag.png
+                    icon: 'img/tag.png',
+                    position: lnglatXY,
+                    map: map
                   });
+                  markers.push(marker);
+                  marker.setLabel({
+                    offset: new AMap.Pixel(-10, -20),
+                    content: result[i].region_name + "；" + result[i].user_name
+                  });
+                  markerClick(marker, result[i]);
+                  var markxy = [];
+                  var path = result[i].target_lat_lng.split("*");
+                  path.pop();
+                  var pointTpye = result[i].type;
+                  if (pointTpye == 0) {
+                    for (var j = 0; j < path.length; j++) {
+                      markxy.push(JSON.parse('[' + String(path[j]) + ']'));
+                    }
 
-                  var lnglatXY1=parseFloat(lnglatXY[0]);
-                  var lnglatXY2=parseFloat(lnglatXY[1]);   //起点的位置经纬度
-                  var markxy=markxy[0].join().split(",");  //所有线的点
-                  var markxy1=parseFloat(markxy[0]);
-                  var markxy2=parseFloat(markxy[1]);
-                  var lnglat1 = new AMap.LngLat(lnglatXY1,lnglatXY2);
-                  var lnglat2 = new AMap.LngLat(markxy1,markxy2);
-                  new AMap.Polyline({
-                    map:map,
-                    strokeColor:'#4196e1',
-                    strokeStyle: "dashed",   //线样式
-                    strokeDasharray: [10, 5], //补充线样式
-                    path:[lnglat1,lnglat2]
-                  });
-                  
-                  new AMap.Text({
-                      text:'飞机位置距离标注点位置'+Math.round(lnglat1.distance(lnglat2))+'米',
-                      position:lnglat1.divideBy(2).add(lnglat2.divideBy(2)),
-                      map:map,
-                      style:{'background-color':'#ccccff',
-                      'border-color':'green',
-                      'font-size':'12px'}
-                  });
-                  map.setFitView();
-                }
-                if (pointTpye==1) {
-                  for(var j=0;j<path.length;j++){
-                    markxy.push(JSON.parse('[' + String(path[j]) + ']'));
+                    var marker = new AMap.Marker({
+                      position: markxy[0],
+                      map: map,
+                      icon: 'img/LK/zd_11.png' //img/tag.png
+                    });
+
+                    var lnglatXY1 = parseFloat(lnglatXY[0]);
+                    var lnglatXY2 = parseFloat(lnglatXY[1]); //起点的位置经纬度
+                    var markxy = markxy[0].join().split(","); //所有线的点
+                    var markxy1 = parseFloat(markxy[0]);
+                    var markxy2 = parseFloat(markxy[1]);
+                    var lnglat1 = new AMap.LngLat(lnglatXY1, lnglatXY2);
+                    var lnglat2 = new AMap.LngLat(markxy1, markxy2);
+                    new AMap.Polyline({
+                      map: map,
+                      strokeColor: '#4196e1',
+                      strokeStyle: "dashed", //线样式
+                      strokeDasharray: [10, 5], //补充线样式
+                      path: [lnglat1, lnglat2]
+                    });
+
+                    new AMap.Text({
+                      text: '飞机位置距离标注点位置' + Math.round(lnglat1.distance(lnglat2)) + '米',
+                      position: lnglat1.divideBy(2).add(lnglat2.divideBy(2)),
+                      map: map,
+                      style: {
+                        'background-color': '#ccccff',
+                        'border-color': 'green',
+                        'font-size': '12px'
+                      }
+                    });
+                    map.setFitView();
                   }
-                  var closestPositionOnLine  = AMap.GeometryUtil.closestOnLine(lnglatXY,markxy);
-                  var polyline = new AMap.Polyline({
-                      path:markxy,          //设置线覆盖物路径
-                      strokeColor: "#4196e1", //线颜色
-                      strokeOpacity: 1,       //线透明度
-                      strokeWeight: 5,        //线宽
-                      strokeStyle: "solid",   //线样式
-                      strokeDasharray: [10, 5] //补充线样式
-                  });
-                  var polyline2 = new AMap.Polygon({
-                    map: map,
-                    strokeStyle:'dashed',
-                    strokeColor:'#4196e1',
-                    strokeWeight:1,
-                    path: [lnglatXY,closestPositionOnLine]
-                  });
-                  new AMap.Text({
-                    text:'飞机位置距离标注线位置'+Math.round(AMap.GeometryUtil.distanceToLine(lnglatXY,markxy))+'米',
-                    position:[(lnglatXY[0]+closestPositionOnLine[0])/2,(lnglatXY[1]+closestPositionOnLine[1])/2],
-                    map:map,
-                    style:{'background-color':'#ccccff','border-color':'green','font-size':'12px'}
-                  });
-                  polyline.setMap(map);
-                  map.setZoomAndCenter(16, markxy[0]);
-                }
-                if (pointTpye==2) {
-                  for(var j=0;j<path.length;j++){
-                    markxy.push(JSON.parse('[' + String(path[j]) + ']'));
-                  }
-                  var closestPositionOnLine  = AMap.GeometryUtil.closestOnLine(lnglatXY,markxy);
-                  var polyline = new AMap.Polygon({
-                      path: markxy,//设置多边形边界路径
+                  if (pointTpye == 1) {
+                    for (var j = 0; j < path.length; j++) {
+                      markxy.push(JSON.parse('[' + String(path[j]) + ']'));
+                    }
+                    var closestPositionOnLine = AMap.GeometryUtil.closestOnLine(lnglatXY, markxy);
+                    var polyline = new AMap.Polyline({
+                      path: markxy, //设置线覆盖物路径
                       strokeColor: "#4196e1", //线颜色
                       strokeOpacity: 1, //线透明度
-                      strokeWeight: 2,    //线宽
+                      strokeWeight: 5, //线宽
+                      strokeStyle: "solid", //线样式
+                      strokeDasharray: [10, 5] //补充线样式
+                    });
+                    var polyline2 = new AMap.Polygon({
+                      map: map,
+                      strokeStyle: 'dashed',
+                      strokeColor: '#4196e1',
+                      strokeWeight: 1,
+                      path: [lnglatXY, closestPositionOnLine]
+                    });
+                    new AMap.Text({
+                      text: '飞机位置距离标注线位置' + Math.round(AMap.GeometryUtil.distanceToLine(lnglatXY, markxy)) +
+                        '米',
+                      position: [(lnglatXY[0] + closestPositionOnLine[0]) / 2, (lnglatXY[1] +
+                        closestPositionOnLine[1]) / 2],
+                      map: map,
+                      style: {
+                        'background-color': '#ccccff',
+                        'border-color': 'green',
+                        'font-size': '12px'
+                      }
+                    });
+                    polyline.setMap(map);
+                    map.setZoomAndCenter(16, markxy[0]);
+                  }
+                  if (pointTpye == 2) {
+                    for (var j = 0; j < path.length; j++) {
+                      markxy.push(JSON.parse('[' + String(path[j]) + ']'));
+                    }
+                    var closestPositionOnLine = AMap.GeometryUtil.closestOnLine(lnglatXY, markxy);
+                    var polyline = new AMap.Polygon({
+                      path: markxy, //设置多边形边界路径
+                      strokeColor: "#4196e1", //线颜色
+                      strokeOpacity: 1, //线透明度
+                      strokeWeight: 2, //线宽
                       fillColor: "#4196e1", //填充色
-                      fillOpacity: 0.35//填充透明度
-                  });
-                  var polyline2 = new AMap.Polygon({
-                    map: map,
-                    strokeStyle:'dashed',
-                    strokeColor:'#4196e1',
-                    strokeWeight:1,
-                    path: [lnglatXY,closestPositionOnLine]
-                  });
-                  new AMap.Text({
-                    text:'飞机位置距离标注面位置'+Math.round(AMap.GeometryUtil.distanceToLine(lnglatXY,markxy))+'米',
-                    position:[(lnglatXY[0]+closestPositionOnLine[0])/2,(lnglatXY[1]+closestPositionOnLine[1])/2],
-                    map:map,
-                    style:{'background-color':'#ccccff','border-color':'green','font-size':'12px'}
-                  });
-                  polyline.setMap(map);
-                  map.setZoomAndCenter(16, markxy[0]);
+                      fillOpacity: 0.35 //填充透明度
+                    });
+                    var polyline2 = new AMap.Polygon({
+                      map: map,
+                      strokeStyle: 'dashed',
+                      strokeColor: '#4196e1',
+                      strokeWeight: 1,
+                      path: [lnglatXY, closestPositionOnLine]
+                    });
+                    new AMap.Text({
+                      text: '飞机位置距离标注面位置' + Math.round(AMap.GeometryUtil.distanceToLine(lnglatXY, markxy)) +
+                        '米',
+                      position: [(lnglatXY[0] + closestPositionOnLine[0]) / 2, (lnglatXY[1] +
+                        closestPositionOnLine[1]) / 2],
+                      map: map,
+                      style: {
+                        'background-color': '#ccccff',
+                        'border-color': 'green',
+                        'font-size': '12px'
+                      }
+                    });
+                    polyline.setMap(map);
+                    map.setZoomAndCenter(16, markxy[0]);
+                  }
                 }
-              }
+              };
             };
-          };
-          $("#complete_report .mr-5").click(function() {
-            var index=$("#complete_report .mr-5").index(this);
-            report_index(result[index])
-          }); 
-          map.setFitView();
-        }
-      }else{
-        layer.msg('查询失败');
-      }
-    },
-    error: function (e) {
-        layer.alert("网络不好，请刷新试试！", {
-        skin: 'layui-layer-molv' 
-        ,closeBtn: 0,anim: 4,btnAlign: 'c'
-      });
-    }
-  });
-};
-//地图和列表切换
-$("#modeSwitch").click(function(){
-  if($(this).val()=="切换成列表模式"){
-      $("#container_map").hide();
-      $(".button-group").hide();
-      $(".menu").css({"position":"fixed","top":"135px","left":"260px"});
-      $(".container_table").show();
-      $(this).val("切换成地图模式")
-  }else{
-      $("#container_map").show();
-      $(".container_table").hide();
-      $(".button-group").show();
-      $(".menu").css({"position":"fixed","top":"135px","left":"260px"});
-      $(this).val("切换成列表模式");
-  }
-});
-// 导入文件
-function impot(){
-  var impot=
-  "<ul class=\"form_sub\"><li class=\"file_img\"><label>导入文件</label><input type=\"file\" style=\"display:inline-block\" class=\"file_impot\" id=\"file_impot\"></li></ul>";
-  layer.confirm(''+impot+'', {
-    type: 1,
-    skin: 'layui-layer-molv', //样式类名
-    closeBtn: 1, //关闭按钮
-    anim: 2,
-    btn: ['保存','取消'],
-    btnAlign: 'c',
-    area: ['300px', '150px;'],
-    title:"导入文件",
-    shadeClose: true, //开启遮罩关闭
-  }, function(){
-    var file = $("#file_impot");
-    var fileList = imgName[0];
-    $.ajax({
-      url:"importFireHot.htm",
-      type : "post",
-      dataType : "json",
-      data:{"hotFileName":fileList},
-      success:function(data){
-        
-        if (data.code=="ok") {
-          layer.msg('导入成功');
-          showFireHot_two('','',0);
-          layer.closeAll();
-        }else{
-          layer.msg('导入失败');
+            $("#complete_report .mr-5").click(function () {
+              var index = $("#complete_report .mr-5").index(this);
+              report_index(result[index])
+            });
+            map.setFitView();
+          }
+        } else {
+          layer.msg('查询失败');
         }
       },
-      error:function(e){
+      error: function (e) {
         layer.alert("网络不好，请刷新试试！", {
-          skin: 'layui-layer-molv'
-          ,closeBtn: 0,anim: 4,btnAlign: 'c'
+          skin: 'layui-layer-molv',
+          closeBtn: 0,
+          anim: 4,
+          btnAlign: 'c'
         });
       }
     });
-  }, function(){
-    layer.closeAll('page');
+  };
+  //地图和列表切换
+  $("#modeSwitch").click(function () {
+    if ($(this).val() == "切换成列表模式") {
+      $("#container_map").hide();
+      $(".button-group").hide();
+      $(".menu").css({
+        "position": "relative",
+        "top": "25px",
+        "left": "30px"
+      });
+      $(".container_table").show();
+      $(this).val("切换成地图模式")
+    } else {
+      $("#container_map").show();
+      $(".container_table").hide();
+      $(".button-group").show();
+      $(".menu").css({
+        "position": "fixed",
+        "top": "115px",
+        "left": "260px"
+      });
+      $(this).val("切换成列表模式");
+    }
   });
-  $("#file_impot").takungaeImgup({
-    formData: {
+  // 导入文件
+  function impot() {
+    var impot =
+      "<ul class=\"form_sub\"><li class=\"file_img\"><label>导入文件</label><input type=\"file\" style=\"display:inline-block\" class=\"file_impot\" id=\"file_impot\"></li></ul>";
+    layer.confirm('' + impot + '', {
+      type: 1,
+      skin: 'layui-layer-molv', //样式类名
+      closeBtn: 1, //关闭按钮
+      anim: 2,
+      btn: ['保存', '取消'],
+      btnAlign: 'c',
+      area: ['300px', '150px;'],
+      title: "导入文件",
+      shadeClose: true, //开启遮罩关闭
+    }, function () {
+      var file = $("#file_impot");
+      var fileList = imgName[0];
+      $.ajax({
+        url: "importFireHot.htm",
+        type: "post",
+        dataType: "json",
+        data: {
+          "hotFileName": fileList
+        },
+        success: function (data) {
+
+          if (data.code == "ok") {
+            layer.msg('导入成功');
+            showFireHot_two('', '', 0);
+            layer.closeAll();
+          } else {
+            layer.msg('导入失败');
+          }
+        },
+        error: function (e) {
+          layer.alert("网络不好，请刷新试试！", {
+            skin: 'layui-layer-molv',
+            closeBtn: 0,
+            anim: 4,
+            btnAlign: 'c'
+          });
+        }
+      });
+    }, function () {
+      layer.closeAll('page');
+    });
+    $("#file_impot").takungaeImgup({
+      formData: {
         "name": "img[]"
-    },
-    url:"uploadFile.htm",
-    id:"imgBox2"
-  });
-}
+      },
+      url: "uploadFile.htm",
+      id: "imgBox2"
+    });
+  }
 
 
-// 详情
-function report_index(result) {
-  layer.open({
+  // 详情
+  function report_index(result) {
+    layer.open({
       type: 1,
       skin: 'layui-layer-molv', //样式类名
       closeBtn: 1, //关闭按钮
       anim: 2,
       btnAlign: 'c',
       area: ['650px'],
-      title:"无人机上报数据信息",
+      title: "无人机上报数据信息",
       shadeClose: true,
-      content:"<ul class=\"form_sub form_sub_release\"><li><label>用户名</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.user_name+"\" disabled><label>电话</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.phone+"\" disabled></li>" +
-      "<li><label>飞机型号</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.drone_type+"\" disabled><label>飞机位置</label><input type=\"text\" class=\"form-control form-boxed \" disabled style=\"margin-right:2px;\" id=\"latLngs_one\" value=\""+result.drone_lng+","+result.drone_lat+";\"><input class=\"enter_map_two\" type=\"button\" value=\"回显地图\" onclick=\"echo_map()\" />" +
-      "<li><label>标注时间</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.marker_time+"\" disabled><label>目标位置</label><input type=\"text\" class=\"form-control form-boxed \" disabled id=\"latLngs\"  style=\"margin-right:2px;\" value=\""+result.target_lat_lng+"\"><input class=\"enter_map_two\" type=\"button\" value=\"回显标注\" onclick=\"marker("+result.type+")\" /></li>" +
-      "<li><label>区域</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.region_name+"\" disabled style=\"width:174px\"><label>天气情况</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.weather+"\" disabled></li><li><label>PM2.5</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.pm25+"\" disabled><label>PM10</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.pm10+"\" disabled></li><li><label>TVOC</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.tvoc+"\" disabled><label>甲醛</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.jiaquan+"\"disabled></li><li><label>温度</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.wendu+"\" disabled><label>湿度</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.shidu+"\" disabled></li><li><label>面积</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.area+"\" disabled><label>周长</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.side_length+"\" disabled></li><li><label>类型</label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>单点</span></label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>测距</span></label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>测面</span></label><label>边长</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.side_length+"\" disabled></li><li><label>标注说明</label><textarea class=\"form-control form-boxed\" disabled>"+result.marker_desc+"</textarea></li><li><label>标注图片</label><div id=\"imgBox1\" style=\"display:inline-block\"><img src=\""+Public_address+"Image/"+result.img_name+"\" onerror=\"javascript:this.src='img/timg.png'\" class=\"imgbig\"></div></li></ul>"
-  });
-  $("input[name='screening']").eq(result.type).prop('checked','checked');
-}
-// 放大图片
-$("body").on('click','.imgbig',function () {
-    var src=$(this).attr("src");
-    var $h1="<img src=\"" +src+ "\" style=\"height:98%;width:98%\">";
-    layer.confirm(''+$h1+'', {
-        type: 0,
-        anim: 7,
-        skin: 'layui-layer-molv',
-        title:'图片预览',
-        area: ['570px', '500px;'],
-        shadeClose: true,
-        btnAlign: 'c'
-    }, function(){
-        event.preventDefault();
-        event.stopPropagation();
-        layer.closeAll('dialog');
-    }, function(){
+      content: "<ul class=\"form_sub form_sub_release\"><li><label>用户名</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.user_name +
+        "\" disabled><label>电话</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.phone +
+        "\" disabled></li>" +
+        "<li><label>飞机型号</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.drone_type +
+        "\" disabled><label>飞机位置</label><input type=\"text\" class=\"form-control form-boxed \" disabled style=\"margin-right:2px;\" id=\"latLngs_one\" value=\"" +
+        result.drone_lng + "," + result.drone_lat +
+        ";\"><input class=\"enter_map_two\" type=\"button\" value=\"回显地图\" onclick=\"echo_map()\" />" +
+        "<li><label>标注时间</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.marker_time +
+        "\" disabled><label>目标位置</label><input type=\"text\" class=\"form-control form-boxed \" disabled id=\"latLngs\"  style=\"margin-right:2px;\" value=\"" +
+        result.target_lat_lng +
+        "\"><input class=\"enter_map_two\" type=\"button\" value=\"回显标注\" onclick=\"marker(" + result.type +
+        ")\" /></li>" +
+        "<li><label>区域</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.region_name +
+        "\" disabled style=\"width:174px\"><label>天气情况</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.weather +
+        "\" disabled></li><li><label>PM2.5</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.pm25 +
+        "\" disabled><label>PM10</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.pm10 +
+        "\" disabled></li><li><label>TVOC</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.tvoc +
+        "\" disabled><label>甲醛</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.jiaquan +
+        "\"disabled></li><li><label>温度</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.wendu +
+        "\" disabled><label>湿度</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.shidu +
+        "\" disabled></li><li><label>面积</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.area +
+        "\" disabled><label>周长</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" + result.side_length +
+        "\" disabled></li><li><label>类型</label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>单点</span></label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>测距</span></label><label class=\"radio\"><input type=\"radio\" name=\"screening\" disabled><span>测面</span></label><label>边长</label><input type=\"text\" class=\"form-control form-boxed\" value=\"" +
+        result.side_length +
+        "\" disabled></li><li><label>标注说明</label><textarea class=\"form-control form-boxed\" disabled>" + result.marker_desc +
+        "</textarea></li><li><label>标注图片</label><div id=\"imgBox1\" style=\"display:inline-block\"><img src=\"" +
+        Public_address + "uploads/" + result.img_name +
+        "\" onerror=\"javascript:this.src='img/timg.png'\" class=\"imgbig\"></div></li></ul>"
     });
-});
-// 回显飞机点
-function echo_map() {
-    var lnglatXY=[];
+    $("input[name='screening']").eq(result.type).prop('checked', 'checked');
+  }
+  // 放大图片
+  $("body").on('click', '.imgbig', function () {
+    var src = $(this).attr("src");
+    var $h1 = "<img src=\"" + src + "\" style=\"height:98%;width:98%\">";
+    layer.confirm('' + $h1 + '', {
+      type: 0,
+      anim: 7,
+      skin: 'layui-layer-molv',
+      title: '图片预览',
+      area: ['570px', '500px;'],
+      shadeClose: true,
+      btnAlign: 'c'
+    }, function () {
+      event.preventDefault();
+      event.stopPropagation();
+      layer.closeAll('dialog');
+    }, function () {});
+  });
+  // 回显飞机点
+  function echo_map() {
+    var lnglatXY = [];
     layer.open({
-        type: 1,
-        skin: 'layui-layer-molv', //样式类名
-        closeBtn: 1, //关闭按钮
-        anim: 2,
-        btnAlign: 'c',
-        area: ['600px', '440px;'],
-        title:"地图信息",
-        shadeClose: true, //开启遮罩关闭
-        content:"<div id=\"container\" style=\"width:600px;height:400px\"></div>",
-        success:function(){
-          var map = new AMap.Map("container", {
-              resizeEnable: true,
-              zoom:11
-          });
-          var type= new AMap.MapType({
-              defaultType:1,
-              showRoad:true
-          });
-          map.addControl(type);
-          if ($("#latLngs_one").val()!="113.8888888888,113.8888888888;") {
-            map.clearMap();
-            var latLngs=$("#latLngs_one").val().split(";");
-            latLngs.pop();
-            var lnglatXY=JSON.parse('[' + String(latLngs) + ']');
-            var marker = new AMap.Marker({
-              position: lnglatXY,
-              map: map
-            });
-            marker.setMap(map);
-            map.setZoomAndCenter(16, lnglatXY);
-          }else{
-            layer.msg("飞机位置为空")
-          }
-        }
-    })
-};
-// 回显标注点
-function marker(pointTpye){
-  var lnglatXY=[];
-  layer.open({
-    type: 1,
-    skin: 'layui-layer-molv', //样式类名
-    closeBtn: 1, //关闭按钮
-    anim: 2,
-    btnAlign: 'c',
-    area: ['600px', '440px;'],
-    title:"地图信息",
-    shadeClose: true, //开启遮罩关闭
-    content:"<div id=\"container\" style=\"width:600px;height:400px\"></div>",
-    success:function(){
-      var map_two = new AMap.Map("container", {
+      type: 1,
+      skin: 'layui-layer-molv', //样式类名
+      closeBtn: 1, //关闭按钮
+      anim: 2,
+      btnAlign: 'c',
+      area: ['600px', '440px;'],
+      title: "地图信息",
+      shadeClose: true, //开启遮罩关闭
+      content: "<div id=\"container\" style=\"width:600px;height:400px\"></div>",
+      success: function () {
+        var map = new AMap.Map("container", {
           resizeEnable: true,
-          zoom:11
-      });
-      var type= new AMap.MapType({
-        defaultType:1,
-        showRoad:true
-      });
-      map_two.addControl(type);
-      var latLngs=$("#latLngs").val().split("*");
-      latLngs.pop();
+          zoom: 11
+        });
+        var type = new AMap.MapType({
+          defaultType: 1,
+          showRoad: true
+        });
+        map.addControl(type);
+        if ($("#latLngs_one").val() != "113.8888888888,113.8888888888;") {
+          map.clearMap();
+          var latLngs = $("#latLngs_one").val().split(";");
+          latLngs.pop();
+          var lnglatXY = JSON.parse('[' + String(latLngs) + ']');
+          var marker = new AMap.Marker({
+            position: lnglatXY,
+            map: map
+          });
+          marker.setMap(map);
+          map.setZoomAndCenter(16, lnglatXY);
+        } else {
+          layer.msg("飞机位置为空")
+        }
+      }
+    })
+  };
+  // 回显标注点
+  function marker(pointTpye) {
+    var lnglatXY = [];
+    layer.open({
+      type: 1,
+      skin: 'layui-layer-molv', //样式类名
+      closeBtn: 1, //关闭按钮
+      anim: 2,
+      btnAlign: 'c',
+      area: ['600px', '440px;'],
+      title: "地图信息",
+      shadeClose: true, //开启遮罩关闭
+      content: "<div id=\"container\" style=\"width:600px;height:400px\"></div>",
+      success: function () {
+        var map_two = new AMap.Map("container", {
+          resizeEnable: true,
+          zoom: 11
+        });
+        var type = new AMap.MapType({
+          defaultType: 1,
+          showRoad: true
+        });
+        map_two.addControl(type);
+        var latLngs = $("#latLngs").val().split("*");
+        latLngs.pop();
 
-      if (pointTpye==0) {
-        for(var i=0;i<latLngs.length;i++){
-          lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
+        if (pointTpye == 0) {
+          for (var i = 0; i < latLngs.length; i++) {
+            lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
+          }
+          var marker = new AMap.Marker({
+            position: lnglatXY[0],
+            map: map_two
+          });
+          marker.setMap(map_two);
+          // map_two.setFitView(15);// 执行定位
+          map_two.setZoomAndCenter(16, lnglatXY[0]);
         }
-        var marker = new AMap.Marker({
-          position: lnglatXY[0],
-          map: map_two
-        });
-        marker.setMap(map_two);
-        // map_two.setFitView(15);// 执行定位
-        map_two.setZoomAndCenter(16, lnglatXY[0]);
-      }
-      if (pointTpye==1) {
-        map_two.clearMap();
-        for(var i=0;i<latLngs.length;i++){
-          lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
-        }
-        var polyline = new AMap.Polyline({
-            path:lnglatXY,          //设置线覆盖物路径
-            strokeColor: "#4196e1", //线颜色
-            strokeOpacity: 1,       //线透明度
-            strokeWeight: 5,        //线宽
-            strokeStyle: "solid",   //线样式
-            strokeDasharray: [10, 5] //补充线样式
-        });
-        polyline.setMap(map_two);
-        map_two.setZoomAndCenter(16, lnglatXY[0]);
-      }
-      if (pointTpye==2) {
-        map_two.clearMap();
-        for(var i=0;i<latLngs.length;i++){
-          lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
-        }
-        var polygon = new AMap.Polygon({
-            path: lnglatXY,//设置多边形边界路径
+        if (pointTpye == 1) {
+          map_two.clearMap();
+          for (var i = 0; i < latLngs.length; i++) {
+            lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
+          }
+          var polyline = new AMap.Polyline({
+            path: lnglatXY, //设置线覆盖物路径
             strokeColor: "#4196e1", //线颜色
             strokeOpacity: 1, //线透明度
-            strokeWeight: 2,    //线宽
+            strokeWeight: 5, //线宽
+            strokeStyle: "solid", //线样式
+            strokeDasharray: [10, 5] //补充线样式
+          });
+          polyline.setMap(map_two);
+          map_two.setZoomAndCenter(16, lnglatXY[0]);
+        }
+        if (pointTpye == 2) {
+          map_two.clearMap();
+          for (var i = 0; i < latLngs.length; i++) {
+            lnglatXY.push(JSON.parse('[' + String(latLngs[i]) + ']'));
+          }
+          var polygon = new AMap.Polygon({
+            path: lnglatXY, //设置多边形边界路径
+            strokeColor: "#4196e1", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 2, //线宽
             fillColor: "#4196e1", //填充色
-            fillOpacity: 0.35//填充透明度
-        });
-        polygon.setMap(map_two);
-        map_two.setZoomAndCenter(16, lnglatXY[0]);
+            fillOpacity: 0.35 //填充透明度
+          });
+          polygon.setMap(map_two);
+          map_two.setZoomAndCenter(16, lnglatXY[0]);
+        }
       }
-    }
-  })
-}
-callback1();
-query();
+    })
+  }
+  callback1();
+  query();
 </script>
+
 </html>

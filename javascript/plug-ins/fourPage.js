@@ -182,7 +182,7 @@
     };
     $.fn.createPage = function(options){
         var args = $.extend({
-            pageCount : 10,
+            pageCount : 20,
             current : 1,
             backFn : function(){}
         },options);

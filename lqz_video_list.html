@@ -8,14 +8,14 @@
     <script src="javascript/plug-ins/pagination.js"></script>
     <script type="text/javascript" src="js/styleMaps.js"></script>
     <style type="text/css">
-    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;background-color:#fff;height:90%;}
+    .tableDiv_fire{top:50px;right:0;left:230px;z-index:19;overflow:auto;height:auto;background-color:#fff;}
     .search_area{height:40px;border:1px solid #e6e6e6;}
     .search_area .search_container{margin-top:5px;}
     .search_container .user{margin-right:10px;padding-left:5px;width:100px;height:25px;border:1px solid #aaa;border-radius:3px;}
     .search_area .search_container select{width:100px;border-radius:3px;}
-    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#addc9d;color:#fff;}
     .container_box{background-color:#fff;}
-    .container_box .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .container_box .report_btn{margin:20px 0 20px 30px;width:120px;height:35px;border:none;background-color:#addc9d;color:#fff;}
     .container_box .report_table{padding-left:30px;width:95%;}
     .report_table .table_flex{position:relative;display:inline-block;margin:0 3% 5% 0;width:30%;}
     .report_table .table_flex video{border:1px solid #e5e5e5;height:210px!important;}
@@ -83,7 +83,7 @@
             <div class="report_table" id="complete_report">
             </div>
              <!-- 分页 -->
-            <div class="office_page" style="text-align: center;margin-bottom: 20px;">
+            <div class="office_page" style="text-align: center;">
                 <span>总记录:<i class="end_total complete_total"></i>条</span>
                 <div class="pagination complete_page">
                     <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="tcdNumber">2</a><a href="javascript:;" class="tcdNumber">3</a><a href="javascript:;" class="tcdNumber">4</a><a href="javascript:;" class="nextPage">下一页</a>
@@ -127,7 +127,7 @@ function video_list() {
 
                                         for(var i=0;i<result.length;i++){
                                             $("#complete_report").append(
-                                                "<div class='table_flex'><video style='width: 100%' src=" +Public_address+'uploads/'+ result[i].path + " controls='controls'></video><div class='describ'><p class='title'>视频名称：" + result[i].video_name + "</p><p>视频描述：" + result[i].video_desc + "<span style='float: right;color:#01dacf'>" + videotype.get(result[i].video_type) + "</span></p><p>上传者：" + result[i].addName + "</p><p>上传时间：" + result[i].update_time + "</p><a class='address_remove' onclick='address_remove(" + result[i].id + ")'>删除</a><p class='address' data-map="+result[i].location+"><i class='icon-map-marker'></i>" + result[i].region_name + "</p></div></div>"
+                                                "<div class='table_flex'><video style='width: 100%' src=" +Public_address+'uploads/'+ result[i].path + " controls='controls'></video><div class='describ'><p class='title'>视频名称：" + result[i].video_name + "</p><p>视频描述：" + result[i].video_desc + "<span style='float: right;color:#addc9d'>" + videotype.get(result[i].video_type) + "</span></p><p>上传者：" + result[i].addName + "</p><p>上传时间：" + result[i].update_time + "</p><a class='address_remove' onclick='address_remove(" + result[i].id + ")'>删除</a><p class='address' data-map="+result[i].location+"><i class='icon-map-marker'></i>" + result[i].region_name + "</p></div></div>"
                                             );
                                         }
                                         var userLevel = sessionStorage.getItem("userLevel");
@@ -141,7 +141,7 @@ function video_list() {
                     });
                     for(var i=0;i<result.length;i++){
                         $("#complete_report").append(
-                            "<div class='table_flex'><video style='width: 100%' src=" +Public_address+'uploads/'+ result[i].path + " controls='controls'></video><div class='describ'><p class='title'>视频名称：" + result[i].video_name + "</p><p>视频描述：" + result[i].video_desc + "<span style='float: right;color:#01dacf'>" + videotype.get(result[i].video_type) + "</span></p><p>上传者：" + result[i].addName + "</p><p>上传时间：" + result[i].update_time + "</p><a class='address_remove' onclick='address_remove(" + result[i].id + ")'>删除</a>" +
+                            "<div class='table_flex'><video style='width: 100%' src=" +Public_address+'uploads/'+ result[i].path + " controls='controls'></video><div class='describ'><p class='title'>视频名称：" + result[i].video_name + "</p><p>视频描述：" + result[i].video_desc + "<span style='float: right;color:#addc9d'>" + videotype.get(result[i].video_type) + "</span></p><p>上传者：" + result[i].addName + "</p><p>上传时间：" + result[i].update_time + "</p><a class='address_remove' onclick='address_remove(" + result[i].id + ")'>删除</a>" +
                             "<p class='address' data-map="+result[i].location+"><i class='icon-map-marker'></i>" + result[i].region_name + "</p></div></div>"
                         );
                     }

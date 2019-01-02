@@ -26,7 +26,6 @@ function login() {
 			data: {"tel":name,"password":pwd,"client":1,"verity_code":code,"session_id":session_id,"mds":mds},
 			async:false,
 			success : function(element) {
-				console.log(element);
 				if(element.code == "s_ok"){
 					var name=element.var.name;//用户姓名
 					// var appType=element.var.mold;//用户权限
@@ -48,10 +47,13 @@ function login() {
 					sessionStorage.setItem("userLevel",userLevel);
 					sessionStorage.setItem("imageHead",imageHead);
 					sessionStorage.setItem("city",city);
-					location.href='index.html';
+					//location.href='index.html';
+					window.open(Public_address+'/HNLYT/index.html');
+					// window.open('http://127.0.0.1:8081/fire_hunan/index.html');
+					// window.open('http://127.0.0.1:8081/fire_refactor/index.html');
+
 				}else if(element.code == "error"){
 					// $("#error_msg").html(element.var);
-					console.log('错误');
 					alert(element.var);
 				}
 			},

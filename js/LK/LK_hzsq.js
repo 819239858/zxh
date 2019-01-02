@@ -16,7 +16,7 @@ function markerClick(marker,data){
 	info.push("<div><span style=\"color:#262626;font-size:14px\">等级 : </span>"+fireMaps.get(data.fire_level)+"<span style=\"color:#262626;font-size:14px;margin-left:20px\">火灾发生时间 : </span>"+data.happen_time+"</div> ");
 	info.push("<div><span style=\"color:#262626;font-size:14px\">上报人 : </span>"+data.name+"<span style=\"color:#262626;font-size:14px;margin-left:20px\">火灾状态 : </span>"+fireStatus.get(data.status)+"</div> ");
 	info.push("<div><span style=\"color:#262626;font-size:14px\">上报人电话: </span>"+data.tel+"</div> ");
-	info.push("<div style=\"text-align:center\"><button style=\"width:100px;height:30px;border:none;border-radius:3px;color:#fff;background:#01dacf\" onclick=\"report_index("+data.status+","+data.id+")\">详情</button></div>")   
+	info.push("<div style=\"text-align:center\"><button style=\"width:100px;height:30px;border:none;border-radius:3px;color:#fff;background:#addc9d\" onclick=\"report_index("+data.status+","+data.id+")\">详情</button></div>")   
 	info.push("</div>");
 	marker.content = info.join("<br/>")	
 	AMap.event.addListener(marker, 'click', function() {

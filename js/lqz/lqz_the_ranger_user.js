@@ -276,7 +276,7 @@ function report_index(fireId) {
                     
                 }
 
-                $("#character").val(result.role); $("#qx_yh input").attr("disabled","disabled");
+                $("#character").val(result.role_id); $("#qx_yh input").attr("disabled","disabled");
                 //判断是否为当前用户，显示密码
                 sessionStorage.getItem("uname")==result.tel?$("#password").show():$("#password").hide();
                 sum2=[];

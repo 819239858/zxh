@@ -118,7 +118,7 @@
                         if (data.code =="s_ok") {
                             // 预览
                             videoName.push(data.var.join());
-                            $("."+opt.id+"").html("<span style='margin-left:20px;cursor: pointer;white-space: inherit;' onclick=\"wj_remove('"+data.var+"',this)\">"+imgArr.join()+"<i class='icon-remove' style='color:#01dacf;'></i></span>");
+                            $("."+opt.id+"").html("<span style='margin-left:20px;cursor: pointer;white-space: inherit;' onclick=\"wj_remove('"+data.var+"',this)\">"+imgArr.join()+"<i class='icon-remove' style='color:#addc9d;'></i></span>");
 
                             layer.msg('上传成功');
                             if(imgArr.length>0){

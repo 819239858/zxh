@@ -222,7 +222,7 @@ function addHotMarkerClick(marker, data,location) {
         + data.publishName
         + "</span></li><li><label>位置：</label><span>"
         + data.userLongitude
-        + ""
+        + ","
         + data.userLatitude
         + "</span></li><li><label>PM2.5：</label>"
         + data.pm25
@@ -263,7 +263,7 @@ function addHotMarkerClick(marker, data,location) {
         + data.publishName
         + "</span></li><li><label>位置：</label><span>"
         + data.userLongitude
-        + ""
+        + ","
         + data.userLatitude
         + "</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span></li>" +
         "<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName + ")\">发送信息</label></li>" +
@@ -297,7 +297,7 @@ function addHotMarkerClick(marker, data,location) {
         + data.publishName
         + "</span></li><li><label>位置：</label><span>"
         + data.userLongitude
-        + ""
+        + ","
         + data.userLatitude
         + "</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span></li>" +
         // "<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName +")\">发送信息</label></li>" +
@@ -401,7 +401,7 @@ function addHotMarkerClick1(marker, data,location) {
             + data.publishName
             + "</span></li><li><label>位置：</label><span>"
             + data.userLongitude
-            + ""
+            + ","
             + data.userLatitude
             + "</span></li><li><label>PM2.5：</label>"
             + data.pm25
@@ -442,7 +442,7 @@ function addHotMarkerClick1(marker, data,location) {
             + data.publishName
             + "</span></li><li><label>位置：</label><span>"
             + data.userLongitude
-            + ""
+            + ","
             + data.userLatitude
             + "</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span></li>" +
             "<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName + ")\">发送信息</label></li>" +
@@ -477,10 +477,10 @@ function addHotMarkerClick1(marker, data,location) {
             + data.publishName
             + "</span></li><li><label>位置：</label><span>"
             + data.userLongitude
-            + ""
+            + ","
             + data.userLatitude
             + "</span></li><li><label>描述：</label><span>我正在巡逻，有事可以call我...</span></li>" +
-            // "<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName +")\">发送信息</label></li>" +
+            "<li><label class='label_information' onclick=\"message('" + data.uid + "','" + data.name + "'," + data.publishName +")\">发送信息</label></li>" +
             "</ul>"
     }
 

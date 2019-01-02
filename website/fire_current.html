@@ -97,10 +97,11 @@
     });
     // 跳转详情
     function disable(result) {
+        console.log(result);
         $("#details").load("website/information_details.html",function(){
             $(".details_title").html(result.title);
-            $(".details_name").html("上传者："+result.publishName);
-            $(".details_date").html("上传时间："+result.publishTime);
+            $(".details_name").html("上传者："+result.publish_name);
+            $(".details_date").html("上传时间："+result.create_time);
             $(".details_content").load(Public_address+"uploads/"+result.url);
         });
     }

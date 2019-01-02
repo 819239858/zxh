@@ -34,22 +34,11 @@ var text=[];
 function confirm() {
     ss = []; username = []; ss_sx = []; username1 = [];
     text=[];
-    // var confirm = "<ul class='form_sub form_sub_release'><li><label>任务名称</label><input type=\"text\" class=\"form-control form-boxed\" disabled value='地面巡护任务'><label>任务类型</label><select class='remove_disabled' id='task_type' style='width:147px;'><option value='1'>森林火灾调查</option><option value='2'>林业有害生物</option><option value='3'>破坏森林资源调查</option><option value='4'>偷猎野生动物调查</option></select></li><li><label>区域</label>" +
-    //     "<select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\">" +
-    //     "</select><select id=\"city_two\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"village\" class=\"remove_disabled\" ></select><label>地图位置<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" id=\"latLngs2\" disabled><input class=\"enter_map_two\" type=\"button\" value=\"进入地图\" onclick=\"layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#latLngs2').val(localStorage.getItem('site'));}})\" /></li><li><label>发布人</label><input type='text' id='taskAddName' class=\"form-control form-boxed\" disabled value=\"\"><label>任务截止时间<i style='color:red'>*</i></label><input type=\"text\" id=\"creactTime\" onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d {%H+1}:%m:%s'})\" class=\"Wdate remove_disabled form-control\" style=\"width:180px\" name=\"creactTime\" /></li><li style=\"position:relative;\">" +
-    //     "<label>指派对象<i style='color:red'>*</i></label><label class=\"radio\"><input type=\"radio\" value=\"search\"  name=\"screening\" checked=\"checked\"/><span>搜索</span></label><label class=\"radio\"><input type=\"radio\" value=\"screening\" name=\"screening\"/><span>筛选</span></label><input id='toName' class='form-control form-boxed toName1' disabled value='' onfocus='setStyle()'><div class=\"screening\"><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value=\"2\">护林员</option><option value=\"3\">消防员</option></select>" +
-    //     "<select  id=\"hot_city\" onchange=\"user_query(this)\">" +
-    //     "</select>" +
-    //     "<select id=\"city_sx\" class='remove_disabled' onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\"></select></div><div id=\"user_query\"></div><div id=\"user_query1\"></div></li><li>" +
-    //     "<label>任务描述</label><textarea class=\"form-control form-boxed remove_disabled\" id=\"desc\"></textarea></li>" +
-    //     "<li id=\"upimg\">" + "<label>图片上传</label><input type=\"file\" name=\"photoName1\" id=\"photoName1\" class=\"upFileimg\"  accept=\"image/png,image/jpg,image/gif,image/JPEG\"/><img class=\"fileInput\" src=\"img/lqz/sc.png\" onclick=\"$('#photoName1').click()\"/>" +
-    //     "<div id=\"imgBox11\"></div></li></ul>";
     var confirm = "<ul class='form_sub form_sub_release form_sub_release1'><li><label>任务名称</label><input type=\"text\" class=\"form-control form-boxed\" disabled value='地面巡护任务'><label>任务类型</label><select class='remove_disabled' id='task_type' style='width:147px;'><option value='1'>森林火灾调查</option><option value='2'>林业有害生物</option><option value='3'>破坏森林资源调查</option><option value='4'>偷猎野生动物调查</option></select></li><li><label>区域</label>" +
-    "<select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\">" +
+    "<select id=\"task_province\" class=\"remove_disabled\" onchange=\"callback(value,this)\">" +
     "</select><select id=\"city_two\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"village\" class=\"remove_disabled\" ></select><label>地图位置<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" id=\"latLngs2\" disabled><input class=\"enter_map_two\" type=\"button\" value=\"进入地图\" onclick=\"layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#latLngs2').val(localStorage.getItem('site'));}})\" /></li><li><label>发布人</label><input type='text' id='taskAddName' class=\"form-control form-boxed\" disabled value=\"\"><label>任务截止时间<i style='color:red'>*</i></label><input type=\"text\" id=\"creactTime\" onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d {%H+1}:%m:%s'})\" class=\"Wdate remove_disabled form-control\" style=\"width:180px\" name=\"creactTime\" /></li>" +
-    "<li style=\"position:relative;\" class=\"label3\"><label>指派对象<i style='color:red'>*</i></label><div id=\"getPeopleByAll\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='3'>消防员</option><option value='2'>护林员</option></select>" +
-    
-    "<select id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query1\"></div></li><li>" +
+    "<li style=\"position:relative;\" class=\"label3\"><label>指派对象<i style='color:red'>*</i></label><div id=\"getPeopleByAll\"></div><div class=\"sreenring\"><input id='toName' class='form-control form-boxed toName1' placeholder='搜索' ><div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query3(this,value,value)\"><option value='3'>消防员</option><option value='2'>护林员</option></select>" +
+    "<select id=\"hot_city\" onchange=\"user_query(value,this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(value,this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" onchange=\"user_query(value,this)\"></select></div><div id=\"user_query1\"></div></div></li><li>" +
     "<label>任务描述</label><textarea class=\"form-control form-boxed remove_disabled\" id=\"desc\"></textarea></li>" +
     "<li id=\"upimg\">" + "<label>图片上传</label><input type=\"file\" name=\"photoName1\" id=\"photoName1\" class=\"upFileimg\"  accept=\"image/png,image/jpg,image/gif,image/JPEG\"/><img class=\"fileInput\" src=\"img/lqz/sc.png\" onclick=\"$('#photoName1').click()\"/>" +
     "<div id=\"imgBox11\"></div></li></ul>";
@@ -60,7 +49,7 @@ function confirm() {
         anim: 2,
         btn: ['发布', '取消'],
         btnAlign: 'c',
-        area: ['650px', '500px'],
+        area: ['650px', '530px'],
         title: "发布任务",
         shadeClose: true, //开启遮罩关闭
     }, function () {
@@ -70,14 +59,13 @@ function confirm() {
         //发布任务
         var task_type = $('#task_type').val();
         var task_end_time = $('#creactTime').val();
-        var task_region = $("#province").val();
-        $("#city_two").val() == '' || $("#city_two").val() == undefined ? task_region = $("#province").val() : $("#village").val() == '' || $("#village").val() == undefined ? task_region = $("#city_two").val() : task_region = $("#village").val();
+        var task_region = $("#task_province").val();
+        $("#city_two").val() == '' || $("#city_two").val() == undefined ? task_region = $("#task_province").val() : $("#village").val() == '' || $("#village").val() == undefined ? task_region = $("#city_two").val() : task_region = $("#village").val();
         // var to_name = $('#toName').attr("data-name");
         // if (to_name == undefined || to_name == '') { to_name = $('#toName').val(); }
         var to_name=text.join(",");
         var task_latlng = $('#latLngs2').val();
         var task_title = "地面监测任务";
-        console.log(to_name);
         var arry = [];
         if (imgName.length > 0) {
             for (var i = 0; i < imgName.length; i++) {
@@ -130,15 +118,12 @@ function confirm() {
         }
     }, function () {
         layer.closeAll('page');
+        text=[];
     });
-
-
-    var proBySet = localStorage.getItem('Public_city');
-    var allBySet = localStorage.getItem('all_city');
-    $('#province').html(allBySet);
-    $('#hot_city').html(proBySet);
-
-
+    var all_citys=localStorage.getItem('all_city');
+    $('#task_province').html(all_citys);
+    $('#hot_city').html(all_citys);
+    callback1();
     $("#photoName1").takungaeImgup({
         formData: {
             "path": "task_image",
@@ -154,18 +139,17 @@ function confirm() {
         $(".screening").hide();
     })
 };
-// 搜索用户查询
-function user_query(e, id, price) {
+// 搜索区域查询---人员
+function user_query(region,e, id, price) {
+    console.log('2');
     if (id == undefined) {
         id = $("#people").val();
     }
     if (price == undefined) {
         price = '';
     }
-    
-    var region = $("#hot_city").val();
-    $("#city_sx").val() == '' || $("#city_sx").val() == undefined ? region = $("#hot_city").val() : $("#area_sx").val() == '' || $("#area_sx").val() == undefined ? region = $("#city_sx").val() : region = $("#area_sx").val();
-    
+    // var region = $("#hot_city").val();
+    // $("#city_sx").val() == '' || $("#city_sx").val() == undefined ? region = $("#hot_city").val() : $("#area_sx").val() == '' || $("#area_sx").val() == undefined ? region = $("#city_sx").val() : region = $("#area_sx").val();
     var dom = $(e).next();
     sendAjax({
         "url": "fire/region/getRegion",
@@ -178,7 +162,7 @@ function user_query(e, id, price) {
                 $(dom).next("#village").children('option').remove();
                 $(dom).append("<option></option>");
                 if (data.code == "s_ok") {
-                    $.each(data.var, function (i, ok) {
+                    $.each(data.var, function (i, ok) { 
                         var op = $("<option></option>").attr({ 'value': ok.id, }).html(ok.name);
                         $(dom).append(op);
                     });
@@ -195,30 +179,96 @@ function user_query(e, id, price) {
         "url": "fire/user/getUserByNameOrTel",
         "data": { "mold_type": id, "region": region }, "callback": function (data) {
             if (data.code == "s_ok") {
-                $("#user_query1").children('span').remove();
-                var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area option:selected').text()==''?$('#city_sx option:selected').text():$('#area option:selected').text());
-                if(city=='省'){
-                    city='湖南省'
+                    $("#user_query1").children('p').remove();
+                    var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area_sx option:selected').text()==''?$('#city_sx option:selected').text():$('#area_sx option:selected').text());
+                    var pro=localStorage.getItem('pro_setItem');
+                    if(city=='省' || city=='城市'){
+                        city=pro;
+                    }
+                    if (price != '') {
+                        $("#toName").attr("data-name", '');
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + id + "_"+ region +"\">"+city+"</p>");
+                    } else {
+                        $("#toName").attr("data-name", '');
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + id + "_" + region + "\">"+city+"</p>");
+                    }
+                if (data.var.length != 0) {
+                    for (var i = 0; i < data.var.length; i++) {
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + data.var[i].tel + "\">" + data.var[i].name + '-'+data.var[i].tel+ "</p>");
+                    }
                 }
-                if (price != '') {
-                    $("#toName").attr("data-name", '');
-                    $("#user_query1").append("<span onclick=\"selected(this)\" data-name=\"" + id + "_"+ region +"\">"+city+"</span>");
-                } else {
-                    $("#toName").attr("data-name", '');
-                    $("#user_query1").append("<span onclick=\"selected(this)\" data-name=\"" + id + "_" + region + "\">"+city+"</span>");
-                }
-                for (var i = 0; i < data.var.length; i++) {
-                    $("#user_query1").append("<span onclick=\"selected(this)\" data-name=\"" + data.var[i].tel + "\">" + data.var[i].name + "</span>");
-                }
-            } else if (data.var.length == 0) {
-                layer.msg('查询数据为空');
-                $("#user_query1").children('span').remove();
             } else {
                 layer.msg(data.var);
             }
         }
     });
 }
+//切换护林员和消防员的时候，搜索人员
+function user_query3(e, id, price){
+    console.log('1');
+    if (id == undefined) {
+        id = $("#people").val();
+    }
+    if (price == undefined) {
+        price = '';
+    }
+    var region = $("#hot_city").val();
+    $("#city_sx").val() == '' || $("#city_sx").val() == undefined ? region = $("#hot_city").val() : $("#area_sx").val() == '' || $("#area_sx").val() == undefined ? region = $("#city_sx").val() : region = $("#area_sx").val();
+    
+    var dom = $(e).next();
+    sendAjax({
+        "url": "fire/region/getRegion",
+        "data": { "parentId": region },
+        "callback": function (data) {
+            if (price == '') {
+                $(dom).children('option').remove();
+                $(dom).next("#area").children('option').remove();
+                $(dom).next("#area_sx").children('option').remove();
+                $(dom).next("#village").children('option').remove();
+                $(dom).append("<option></option>");
+                if (data.code == "s_ok") {
+                    $.each(data.var, function (i, ok) { 
+                        var op = $("<option></option>").attr({ 'value': ok.id, }).html(ok.name);
+                        $(dom).append(op);
+                    });
+                } else {
+                    layer.msg(data.var);
+                }
+            }
+        },
+        error: function (e) {
+            layer.msg("错误！！");
+        }
+    });
+    sendAjax({
+        "url": "fire/user/getUserByNameOrTel",
+        "data": { "mold_type": id, "region": region }, "callback": function (data) {
+            if (data.code == "s_ok") {
+                    $("#user_query1").children('p').remove();
+                    var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area_sx option:selected').text()==''?$('#city_sx option:selected').text():$('#area_sx option:selected').text());
+                    var pro=localStorage.getItem('pro_setItem');
+                    if(city=='省' || city=='城市'){
+                        city=pro;
+                    }
+                    if (price != '') {
+                        $("#toName").attr("data-name", '');
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + id + "_"+ region +"\">"+city+"</p>");
+                    } else {
+                        $("#toName").attr("data-name", '');
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + id + "_" + region + "\">"+city+"</p>");
+                    }
+                if (data.var.length != 0) {
+                    for (var i = 0; i < data.var.length; i++) {
+                        $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\"" + data.var[i].tel + "\">" + data.var[i].name + "</p>");
+                    }
+                }
+            } else {
+                layer.msg(data.var);
+            }
+        }
+    });
+}
+//输入框搜索
 $("body").on('keyup', '.toName1', function () {
     var key = $("#toName").val();
     if (key != "") {
@@ -226,14 +276,15 @@ $("body").on('keyup', '.toName1', function () {
             "url": "fire/user/getUserByNameOrTel",
             "data": { "name": key }, "callback": function (data) {
                 if (data.code == 's_ok') {
+                    $("#user_query1").children('p').remove();
                     if (data.var.length < 1) {
-                        $("#user_query1").children('span').remove();
-                        $("#user_query1").hide();
+                        $("#user_query1").children('p').remove();
+                
                     } else {
-                        $("#user_query1").children('span').remove();
+                        $("#user_query1").children('p').remove();
                         $("#user_query1").show();
                         for (var i = 0; i < data.var.length; i++) {
-                            $("#user_query1").append("<span onclick=\"selected_two(this)\" data-name=\"" + data.var[i].tel + "\">" + data.var[i].name + "</span>");
+                            $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name +'-'+data.var[i].tel+ "</p>");
                         }
                     }
                 } else {
@@ -252,12 +303,12 @@ function selected(e) {
     console.log(text);
     var number=e.getAttribute('data-name');
     if(text.length<1){
-        var html="<div class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></div>";
+        var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
         text.push(number); 
         $("#getPeopleByAll").append(html); 
     }else{
         if(text.indexOf(number)==-1){
-            var html="<div class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></div>";
+            var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
             text.push(number); 
             $("#getPeopleByAll").append(html); 
         }
@@ -273,39 +324,7 @@ function delThis(e){
 
 
 var ss_sx = []; var username1 = [];
-function selected_two(e) {
-    $("#user_query1").hide();
-    if (ss_sx.indexOf($(e).html()) == -1) {
-        ss_sx.push($(e).attr("data-name"));
-    }
-    var sss_sx = ss_sx.join(",");
-    // username1.push($(e).attr("data-name"));
-    $("#toName").val(sss_sx);
-    $("#toName").attr("data-name", username1);
-    // $(e).remove();
-    username1 = []; ss_sx = [];
-};
-// 筛选搜索切换
-$("body").on('click', 'input[type="radio"]', function () {
-    if ($(this).val() != "screening") {
-        $(".screening").hide();
-        $("#user_query").hide();
-        $("#user_query1").show();
-        $("#toName").val("");
-        $("#toName").removeAttr("data-name");
-        ss_sx = [];
-        $("#toName").addClass("toName1");
-    } else {
-        $(".screening").show();
-        $("#user_query").show();
-        $("#user_query1").hide();
-        $("#toName").val("");
-        $("#toName").removeAttr("data-name");
-        ss = [];
-        username = [];
-        $("#toName").removeClass("toName1");
-    }
-});
+
 
 // 发布任务 关闭
 $('.gb').click(function () {
@@ -540,10 +559,10 @@ function toCenter(task_id, task_status) {
                         },
                         shadeClose: true, //开启遮罩关闭
 
-                        content: `<ul class="form_sub form_sub_release"><li><label>任务名称：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_title}"><label>任务类型：</label><input type="text" class="form-control form-boxed" disabled value="${rewutype.get(result.task_type)}"></li><li><label>任务区域：</label><input type="text" class="form-control form-boxed" readonly value="${result.region_name}" ><label>地图位置：</label><input type="text" class="form-control form-boxed"  value="${result.task_latlng}" readonly><button onclick="dthx(this,${result.pointType})" id='${result.task_latlng}' style="margin-left:3px;width:65px;border-radius:3px;background:#01dacf;color:#fff;border:none;padding:3px;">进入地图</button></li><li><label>发布人：</label><input type="text" class="form-control form-boxed" disabled value="${result.add_name}"><label>指派对象：</label><input type="text" class="form-control form-boxed" disabled value="${result.to_name}" ></li><li><label>接受人：</label><input type="text" class="form-control form-boxed" disabled value="${result.recv_name}"><label>发布时间：</label><input type="text" class="form-control form-boxed" value="${result.task_add_time}" disabled></li><li><label>截止时间：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_end_time}">
+                        content: `<ul class="form_sub form_sub_release"><li><label>任务名称：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_title}"><label>任务类型：</label><input type="text" class="form-control form-boxed" disabled value="${rewutype.get(result.task_type)}"></li><li><label>任务区域：</label><input type="text" class="form-control form-boxed" readonly value="${result.region_name}" ><label>地图位置：</label><input type="text" class="form-control form-boxed"  value="${result.task_latlng}" readonly><button onclick="dthx(this,${result.pointType})" id='${result.task_latlng}' style="margin-left:3px;width:65px;border-radius:3px;background:#addc9d;color:#fff;border:none;padding:3px;">进入地图</button></li><li><label>发布人：</label><input type="text" class="form-control form-boxed" disabled value="${result.add_name}"><label>指派对象：</label><input type="text" class="form-control form-boxed" disabled value="${result.to_name}" ></li><li><label>接受人：</label><input type="text" class="form-control form-boxed" disabled value="${result.recv_name}"><label>发布时间：</label><input type="text" class="form-control form-boxed" value="${result.task_add_time}" disabled></li><li><label>截止时间：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_end_time}">
                         <label>状态：</label><input type="text" class="form-control form-boxed" value="${rewuStatus.get(result.task_status)}" disabled></li><li>
                         <label>任务描叙：</label><textarea class="form-control form-boxed remove_disabled" readonly style='width: 146px;'>${result.task_desc}</textarea>
-                        <label>反馈内容：</label><textarea class="form-control form-boxed remove_disabled" disabled style='width: 146px;'>${feedback.get(result.task_result)}</textarea></li>
+                        <label>反馈内容：</label><textarea class="form-control form-boxed remove_disabled" disabled style='width: 146px;'>${result.task_result}</textarea></li>
                         <li><label>拒绝理由：</label><input  value="${result.refuse_reason}" type="text" class="form-control form-boxed" disabled /> </li>
                         <li id="task_img"><label>任务图片</label></li>
                         <li id="upimg"><label>反馈图片</label></li></ul>`
@@ -573,10 +592,10 @@ function toCenter(task_id, task_status) {
                         },
                         shadeClose: true, //开启遮罩关闭
 
-                        content: `<ul class="form_sub form_sub_release"><li><label>任务名称：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_title}"><label>任务类型：</label><input type="text" class="form-control form-boxed" disabled value="${rewutype.get(result.task_type)}"></li><li><label>任务区域：</label><input type="text" class="form-control form-boxed" readonly value="${result.region_name}" ><label>地图位置：</label><input type="text" class="form-control form-boxed"  value="${result.task_latlng}" readonly><button onclick="dthx(this,${result.pointType})" id='${result.task_latlng}' style="margin-left:3px;width:65px;border-radius:3px;background:#01dacf;color:#fff;border:none;padding:3px;">进入地图</button></li><li><label>发布人：</label><input type="text" class="form-control form-boxed" disabled value="${result.add_name}"><label>指派对象：</label><input type="text" class="form-control form-boxed" disabled value="${result.to_name}" ></li><li><label>接受人：</label><input type="text" class="form-control form-boxed" disabled value="${result.recv_name}"><label>发布时间：</label><input type="text" class="form-control form-boxed" value="${result.task_add_time}" disabled></li><li><label>截止时间：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_end_time}">
+                        content: `<ul class="form_sub form_sub_release"><li><label>任务名称：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_title}"><label>任务类型：</label><input type="text" class="form-control form-boxed" disabled value="${rewutype.get(result.task_type)}"></li><li><label>任务区域：</label><input type="text" class="form-control form-boxed" readonly value="${result.region_name}" ><label>地图位置：</label><input type="text" class="form-control form-boxed"  value="${result.task_latlng}" readonly><button onclick="dthx(this,${result.pointType})" id='${result.task_latlng}' style="margin-left:3px;width:65px;border-radius:3px;background:#addc9d;color:#fff;border:none;padding:3px;">进入地图</button></li><li><label>发布人：</label><input type="text" class="form-control form-boxed" disabled value="${result.add_name}"><label>指派对象：</label><input type="text" class="form-control form-boxed" disabled value="${result.to_name}" ></li><li><label>接受人：</label><input type="text" class="form-control form-boxed" disabled value="${result.recv_name}"><label>发布时间：</label><input type="text" class="form-control form-boxed" value="${result.task_add_time}" disabled></li><li><label>截止时间：</label><input type="text" class="form-control form-boxed" disabled value="${result.task_end_time}">
                         <label>状态：</label><input type="text" class="form-control form-boxed" value="${rewuStatus.get(result.task_status)}" disabled></li><li>
                         <label>任务描叙：</label><textarea class="form-control form-boxed remove_disabled" readonly style='width: 146px;'>${result.task_desc}</textarea>
-                        <label>反馈内容：</label><textarea class="form-control form-boxed remove_disabled" disabled style='width: 146px;'>${feedback.get(result.task_result)}</textarea></li>
+                        <label>反馈内容：</label><textarea class="form-control form-boxed remove_disabled" disabled style='width: 146px;'>${result.task_result}</textarea></li>
                         <li id="task_img"><label>任务图片</label></li>
                         <li id="upimg"><label>反馈图片</label></li></ul>`
                     });
@@ -684,9 +703,9 @@ function zdzx() {
                 var userLevel = sessionStorage.getItem("userLevel");
                 for (var i = 0; i < data.length; i++) {
                     if (userLevel != '1') {
-                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#01dacf' href='javascript:'>" + '详情' + "</a></td></tr>");
+                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#addc9d' href='javascript:'>" + '详情' + "</a></td></tr>");
                     } else {
-                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#01dacf' href='javascript:'>" + '详情' + "</a></td></tr>");
+                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#addc9d' href='javascript:'>" + '详情' + "</a></td></tr>");
                     }
                     switch (data[i].task_status) {
                         case "0":
@@ -736,7 +755,7 @@ function zdzx() {
                     var data = data.var.data;
                     $("#dmrw_tbody").html("");
                     for (var i = 0; i < data.length; i++) {
-                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#01dacf' href='javascript:'>" + '详情' + "</a></td></tr>");
+                        $("#dmrw_tbody").append("<tr><td>" + data[i].task_id + "</td><td>" + data[i].region_name + "</td><td>" + rewutype.get(data[i].task_type) + "</td><td>" + data[i].add_name + "</td><td>" + data[i].recv_name + "</td><td>" + data[i].task_add_time + "</td><td>" + data[i].task_end_time + "</td><td class='taskStatus_overdue'>" + rewuStatus.get(data[i].task_status) + "</td><td><a onclick='toCenter(" + data[i].task_id + "," + data[i].task_status + ");' style='color:#addc9d' href='javascript:'>" + '详情' + "</a></td></tr>");
                         switch (data[i].task_status) {
                             case "0":
                                 images = 'rw01.png';
@@ -780,7 +799,7 @@ zdzx();
 
 //卫星监测热点marker点击事件
 function addHotMarkerClick_two(marker, data) {
-    marker.content = "<div style=\"width:360px;font-family:'微软雅黑' \"><div><span style=\"color:#262626;font-size:14px;\">任务名称 : </span>" + data.task_title + "</div><br><div>" + "<span style=\"color:#262626;font-size:14px;\">区域 : </span>" + data.region_name + "</div><br><div><span style=\"color:#262626;font-size:14px\">类型 : </span>" + rewutype.get(data.task_type) + "<span style=\"color:#262626;font-size:14px;margin-left:30px\">发布时间 : </span>" + data.task_add_time + "</div><br><div><span style=\"color:#262626;font-size:14px\">发布人 : </span>" + data.add_name + "<span style=\"color:#262626;font-size:14px;margin-left:30px\">任务状态 : </span>" + rewuStatus.get(data.task_status) + "</div><br><div style=\"text-align:center\"><button style=\"width:100px;height:30px;border:none;border-radius:3px;color:#fff;background:#01dacf\" onclick='toCenter(" + data.task_id + "," + data.task_status + ");'>详情</button></div>"
+    marker.content = "<div style=\"width:360px;font-family:'微软雅黑' \"><div><span style=\"color:#262626;font-size:14px;\">任务名称 : </span>" + data.task_title + "</div><br><div>" + "<span style=\"color:#262626;font-size:14px;\">区域 : </span>" + data.region_name + "</div><br><div><span style=\"color:#262626;font-size:14px\">类型 : </span>" + rewutype.get(data.task_type) + "<span style=\"color:#262626;font-size:14px;margin-left:30px\">发布时间 : </span>" + data.task_add_time + "</div><br><div><span style=\"color:#262626;font-size:14px\">发布人 : </span>" + data.add_name + "<span style=\"color:#262626;font-size:14px;margin-left:30px\">任务状态 : </span>" + rewuStatus.get(data.task_status) + "</div><br><div style=\"text-align:center\"><button style=\"width:100px;height:30px;border:none;border-radius:3px;color:#fff;background:#addc9d\" onclick='toCenter(" + data.task_id + "," + data.task_status + ");'>详情</button></div>"
     AMap.event.addListener(marker, 'click', function () {
         infoWindow.setContent(marker.content);
         infoWindow.open(map, marker.getPosition());
@@ -814,7 +833,6 @@ function dthx(obj, postype) {
             var latLngs = $(obj).attr("id");
             var lnglat = latLngs.split(";");
             if (postype=="0") {
-                console.log(0)
                 var lnglat=latLngs.split(";");
                 lnglat=lnglat[0].split(",");
                 map.setZoomAndCenter(12, lnglat);
@@ -829,10 +847,8 @@ function dthx(obj, postype) {
               }
             
               if (postype=="1") {
-                console.log(1)
                 var lnglat=latLngs.split(";");
                 lnglat.pop();
-                 //lnglat  ["111.569998,28.381557", "112.119314,26.961065"]
                 var arr=[];
                 for(var i=0;i<lnglat.length;i++){
                     arr.push(lnglat[i].split(","));

@@ -28,22 +28,29 @@
 </div>
 <script>
     //新闻查询
-    $.ajax({
-        url : Public_address+"fire/news/listNewByCondition",
-        type : "post",
-        dataType : "json",
-        data: {"current_page":"1","status":"2","news_type":"3","per_page":"8"},
-        async:false,
-        success : function(data) {
-            if (data.code=="s_ok") {
-                if (data.var.total!=0) {
-                    var result=data.var.data;var num = '';
-                    $("#details .bd_one li").remove();
-                    $("#details .bd_one .end_total").html(data.var.total);
-                    num = data.var.total;
-                    for (let i = 0; i < result.length; i++) {
-                        $("#details .bd_one .office_page").before(
-                            `
+    function searchNews() {
+        $.ajax({
+            url: Public_address + "fire/news/listNewByCondition",
+            type: "post",
+            dataType: "json",
+            data: {
+                "current_page": "1",
+                "status": "2",
+                "news_type": "3",
+                "per_page": "8"
+            },
+            async: false,
+            success: function (data) {
+                if (data.code == "s_ok") {
+                    if (data.var.total != 0) {
+                        var result = data.var.data;
+                        var num = '';
+                        $("#details .bd_one li").remove();
+                        $("#details .bd_one .end_total").html(data.var.total);
+                        num = data.var.total;
+                        for (let i = 0; i < result.length; i++) {
+                            $("#details .bd_one .office_page").before(
+                                `
                             <li>
                                 <a class="title" href="javascript:;">${result[i].title}</a>
                                 <div class="mr-5 clearfix">
@@ -56,24 +63,29 @@
                                 </div>
                             </li>
                             `
-                        );
-                    }
-                    $(".complete_page").createPage({
-                        pageCount: Math.ceil(num / 8),
-                        current: 1,
-                        backFn: function(p) {
-                            $.ajax({
-                                url : "listNewsByCondition.htm",
-                                type : "post",
-                                dataType : "json",
-                                data: {"current_page":p,"status":"2","news_type":"3","per_page":"8"},
-                                async:false,
-                                success : function(data) {
-                                    var result=data.var.data;
-                                    $("#details .bd_one li").remove();
-                                    for (let i = 0; i < result.length; i++) {
-                                        $("#details .bd_one .office_page").before(
-                                            `
+                            );
+                        }
+                        $(".complete_page").createPage({
+                            pageCount: Math.ceil(num / 8),
+                            current: 1,
+                            backFn: function (p) {
+                                $.ajax({
+                                    url: Public_address + "fire/news/listNewByCondition",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                        "current_page": p,
+                                        "status": "2",
+                                        "news_type": "3",
+                                        "per_page": "8"
+                                    },
+                                    async: false,
+                                    success: function (data) {
+                                        var result = data.var.data;
+                                        $("#details .bd_one li").remove();
+                                        for (let i = 0; i < result.length; i++) {
+                                            $("#details .bd_one .office_page").before(
+                                                `
                                             <li>
                                                 <a class="title" href="javascript:;">${result[i].title}</a>
                                                 <div class="mr-5 clearfix">
@@ -86,42 +98,49 @@
                                                 </div>
                                             </li>
                                             `
-                                        );
+                                            );
+                                        }
                                     }
-                                }
-                            })
-                        }
-                    })
-                    $("#details .bd_one").on("click","li",function() {
-                        var index=$("#details .bd_one").find("li").index(this);
-                        disable(result[index]);
-                    })
-                }else{
-                    $("#details .bd_one .end_total").html(0);num = 1;
-                    $("#details .bd_one li").remove();
+                                })
+                            }
+                        })
+                        $("#details .bd_one").on("click", "li", function () {
+                            var index = $("#details .bd_one").find("li").index(this);
+                            disable(result[index]);
+                        })
+                    } else {
+                        $("#details .bd_one .end_total").html(0);
+                        num = 1;
+                        $("#details .bd_one li").remove();
+                    }
+                } else {
+                    alert("发生错误！")
                 }
-            }else{
-                alert("发生错误！")
             }
-        }
-    });
+        });
+    }
     // 视频查询
-    $.ajax({
-        url : Public_address+"fire/history_video/listVideoByCondition",
-        type : "post",
-        dataType : "json",
-        data: {"current_page": 1,"per_page":20},
-        async:false,
-        success : function(data) {
-            if (data.code=="s_ok") {
-                var result = data.var.data;var num = '';
-                if (data.var.total!=0) {
-                    $("#details .bd_two li").remove();
-                    $("#details .bd_two .end_total").html(data.var.total);
-                    num = data.var.total;
-                    for (let i = 0; i < result.length; i++) {
-                        $("#details .bd_two .office_page").before(
-                            `
+    function searchVideos() {
+        $.ajax({
+            url: Public_address + "fire/history_video/listVideoByCondition",
+            type: "post",
+            dataType: "json",
+            data: {
+                "current_page": 1,
+                "per_page": 20
+            },
+            async: false,
+            success: function (data) {
+                if (data.code == "s_ok") {
+                    var result = data.var.data;
+                    var num = '';
+                    if (data.var.total != 0) {
+                        $("#details .bd_two li").remove();
+                        $("#details .bd_two .end_total").html(data.var.total);
+                        num = data.var.total;
+                        for (let i = 0; i < result.length; i++) {
+                            $("#details .bd_two .office_page").before(
+                                `
                             <li>
                                 <a class="title" href="javascript:;">${result[i].video_name}</a>
                                 <div class="mr-5 clearfix">
@@ -136,24 +155,28 @@
                                 </div>
                             </li>
                             `
-                        );
-                    }
-                    $(".complete_page_two").createPage({
-                        pageCount: Math.ceil(num / 6),
-                        current: 1,
-                        backFn: function(p) {
-                            $.ajax({
-                                url : Public_address+"fire/history_video/listVideoByCondition",
-                                type : "post",
-                                dataType : "json",
-                                data: {"current_page": p,"per_page":20},
-                                async:false,
-                                success : function(data) {
-                                    var result=data.var.data;
-                                    $("#details .bd_two li").remove();
-                                    for (let i = 0; i < result.length; i++) {
-                                        $("#details .bd_two .office_page").append(
-                                            `
+                            );
+                        }
+                        $(".complete_page_two").createPage({
+                            pageCount: Math.ceil(num / 6),
+                            current: 1,
+                            backFn: function (p) {
+                                $.ajax({
+                                    url: Public_address +
+                                        "fire/history_video/listVideoByCondition",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                        "current_page": p,
+                                        "per_page": 20
+                                    },
+                                    async: false,
+                                    success: function (data) {
+                                        var result = data.var.data;
+                                        $("#details .bd_two li").remove();
+                                        for (let i = 0; i < result.length; i++) {
+                                            $("#details .bd_two .office_page").append(
+                                                `
                                             <li>
                                                 <a class="title" href="javascript:;">${result[i].video_name}</a>
                                                 <div class="mr-5 clearfix">
@@ -168,74 +191,81 @@
                                                 </div>
                                             </li>
                                             `
-                                        );
+                                            );
+                                        }
                                     }
-                                }
-                            })
-                        }
-                    })
-                    $("#details .bd_two").on("click","li",function() {
-                        var index=$("#details .bd_two").find("li").index(this);
-                        disable_two(result[index]);
-                    })
-                }else{
-                    $("#details .bd_two .end_total").html(0);num = 1;
-                    $("#details .bd_two li").remove();
+                                })
+                            }
+                        })
+                        $("#details .bd_two").on("click", "li", function () {
+                            var index = $("#details .bd_two").find("li").index(this);
+                            disable_two(result[index]);
+                        })
+                    } else {
+                        $("#details .bd_two .end_total").html(0);
+                        num = 1;
+                        $("#details .bd_two li").remove();
+                    }
+                } else {
+                    alert("发生错误！")
                 }
-            }else{
-                alert("发生错误！")
             }
-        }
+        });
+    }
+
+    $(function () {
+        searchNews();
+        searchVideos();
     });
-    $('.tab-nav .hd').on("click","li",function(){
-        var index=$(this).index()-1;
-        if (index==0) {
-            $("#main").load("website/fire_knowledge.html",function() {
+    $('.tab-nav .hd').on("click", "li", function () {
+        var index = $(this).index() - 1;
+        if (index == 0) {
+            $("#main").load("website/fire_knowledge.html", function () {
                 $('.tab-nav .hd li').eq(index).addClass('on').siblings().removeClass('on');
                 $("#details .bd").hide().eq(index).show();
             });
-        }else{
-            $("#main").load("website/fire_knowledge.html",function() {
+        } else {
+            $("#main").load("website/fire_knowledge.html", function () {
                 $('.tab-nav .hd li').eq(index).addClass('on').siblings().removeClass('on');
                 $("#details .bd").hide().eq(index).show();
             });
-            
+
         }
     });
     // 跳转新闻详情
     function disable(result) {
-        $("#details").load("website/information_details.html",function(){
+        $("#details").load("website/information_details.html", function () {
             $(".details_title").html(result.title);
-            $(".details_name").html("上传者："+result.author);
-            $(".details_date").html("上传时间："+result.create_time);
-            $(".details_content").load(Public_address+"uploads/"+result.url);
+            $(".details_name").html("上传者：" + result.author);
+            $(".details_date").html("上传时间：" + result.create_time);
+            $(".details_content").load(Public_address + "uploads/" + result.url);
         });
     }
     // 跳转视频详情
     function disable_two(result) {
         var type;
-        $("#details").load("website/video_details.html",function(){
+        $("#details").load("website/video_details.html", function () {
             $(".details_title").html(result.video_name);
-            $(".details_name").html("上传者："+result.addName);
-            $(".details_date").html("上传时间："+result.upload_time);
-            $(".video video").attr("src",Public_address+"uploads/"+result.video_path);
+            $(".details_name").html("上传者：" + result.addName);
+            $(".details_date").html("上传时间：" + result.upload_time);
+            $(".video video").attr("src", Public_address + "uploads/" + result.video_path);
             $(".video span").eq(0).html(result.video_name);
             switch (result.video_type) {
                 case "0":
-                    type="防火动态"
+                    type = "防火动态"
                     break;
                 case "1":
-                    type="当前火情"
+                    type = "当前火情"
                     break;
                 case "2":
-                    type="火险预报"
+                    type = "火险预报"
                     break;
                 case "3":
-                    type="经验交流"
+                    type = "经验交流"
                     break;
             }
             $(".video span").eq(1).html(type);
-            $(".video span").eq(2).attr("data-latLngs",result.location);
+            $(".video span").eq(2).attr("data-latLngs", result.location);
             $(".video span").eq(3).html(result.region_name);
         });
     }

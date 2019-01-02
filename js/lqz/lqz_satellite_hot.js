@@ -165,11 +165,18 @@ function view(id) {
 }
 
 // 确认
+var text=[];
 function confirm() {
   ss=[];username=[];ss_sx=[];username1=[];
-  //var confirm="<ul class=\"form_sub form_sub_release\"><li><label>任务名称</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"地面巡护任务\"><label>任务类型</label><select  class=\"remove_disabled\"><option value=\"5\">热点核查</option></select></li><li><label>区域</label><select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\"><option value=''>城市</option><option value='4301'>长沙市</option><option value='4302'>株洲市</option><option value='4303'>湘潭市</option><option value='4304'>衡阳市</option><option value='4305'>邵阳市</option><option value='4306'>岳阳市</option><option value='4307'>常德市</option><option value='4308'>张家界市</option><option value='4309'>益阳市</option><option value='4311'>永州市</option><option value='4310'>郴州市</option><option value='4312'>怀化市</option><option value='4313'>娄底市</option><option value='4331'>湘西自治州</option></select><select id=\"city_two\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"village\" class=\"remove_disabled\" ></select><label>地图位置<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" id=\"latLngs2\" disabled></li><li><label>发布人</label><input type=\"text\" id=\"taskAddName\" class=\"form-control form-boxed\" disabled value=\"\"><label>任务截止时间<i style='color:red'>*</i></label><input type=\"text\" id=\"creactTime\" onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d {%H+1}:%m:%s'})\" class=\"Wdate remove_disabled form-control\" style=\"width:180px\" name=\"creactTime\" /></li><li style=\"position:relative;\"><label>指派对象<i style='color:red'>*</i></label><label class=\"radio\"><input type=\"radio\" value=\"search\" name=\"screening\" checked=\"checked\"/><span>搜索</span></label><label class=\"radio\"><input type=\"radio\" value=\"screening\" name=\"screening\"/><span>筛选</span></label><input id='toName' class='form-control form-boxed toName1' value='' onfocus='setStyle()'><div class=\"screening\"><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value=\"2\">护林员</option><option value=\"3\">消防员</option></select><select  id=\"hot_city\" onchange=\"user_query(this)\"><option value='43'>省</option><option value=\"4301\">长沙市</option><option value=\"4302\" >株洲市</option><option value=\"4303\">湘潭市</option><option value=\"4304\">衡阳市</option><option value=\"4305\">邵阳市</option><option value=\"4306\">岳阳市</option><option value=\"4307\">常德市</option><option value=\"4308\">张家界市</option><option value=\"4309\">益阳市</option><option value=\"4311\">永州市</option><option value=\"4310\">郴州市</option><option value=\"4312\">怀化市</option><option value=\"4313\">娄底市</option><option value=\"4331\">湘西自治州</option></select><select  id=\"city_sx\" class='remove_disabled' onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\"></select></div><div id=\"user_query\"></div><div id=\"user_query1\"></div></li><li id=\"upimg\" style=\"width: 250px;\"><label>图片上传</label><input type=\"file\" name=\"photoName1\" id=\"photoName1\" class=\"upFileimg\" multiple accept=\"image/png,image/jpg,image/gif,image/JPEG\"/><img class=\"fileInput\" src=\"img/lqz/sc.png\" onclick=\"$('#photoName1').click()\"/><div id=\"imgBox11\"></div></li></ul>";
-  var confirm="<ul class=\"form_sub form_sub_release\"><li><label>任务名称</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"地面巡护任务\"><label>任务类型</label><select  class=\"remove_disabled\"><option value=\"5\">热点核查</option></select></li><li><label>区域</label>" +
-      "<select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"city_two\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"village\" class=\"remove_disabled\" ></select><label>地图位置<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" id=\"latLngs2\" disabled></li><li><label>发布人</label><input type=\"text\" id=\"taskAddName\" class=\"form-control form-boxed\" disabled value=\"\"><label>任务截止时间<i style='color:red'>*</i></label><input type=\"text\" id=\"creactTime\" onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d {%H+1}:%m:%s'})\" class=\"Wdate remove_disabled form-control\" style=\"width:180px\" name=\"creactTime\" /></li><li style=\"position:relative;\"><label>指派对象<i style='color:red'>*</i></label><label class=\"radio\"><input type=\"radio\" value=\"search\" name=\"screening\" checked=\"checked\"/><span>搜索</span></label><label class=\"radio\"><input type=\"radio\" value=\"screening\" name=\"screening\"/><span>筛选</span></label><input id='toName' class='form-control form-boxed toName1' value='' onfocus='setStyle()'><div class=\"screening\"><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value=\"2\">护林员</option><option value=\"3\">消防员</option></select><select  id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class='remove_disabled' onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\"></select></div><div id=\"user_query\"></div><div id=\"user_query1\"></div></li><li id=\"upimg\" style=\"width: 250px;\"><label>图片上传</label><input type=\"file\" name=\"photoName1\" id=\"photoName1\" class=\"upFileimg\" multiple accept=\"image/png,image/jpg,image/gif,image/JPEG\"/><img class=\"fileInput\" src=\"img/lqz/sc.png\" onclick=\"$('#photoName1').click()\"/><div id=\"imgBox11\"></div></li></ul>";
+  text=[];
+
+  var confirm="<ul class=\"form_sub form_sub_release\"><li><label>任务名称</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"地面巡护任务\"><label>任务类型</label><select  class=\"remove_disabled\"><option value=\"5\">热点核查</option></select></li><li><label>任务区域</label>" +
+      "<select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"city_two\" class=\"remove_disabled\" onchange=\"callback(value,this)\"></select><select id=\"village\" class=\"remove_disabled\" ></select><label>地图位置<i style='color:red'>*</i></label><input type=\"text\" class=\"form-control form-boxed\" id=\"latLngs2\" disabled></li><li><label>发布人</label><input type=\"text\" id=\"taskAddName\" class=\"form-control form-boxed\" disabled value=\"\"><label>任务截止时间<i style='color:red'>*</i></label><input type=\"text\" id=\"creactTime\" onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d {%H+1}:%m:%s'})\" class=\"Wdate remove_disabled form-control\" style=\"width:180px\" name=\"creactTime\" /></li>"+
+      "<li style=\"position:relative;\" class=\"label3\"><label>指派对象<i style='color:red'>*</i></label>"+
+      "<div id=\"getPeopleByAll\"></div>"+
+      "<div class=\"sreenring\"><input id='toName' class='form-control form-boxed toName1' placeholder='搜索' ><div class=\"\"><select  id=\"hot_city\" onchange=\"user_query(value,this)\"></select><select  id=\"city_sx\" class='remove_disabled' onchange=\"user_query(value,this)\"></select><select id=\"area_sx\" onchange=\"user_query(value,this)\" class=\"remove_disabled\"></select></div><div id=\"user_query1\"><b>筛选：</b></div></div></li>"+
+      "<li id=\"upimg\"><label>图片上传</label><input type=\"file\" name=\"photoName1\" id=\"photoName1\" class=\"upFileimg\" multiple accept=\"image/png,image/jpg,image/gif,image/JPEG\"/><img class=\"fileInput\" src=\"img/lqz/sc.png\" onclick=\"$('#photoName1').click()\"/><div id=\"imgBox11\"></div></li></ul>";
+  
   layer.confirm(''+confirm+'', {
     type: 1,
     skin: 'layui-layer-molv', //样式类名
@@ -177,7 +184,7 @@ function confirm() {
     anim: 2,
     btn: ['发布','取消'],
     btnAlign: 'c',
-    area: ['650px','420px'],
+    area: ['650px','480px'],
     title:"发布任务",
     shadeClose: true, //开启遮罩关闭
   }, function(){
@@ -187,25 +194,28 @@ function confirm() {
     var task_type="5";
     var task_end_time=$('#creactTime').val();
     var task_region=$("#province").val();
-    $("#city_two").val()==''||$("#city_two").val()==undefined?task_region=$("#province").val():$("#village").val()==''||$("#village").val()==undefined?task_region=$("#city").val():task_region=$("#village").val();
+    $("#city_two").val()==''||$("#city_two").val()==undefined?task_region=$("#province").val():$("#village").val()==''||$("#village").val()==undefined?task_region=$("#city_two").val():task_region=$("#village").val();
     var task_desc="此处为卫星监测疑似起火点，请派人前往确认！";
-    var to_name=$('#toName').attr("data-name");
-    if (to_name==undefined||to_name=='') {to_name=$('#toName').val();}
+    var to_name=text.join(",");
     var task_latlng=$('#latLngs2').val();
     var task_title="地面巡护任务";
     var hot_id=sessionStorage.getItem("hot_id");
     var task_result_image=imgName.join();
     var pointType='0';
-    var task_obj=$('#people').val();
-    if (toName!=''&& toName != null&&task_region!=''&&hot_id!=''&&task_end_time!=''){
+    var task_obj='3';
+    if (to_name!=''&& to_name != null&&task_region!=''&&hot_id!=''&&task_end_time!=''){
       sendAjax({
         "url":"fire/task/addTask",
-        "data":{"task_type":task_type,"task_end_time":task_end_time,"task_region":task_region,"task_latlng":task_latlng,"to_name":to_name,"task_title":task_title,"pointType":pointType,"task_desc":task_desc,"task_result_image":task_result_image,"hot_id":hot_id,"task_obj":task_obj},"callback":function(data){
+        "data":{"task_type":task_type,"task_end_time":task_end_time,
+        "task_region":task_region,"task_latlng":task_latlng,"to_name":to_name,
+        "task_title":task_title,"pointType":pointType,"task_desc":task_desc,"task_result_image":task_result_image,
+        "hot_id":hot_id,"task_obj":task_obj},"callback":function(data){
           if (data.code=="s_ok") {
             layer.closeAll('dialog');
             layer.closeAll('page');
             user_query();
             layer.msg('发布成功');
+            text=[];
           }else{
             layer.msg(data.var);
           }
@@ -221,6 +231,7 @@ function confirm() {
     }
   }, function(){
     layer.closeAll('page');
+    text=[];
   });
 
     var all_citys=localStorage.getItem('all_city');
@@ -242,18 +253,18 @@ function confirm() {
   var name =sessionStorage.getItem("name");
   $("#taskAddName").val(name);
   $("body").find(".upFileimg").click(function(e){
-    $("#user_query").hide();
+  
     $(".screening").hide();
   })
 }
 // 搜索用户查询
-function user_query(e,id,price) {
+function user_query(region,e,id,price) {
   // callback1();
   if (id==undefined) {
-    id=$("#people").val();
+    id='3';
   }
-  var region=$("#hot_city").val();
-  $("#city_sx").val()==''||$("#city_sx").val()==undefined?region=$("#hot_city").val():$("#area_sx").val()==''||$("#area_sx").val()==undefined?region=$("#city_sx").val():region=$("#area_sx").val();
+  // var region=$("#hot_city").val();
+  // $("#city_sx").val()==''||$("#city_sx").val()==undefined?region=$("#hot_city").val():$("#area_sx").val()==''||$("#area_sx").val()==undefined?region=$("#city_sx").val():region=$("#area_sx").val();
   var dom = $(e).next();
   sendAjax({
     "url":"fire/region/getRegion",
@@ -282,43 +293,48 @@ function user_query(e,id,price) {
   });
   sendAjax({
     "url":"fire/user/getUserByNameOrTel",
-    "data":{"mold_type":id,"region":region},"callback":function(data){
+    "data":{"mold_type":id,"region":region,"mold_type":3},"callback":function(data){
       if (data.code=="s_ok") {
-        $("#user_query").children('span').remove();
-        if (price!=undefined) {
+        $("#user_query1").children('p').remove();
+        var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area_sx option:selected').text()==''?$('#city_sx option:selected').text():$('#area_sx option:selected').text());
+          var pro=localStorage.getItem('pro_setItem');
+          if(city=='省' || city=='城市'){
+              city=pro;
+          }
+        if (price!='') {
           $("#toName").attr("data-name",'');
-          $("#user_query").append("<span onclick=\"selected(this)\" data-name=\""+id+"_\">全部人</span>");
+          $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
         }else{
           $("#toName").attr("data-name",'');
-          $("#user_query").append("<span onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">全部人</span>");
+          $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
         }
-        for (var i = 0; i < data.var.length; i++) {
-          $("#user_query").append("<span onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name + "</span>");
+        if (data.var.length != 0) {
+          for (var i = 0; i < data.var.length; i++) {
+            $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name +'-'+data.var[i].tel+ "</p>");
+          }
         }
-      }else if (data.var.length==0){
-        layer.msg('查询数据为空');
-        $("#user_query").children('span').remove();
       }else{
         layer.msg(data.var);
       }
     }
   });
 }
+
+//搜索
 $("body").on('keyup', '.toName1', function() {
   var key = $("#toName").val();
   if (key != "") {
     sendAjax({
       "url":"fire/user/getUserByNameOrTel",
-      "data":{"name":key},"callback":function(data){
+      "data":{"name":key,"mold_type":3},"callback":function(data){
           if(data.code=='s_ok'){
               if(data.var.length<1){
-                  $("#user_query1").children('span').remove();
-                  $("#user_query1").hide();
+                  $("#user_query1").children('p').remove();
               }else{
-                  $("#user_query1").children('span').remove();
+                  $("#user_query1").children('p').remove();
                   $("#user_query1").show();
                   for (var i = 0; i < data.var.length; i++) {
-                      $("#user_query1").append("<span onclick=\"selected_two(this)\" data-name=\"" + data.var[i].tel + "\">" + data.var[i].name + "</span>");
+                      $("#user_query1").append("<p onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name +'-'+data.var[i].tel+ "</p>");
                   }
               }
           }else{
@@ -330,66 +346,31 @@ $("body").on('keyup', '.toName1', function() {
       $("#userName").attr("data-name", '');
   }
 });
-// 聚焦显示
-function setStyle() {
-  if($("input[value='screening']:checked").length>0){
-    $(".screening").show();
-    $("#user_query").show();
-  }
-}
+
+
 // 点击选中指派对象
 var ss=[];var username=[];
 function selected(e) {
-  if ($(e).html() == "全部人") {
-    username = [];
-    ss = [];
-    $("#toName").attr("data-name",'');
-    $("#toName").val("");
-    $("#toName").val("全部人");
-    $("#user_query").empty();
-  }
-  ss.push($(e).html());
-  var sss=ss.join(",");
-  $("#toName").val(sss);
-  $(e).remove();
-  username.push($(e).attr("data-name"));
-  var dataname=username.join(",");
-  $("#toName").attr("data-name",dataname);
-  $(".screening").hide();
-  $("#user_query").hide();
+  var number=e.getAttribute('data-name');
+    if(text.length<1){
+        var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
+        text.push(number); 
+        $("#getPeopleByAll").append(html); 
+    }else{
+        if(text.indexOf(number)==-1){
+            var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
+            text.push(number); 
+            $("#getPeopleByAll").append(html); 
+        }
+    }  
 };
+//点击删除
+function delThis(e){
+  e.remove();
+  var number=e.getAttribute('data-name');
+  text.splice(text.indexOf(number),1); 
+}
 var ss_sx=[];var username1=[];
-function selected_two(e) {
-  $("#user_query1").hide();
-  ss_sx.push($(e).html());
-  var sss_sx=ss_sx.join(",");
-  username1.push($(e).attr("data-name"));
-  $("#toName").val(sss_sx);
-  $("#toName").attr("data-name",username1);
-  $(e).remove();
-  username1=[];ss_sx=[];
-};
-// 筛选搜索切换
-$("body").on('click','input[type="radio"]',function(){
-  if ($(this).val()!="screening") {
-    $(".screening").hide();
-    $("#user_query").hide();
-    $("#user_query1").show();
-    $("#toName").val("");
-    $("#toName").removeAttr("data-name");
-    ss_sx=[];
-    $("#toName").addClass("toName1");
-  }else{
-    $(".screening").show();
-    $("#user_query").show();
-    $("#user_query1").hide();
-    $("#toName").val("");
-    $("#toName").removeAttr("data-name");
-    ss=[];username=[];
-    $("#toName").removeClass("toName1");
-  }
-})
-
 
 // 取消
 $(".content-wrap").on('click','#cancel',function () {

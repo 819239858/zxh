@@ -104,7 +104,6 @@
                 data.append("file[]", file);
                 data.append("path", opt.formData.path);//path
                 data.append("file_ext", type);//opt.formData.file_ext
-                // console.log(data)
                 $.ajax({
                     type : 'POST',
                     url : Public_address+url+'?s_token='+s_token,
@@ -117,15 +116,9 @@
                         if (data.code =="s_ok") {
                             // 预览
                             videoName.push(data.var.join());
-                            $("."+opt.id+"").append("<span style='margin-left:20px;cursor: pointer;white-space: inherit;' onclick=\"wj_remove('"+data.var+"',this)\">"+imgArr.join()+"<i class='icon-remove' style='color:#01dacf;'></i></span>");
-
+                            $("."+opt.id+"").append("<span style='margin-left:20px;cursor: pointer;white-space: inherit;' onclick=\"wj_remove('"+data.var+"',this)\">"+imgArr.join()+"<i class='icon-remove' style='color:#addc9d;'></i></span>");
                             layer.msg('上传成功');
-                            if(imgArr.length>0){
-                                console.log('有视频');
-                            }else{
-                                console.log('没有视频');
-                            }
-
+                            
                             $("#video").attr("src",imgArr.join());
                             $("#video").show();
                         }

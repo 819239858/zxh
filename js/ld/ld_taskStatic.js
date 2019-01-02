@@ -4,7 +4,6 @@ var myDate = new Date;
 var year = myDate.getFullYear();
 var month = myDate.getMonth()+1 > 9 ? myDate.getMonth()+1 : "0" + (myDate.getMonth()+1);
 var next=myDate.getMonth()==12?myDate.getMonth():(myDate.getMonth()+1 > 9 ? myDate.getMonth()+1 : "0" + (myDate.getMonth()+1));
-console.log("yue:"+next);
 //统计城市
 var arr=[];
 arr.push($("#ld_city option:checked").html());

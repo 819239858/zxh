@@ -11,14 +11,14 @@
     <script src="javascript/plug-ins/pagination.js"></script>
     
     <style type="text/css">
-    .tableDiv_fire{position:fixed;top:80px;right:10px;left:250px;z-index:19;overflow:auto;height:90%;background: #fff;}
+    .tableDiv_fire{top:50px;right:0;left:230px;z-index:19;overflow:auto;height:auto;background-color:#fff;}
     .search_area{height:40px;border:1px solid #e6e6e6;}
     .search_area .search_container{margin-top:5px;}
     .search_container .user{margin-right:10px;padding-left:5px;width:100px;height:25px;border:1px solid #aaa;border-radius:3px;}
     .search_area .search_container select{width:100px;border-radius:3px;}
-    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#01dacf;color:#fff;}
+    .search_area #search_btn{width:100px;height:25px;border:none;border-radius:3px;background-color:#addc9d;color:#fff;}
     .container_box{background-color:#fff;}
-    .container_box .report_btn{position: absolute;right: 200px;top: 155px;width:120px;height:35px;border:none;background-color:#01dacf;color:#fff;}
+    .container_box .report_btn{position: absolute;right: 200px;top: 155px;width:120px;height:35px;border:none;background-color:#addc9d;color:#fff;}
     .container_box .report_table{padding-left:30px;width:85%;margin:0 auto;}
     .container_box h1{text-align: center;margin-top: 30px;}
     .container_box acronym{text-align:center;display:block;color:#e5e5e5;border-top:1px solid #e5e5e5;width:80px;margin: 0 auto;padding-top:5px;margin-bottom:50px;}
@@ -27,14 +27,14 @@
      .report_table .table_flex .describe{position:relative;}
     .report_table .table_flex .describe p{margin-bottom: 0;color: #999;}
     .report_table .table_flex .describe p.title{font-weight: bold;color: #666;border-bottom: 1px solid #e5e5e5;padding-bottom: 5px;}
-    .report_table .table_flex .describe .address{position: absolute;bottom:0px;right:0;cursor: pointer;color: #01dacf;} 
+    .report_table .table_flex .describe .address{position: absolute;bottom:0px;right:0;cursor: pointer;color: #addc9d;} 
     .search_container .Wdate{width:140px;height:25px;border-radius:3px;}
     .report_table .table_flex .mr-5 .title{color: #666;margin: 5px 0;display: block;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-    .report_table .table_flex .mr-5 .title:hover{color: #01dacf;cursor: pointer;}
+    .report_table .table_flex .mr-5 .title:hover{color: #8cca78;cursor: pointer;}
      #editor{margin: auto;text-align: left;margin-top:50px;display: none;}
     .form_sub_release{border:solid 1px #e5e5e5;padding:10px;margin-bottom: 40px;width:800px}
     .form_sub_release label{width:auto;}
-    .form_sub_release .enter_map{width:80px;background-color:#01dacf;border:none;color:#fff;border-radius:3px;}
+    .form_sub_release .enter_map{width:80px;background-color:#addc9d;border:none;color:#fff;border-radius:3px;}
     .form_sub_release .border_btoom{width:100%;border:none;border-bottom: 1px solid #e5e5e5;padding-left: 10px;}
     .form_sub_release .cancel,.form_sub_release #latLngs{width: 100px;}
     #editor_two{margin:20px auto;padding:20px;width:65%;text-align:left;}
@@ -96,7 +96,7 @@
             <div class="report_table" id="complete_report">
             </div>
              <!-- 分页 -->
-            <div class="office_page" style="text-align: center;margin-top: 20px;">
+            <div class="office_page" style="text-align: center;">
                 <span>总记录:<i class="end_total complete_total"></i>条</span>
                 <div class="pagination complete_page">
                     <span class="disabled">上一页</span><span class="current">1</span><a href="javascript:;" class="nextPage">下一页</a>
@@ -179,9 +179,6 @@
     $('#hot_city').html(city);
     $('#province').html(city);
 
-
-
-
 // 加载文章列表
 function video_list() {
     $(".container_box").show();
@@ -189,7 +186,6 @@ function video_list() {
     $("#article").hide();
     $("#index_titel").html("典型案例");
     var region=$("#city").val()==''||$("#city").val()==undefined?$("#hot_city").val():($("#area").val()==''||$("#area").val()==undefined?$("#city").val():$("#area").val());
-    console.log(region);
     var begin_time=$("#startTime").val();
     var end_time=$("#endTime").val();
     sendAjax({

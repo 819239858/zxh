@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <script src="js/styleMaps.js" type="text/javascript"></script>
     <script src="javascript/public.js"></script>
     <script src="js/WJ/wj_weather.js"></script>
 </head>
-
 <body>
     <div class="tableDiv_fire">
         <div class="head_menu">
@@ -34,47 +32,19 @@
             </div>
         </div>
         <div class="cont_box">
-            <!--<iframe class="box_address" id="iframe_box" style="width:100%;height:510px;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);" hspace="-500px" vspace="-150px" src="http://www.nmc.cn/publish/observations/environmental.html" ></iframe>-->
-            <!--湖南省天气预报-->
-            <iframe class="box_address" id="iframe_box" style="width:100%;height:100%;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);"
-                hspace="-500px" vspace="-150px" src="http://www.nmc.cn/publish/forecast/AHN.html"></iframe>
+                 <!--<iframe class="box_address" id="iframe_box" style="width:100%;height:510px;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);" hspace="-500px" vspace="-150px" src="http://www.nmc.cn/publish/observations/environmental.html" ></iframe>-->
+                <!--湖南省天气预报-->
+            <iframe class="box_address" id="iframe_box" style="width:100%;height:100%;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);" hspace="-500px" vspace="-150px" src="http://www.nmc.cn/publish/forecast/AHN.html" ></iframe>
             <!--福建省天气预报-->
             <!--<iframe class="box_address" id="iframe_box" style="width:100%;height:100%;border:none;box-shadow:0 -2px 2px rgba(176,175,175,1);" hspace="-500px" vspace="-150px" src="http://www.nmc.cn/publish/forecast/AFJ.html" ></iframe>-->
         </div>
     </div>
 </body>
 <style>
-    .tableDiv_fire {
-        z-index: 19;
-        position: fixed;
-        height: 100%;
-        overflow: auto;
-        top: 50px;
-        right: 0px;
-        left: 230px;
-        margin:20px 10px 0px 10px;
-    }
-
-    .head_menu {
-        width: 100%;
-        height: 150px;
-        float: left;
-    }
-
-    .cont_box {
-        width: 100%;
-        height: 100%;
-    }
-
-    .head_cont {
-        line-height: 150px;
-        padding-left: 25px;
-        background-color: #fff;
-    }
-
-    .head_cont a {
-        margin-right: 80px;
-    }
+    .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:50px;right: 0px;left: 230px;background-color:#fff;}
+    .head_menu{width:100%;height:150px;float:left;margin-top:10px;}
+    .cont_box{width:100%;height:100%;}
+    .head_cont{line-height:150px;margin-left:25px;}
+    .head_cont a{margin-right:80px;}
 </style>
-
 </html>

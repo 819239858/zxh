@@ -13,22 +13,22 @@
     <script src="js/imgPlugin.js"></script>
     
     <style>
-      .tableDiv_fire{z-index:19;position:fixed;background: #fff;height:100%;overflow: auto;top:80px;right: 10px;left: 250px;}
+      .tableDiv_fire{z-index:19;position:fixed;height:100%;overflow: auto;top:50px;right: 0px;left: 230px;background-color:#fff;}
       .form_sub_release .upFileBtn{position:absolute;width:70px;height:70px;opacity:0;bottom:0px;left: 110px;}
       .form_sub_release .fileInput,.form_sub_release .user_img_icon{padding:20px;width:70px;height:70px;border:1px solid #e5e5e5;}
       .search_area{height:40px;border:1px solid #e6e6e6;}
       .search_container{margin-top:5px;margin-left:30px;}
       #container_map{height:100%;width:100%;}
-      .menu{position:fixed;z-index:100;left:260px;top:145px;}
+      .menu{position:fixed;z-index:100;left:260px;top:115px;}
       .container_table{width:100%;}
-      .table_cont{width:95%; padding-left:10px;margin-top:70px;}
+      .table_cont{width:95%; padding-left:30px;margin-top:100px;}
       .office_page{text-align:center;margin-bottom:50px;}
       .add{background-image:url(img/add.png) no-repeat;}
       .form_sub_release{width: 648px;}
       .form_sub_release select{width: 58px;}
       .form_sub input{width: 175px;}
       #imgBox1 img{width:60px;height:60px;}
-      .ml-5{display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
+      .ml-5{display: block;width:120px;height:28px;background-color:#addc9d;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;}
    </style>
 </head>
 <body>
@@ -66,7 +66,7 @@
         <div class="menu">
             <div style="position:relative;display:inline-block;margin-right:6px;" id="xz">
                     <img src="img/add.png" alt="" style="position:absolute;top:15px;left:20px;">
-                    <input type="button" class="add" style="width: 100px;height:40px;background-color:#01dacf;border:none;color:#fff;" value="新增" id="add" onclick="new_office()">
+                    <input type="button" class="add" style="width: 100px;height:40px;background-color:#addc9d;border:none;color:#fff;" value="新增" id="add" onclick="new_office()">
             </div>
             <script>
               var userLevel = sessionStorage.getItem("userLevel");
@@ -76,12 +76,12 @@
             </script>
             <div style="position:relative;display:inline-block;">
               <img src="img/change.png" alt="" style="position:absolute;top:13px;left:15px;width:15px">
-              <input type="button" style="width: 140px;height:40px;background-color:#01dacf;border:none;color:#fff;padding-left:20px;" value="切换成列表模式" id="tabModel">
+              <input type="button" style="width: 140px;height:40px;background-color:#addc9d;border:none;color:#fff;padding-left:20px;" value="切换成列表模式" id="tabModel">
             </div>
         </div>
         <!-- 下部地图区域 -->
         <div id="container_map" tabindex="0" ></div>
-        <div class="button-group" style="bottom:80px;">
+        <div class="button-group">
           <input type="button" class="button" value="点距离量测" onClick="javascript:startRuler1()"/>
           <input type="button" class="button" value="面距离量测" onClick="javascript:startRuler2()"/>
         </div>

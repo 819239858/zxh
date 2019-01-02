@@ -74,10 +74,10 @@ function new_office() {
 		var describe=$("#desc").val();
 		var administrator=$("#manage").val();
 		var phone=$("#phone").val();
-		if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(phone))) {                      
-			layer.msg("手机号填写的格式不对，请正确填写");
-			return false;
-		}
+		// if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(phone))) {                      
+		// 	layer.msg("手机号填写的格式不对，请正确填写");
+		// 	return false;
+		// }
 		if (region!=''&&location!=''&&established_time!=''&&long!=''&&width!=''&&administrator!=''&&phone!='') {
 			sendAjax({
 				"url":"fire/fire_barrier/addFireBarrier",

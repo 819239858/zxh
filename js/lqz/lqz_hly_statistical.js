@@ -111,7 +111,7 @@ function showFireHot_two() {
 }
 //marker点击事件
 function addHotMarkerClick_two(marker, data) {
-    marker.content = "<div style=\"background-color:#fff;border-radius:6px;padding-left: 20px;width:400px\"><p style=\"color:#030303;font-size:14px;line-height:20px;\">类型:<span style=\"color:#999da8;margin-left:6px;\">" + forestMaps.get(data.report_type) + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">时间:<span style=\"color:#999da8;margin-left:6px;\">" + data.happen_time + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">区域:<span style=\"color:#999da8;margin-left:6px;\">" + data.region_name + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">位置:<span style=\"color:#999da8;margin-left:6px;\">" + data.position + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">姓名:<span style=\"color:#999da8;margin-left:6px;\">" + data.name + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">电话:<span style=\"color:#999da8;margin-left:6px;\">" + data.tel + "</span></p><div style=\"display: block;width:120px;height:28px;background-color:#01dacf;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;\" class=\"ml-5\">详情</div></div>"
+    marker.content = "<div style=\"background-color:#fff;border-radius:6px;padding-left: 20px;width:400px\"><p style=\"color:#030303;font-size:14px;line-height:20px;\">类型:<span style=\"color:#999da8;margin-left:6px;\">" + forestMaps.get(data.report_type) + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">时间:<span style=\"color:#999da8;margin-left:6px;\">" + data.happen_time + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">区域:<span style=\"color:#999da8;margin-left:6px;\">" + data.region_name + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">位置:<span style=\"color:#999da8;margin-left:6px;\">" + data.position + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">姓名:<span style=\"color:#999da8;margin-left:6px;\">" + data.name + "</span></p><p style=\"color:#030303;font-size:14px;line-height:20px;\">电话:<span style=\"color:#999da8;margin-left:6px;\">" + data.tel + "</span></p><div style=\"display: block;width:120px;height:28px;background-color:#addc9d;color:#fff;text-align: center;line-height:28px;font-size:14px;border-radius:4px;margin:8px auto 0 auto;\" class=\"ml-5\">详情</div></div>"
     AMap.event.addListener(marker, 'click', function () {
         infoWindow.setContent(marker.content);
         infoWindow.open(map, marker.getPosition());
@@ -207,7 +207,7 @@ function details_resources(fireid) {
                     area: ['600px', '400px'],
                     title: "事件详情",
                     shadeClose: true, //开启遮罩关闭
-                    content: "<ul class=\"form_sub form_sub_release\"><li><label>区域</label><select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\" disabled style=\"background-color:#f2f2f2\"></select><select id=\"city_two\" class=\"remove_disabled\" onclick=\"callback(value,this)\" disabled style=\"background-color:#f2f2f2\"></select><select id=\"village\" class=\"remove_disabled\" disabled style=\"background-color:#f2f2f2\"></select><label>地图位置</label><input type=\"text\" class=\"form-control form-boxed \" id=\"add_latLngs\" disabled style=\"margin: 0 2px;\"><input class=\"enter_map_two\" type=\"button\" style=\"display:none\" value=\"进入地图\" onclick=\"layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#add_latLngs').val(localStorage.getItem('site'));}})\" /><input class=\"enter_map_look\" type=\"button\" value=\"回显位置\" onclick=\"dthx('"+result.position+"',"+result.position_type+")\" style='width: 65px;border:none;background: #01dacf;color: #fff;'></li><li><label>发生时间</label><input type=\"text\" id=\"add_creactTime\" disabled onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" class=\"Wdate remove_disabled form-control\" style=\"width:150px\"/><label>事件类型</label><select id=\"add_type\"disabled style=\"width:150px;background-color:#f2f2f2\" class=\"remove_disabled\"><option value=\"0\">森林火灾</option><option value=\"1\">破坏森林资源</option><option value=\"2\">偷猎野生生物</option><option value=\"3\">林业有害生物</option><option value=\"4\">其他情况</option></select></li><li><label>上报人姓名</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"" + result.name + "\"><label>联系电话</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"" + result.tel + "\"></li><li><label>事件描述</label><textarea id=\"add_desc\" class=\"form-control form-boxed remove_disabled\" disabled></textarea></li><li><li style=\"position:relative\"><label>图片</label><input type=\"file\" id=\"photoName2\" class=\"upFileBtn\" multiple accept=\"image/png,image/jpg,image/gif,image/JPEG\" style=\"display:none\"> <img class=\"fileInput\" src=\"img/lqz/upimg.png\" style=\"display:none\"><div id=\"imgBox1\" style=\"display:inline-block\"></div></li><li class=\"background_user_information\">" +
+                    content: "<ul class=\"form_sub form_sub_release\"><li><label>区域</label><select id=\"province\" class=\"remove_disabled\" onchange=\"callback(value,this)\" disabled style=\"background-color:#f2f2f2\"></select><select id=\"city_two\" class=\"remove_disabled\" onclick=\"callback(value,this)\" disabled style=\"background-color:#f2f2f2\"></select><select id=\"village\" class=\"remove_disabled\" disabled style=\"background-color:#f2f2f2\"></select><label>地图位置</label><input type=\"text\" class=\"form-control form-boxed \" id=\"add_latLngs\" disabled style=\"margin: 0 2px;\"><input class=\"enter_map_two\" type=\"button\" style=\"display:none\" value=\"进入地图\" onclick=\"layer.open({type: 2,title: '选中地图',shadeClose: false,shade: 0.8,area: ['700px', '450px;'],content: 'map.html',cancel: function(){$('#add_latLngs').val(localStorage.getItem('site'));}})\" /><input class=\"enter_map_look\" type=\"button\" value=\"回显位置\" onclick=\"dthx('"+result.position+"',"+result.position_type+")\" style='width: 65px;border:none;background: #addc9d;color: #fff;'></li><li><label>发生时间</label><input type=\"text\" id=\"add_creactTime\" disabled onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" class=\"Wdate remove_disabled form-control\" style=\"width:150px\"/><label>事件类型</label><select id=\"add_type\"disabled style=\"width:150px;background-color:#f2f2f2\" class=\"remove_disabled\"><option value=\"0\">森林火灾</option><option value=\"1\">破坏森林资源</option><option value=\"2\">偷猎野生生物</option><option value=\"3\">林业有害生物</option><option value=\"4\">其他情况</option></select></li><li><label>上报人姓名</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"" + result.name + "\"><label>联系电话</label><input type=\"text\" class=\"form-control form-boxed\" disabled value=\"" + result.tel + "\"></li><li><label>事件描述</label><textarea id=\"add_desc\" class=\"form-control form-boxed remove_disabled\" disabled></textarea></li><li><li style=\"position:relative\"><label>图片</label><input type=\"file\" id=\"photoName2\" class=\"upFileBtn\" multiple accept=\"image/png,image/jpg,image/gif,image/JPEG\" style=\"display:none\"> <img class=\"fileInput\" src=\"img/lqz/upimg.png\" style=\"display:none\"><div id=\"imgBox1\" style=\"display:inline-block\"></div></li><li class=\"background_user_information\">" +
                         "<input type=\"button\" value=\"编辑\" class=\"report\" onclick=\"remove_disabled()\"> " +
                         "<input type=\"button\" value=\"保存\" class=\"report submit\" onclick=\"disabled_user(" + fireid.id + ")\"></li></ul>"
                 });
@@ -311,7 +311,6 @@ function disabled_user(id) {
 }
 //地图回显
 function  dthx(latLngs,pointTpye) {
-    console.log(pointTpye)
     layer.open({
         type: 1,
         skin: 'layui-layer-molv', //样式类名
@@ -334,13 +333,10 @@ function  dthx(latLngs,pointTpye) {
             map.addControl(type);
             map.clearMap();
             var lnglatXY=[];
-            console.log(pointTpye=='')
             if (pointTpye=="0") {
-              console.log(0)
               var lnglat=latLngs.split(";");
               lnglat=lnglat[0].split(",");
               map.setZoomAndCenter(12, lnglat);
-              console.log(lnglat);  //["112.800467", "27.508091"]
               var marker = new AMap.Marker({
                 icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
                 position: lnglat,
@@ -351,7 +347,6 @@ function  dthx(latLngs,pointTpye) {
             }
           
             if (pointTpye=="1") {
-              console.log(1)
               var lnglat=latLngs.split(";");
               lnglat.pop();
                //lnglat  ["111.569998,28.381557", "112.119314,26.961065"]
@@ -360,7 +355,6 @@ function  dthx(latLngs,pointTpye) {
                   arr.push(lnglat[i].split(","));
               }
               map.clearMap();
-             
               var polyline = new AMap.Polyline({
                   path:arr,          //设置线覆盖物路径
                   strokeColor: "#4196e1", //线颜色
@@ -373,7 +367,6 @@ function  dthx(latLngs,pointTpye) {
               //map.setZoomAndCenter(16, lnglatXY[0]);
             }
             if (pointTpye=="2"|| pointTpye==='') {
-              console.log(2)
               var lnglat=latLngs.split(";");
               lnglat.pop();
               var arr=[];
@@ -461,7 +454,7 @@ $("#modeSwitch").click(function () {
         $(".button-group").hide();
         $(".btn_none").css("display", "inline-block");
 
-        $(".menu").css({ "position": "absolute", "top": "45px", "left": "20px" });
+        $(".menu").css({ "position": "relative", "top": "25px", "left": "30px" });
         $(this).val("切换成地图模式");
         //统计搜索头部
         $('.search_area .origin').show();
@@ -472,7 +465,7 @@ $("#modeSwitch").click(function () {
         $(".container_table").hide();
         $(".statistical_figure").hide();
         $(".btn_none").css("display", "none");
-        $(".menu").css({ "position": "absolute", "top": "45px", "left": "20px" });
+        $(".menu").css({ "position": "fixed", "top": "115px", "left": "260px" });
         $(this).val("切换成列表模式");
         //统计搜索头部
         $('.search_area .origin').show();

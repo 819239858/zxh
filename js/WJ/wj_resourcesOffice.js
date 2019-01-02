@@ -74,10 +74,10 @@ function new_office() {
     var desc=$("#desc").val();
     var manage=$("#manage").val();
     var tel=$("#phone").val();
-    if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(tel))) {                      
-      layer.msg("手机号填写的格式不对，请正确填写");
-      return false;
-    }
+    // if (!(/^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/.test(tel))) {                      
+    //   layer.msg("手机号填写的格式不对，请正确填写");
+    //   return false;
+    // }
     console.log(videoName);
     var current_person=videoName[0];
     var office_person=videoName[1];

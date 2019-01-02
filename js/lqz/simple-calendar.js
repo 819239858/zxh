@@ -288,7 +288,7 @@ var SimpleCalendar = function () {
       //actions
       header.innerHTML = header.innerHTML + '<div class="sc-actions">' + '      <div class="sc-yleft">' + '        &lsaquo;</div>' + '      <select class="sc-select-year" name="">' + '      </select>' + '      <div class="sc-yright">&rsaquo;</div>' + '  </div>';
       header.innerHTML = header.innerHTML + '<div class="sc-actions">' + '    <div class="sc-mleft">' + '      &lsaquo;</div>' + '    <select class="sc-select-month" name="">' + '    </select>' + '    <div class="sc-mright">&rsaquo;</div>' + '</div>';
-      //header.innerHTML = header.innerHTML + '<div class="sc-actions"><span class="sc-return-today">打卡：<span style="color:#01dacf;margin-right: 20px;" id="has_clock">0次</span>未打卡：<span style="color:#ff8a8a" id="not_clock">30次</span></span></div>';
+      //header.innerHTML = header.innerHTML + '<div class="sc-actions"><span class="sc-return-today">打卡：<span style="color:#addc9d;margin-right: 20px;" id="has_clock">0次</span>未打卡：<span style="color:#ff8a8a" id="not_clock">30次</span></span></div>';
       header.innerHTML = header.innerHTML + '<div class="sc-actions"><span class="sc-time"></span></div>';
       scbody.innerHTML = ' <div class="sc-week"> </div> <div class="sc-days"> </div>';
       var week = scbody.querySelector('.sc-week');
@@ -448,54 +448,30 @@ var SimpleCalendar = function () {
         daysElement[i].querySelector('.day').innerHTML = writeday;
         //判断是否添加阴历
         if (this._options.showLunarCalendar) {
-          //this._options.mark======[{data: "2018-12-10", time: "15:50:13",
-          // position: "湖南省长沙市芙蓉区古曲中路642号靠近长沙银行(长沙嘉雨社区支行)",
-          // location: "113.037730,28.181059;"}]
-          //当天时间
+          
           var nTime= new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
-          //打卡时间的天数----17875
+         
           
           var day_time =Math.floor(nTime/86400);
-          //theday.getTime()  本月第一天
+          
           var dayend_time=Math.floor(theday.getTime()/86400000);
           var a=[];
           var  that=this;
-          //console.log(that._options.mark);
+         
           for(var x=0;x<that._options.mark.length;x++){
             var markDay=Math.floor(new Date(this._options.mark[x].data).getTime()/86400000);
             if (dayend_time > day_time) {
-              //本月还没到的时间(不包括今天)
+              
               daysElement[i].querySelector('.lunar-day').innerHTML="";
               daysElement[i].style.backgroundColor = '#fff';
               daysElement[i].style.color = '#565555';
             }else{
                 if(markDay == (dayend_time+1)){
-                  //記錄已經打卡的格子
+                 
                   a.push(i);
-                  //添加点击事件
-                  var position=that._options.mark[x].location;
-                  var data=that._options.mark[x].data+" "+that._options.mark[x].time;
-                  var location=that._options.mark[x].position;
                   
-                  console.log(data);
                   daysElement[i].addEventListener('click',function(){
-                    
-                    var add_resources='<ul class="ulText" style="width:100%;padding:20px;text-align:left;">' +
-                      '<li><label>打卡时间：</label><span id="textData"></span></li>' +
-                      '<li><label>地址：</label><span id="textPos"></span></li>' +
-                      "<li><label>坐标：</label><input class=\"enter_map\" type=\"button\" value=\"回显位置\" onclick=\"echo_map(\'"+position+"',"+'1'+")\" style=\'width: 65px;border:none;background: #01dacf;color: #fff;\'>" +
-                      '</li></ul>';     
-                    layer.confirm(add_resources, {
-                      title:'打卡信息',
-                      type: 1,
-                      closeBtn: 1, //关闭按钮
-                      anim: 2,
-                      skin: 'layui-layer-molv',
-                      shadeClose: true, //开启遮罩关闭
-                      btnAlign: 'c',
-                    })
-                    $("#textData").html(data);
-                    $("#textPos").html(location);
+                    allText(that._options.mark);
                   });
 
                 }else{
@@ -524,6 +500,30 @@ var SimpleCalendar = function () {
           daysElement[i].classList.add("sc-today");
         }
       };
+
+        function allText(e){ 
+          var all='<div id="allTextByOption"></div>';
+          layer.confirm(''+all+'', {
+                      title:'本月打卡信息',
+                      type: 1,
+                      closeBtn: 1, //关闭按钮
+                      anim: 2,
+                      skin: 'layui-layer-molv',
+                      shadeClose: true, //开启遮罩关闭
+                      btnAlign: 'c',
+                      area: ['650px', '450px;'],
+                    })
+          for(var i=0;i<e.length;i++){
+            var option='<ul class="ulText" style="width:100%;padding:20px;text-align:left;">' +
+            '<li><label>打卡时间：</label><span id="textData">'+e[i].data+'</span></li>' +
+            '<li><label>地址：</label><span id="textPos">'+e[i].position+'</span></li>' +
+            "<li><label>坐标：</label><input class=\"enter_map\" type=\"button\" value=\"回显位置\" onclick=\"echo_map(\'"+e[i].location+"',"+'1'+")\" style=\'width: 65px;border:none;background: #addc9d;color: #fff;\'>" +
+            '</li></ul>';
+            $('#allTextByOption').append(option);
+
+          }
+        
+        }
       // 总天数
       number_days=daysElement.length-list_time.length;
     }
@@ -731,54 +731,54 @@ var SimpleCalendar = function () {
       var monthadd = container.querySelector('.sc-mright');
       var monthsub = container.querySelector('.sc-mleft');
 
-      yearadd.onclick = function () {
-        var currentyear = selectYear.value;
-        if (currentyear < 2049) currentyear++;
-        selectYear.value = currentyear;
-        var currentmonth = selectMonth.value;
+      // yearadd.onclick = function () {
+      //   var currentyear = selectYear.value;
+      //   if (currentyear < 2049) currentyear++;
+      //   selectYear.value = currentyear;
+      //   var currentmonth = selectMonth.value;
         
-        selectMonth.value = currentmonth;
-        var options_this=calendar;
-        calendar.update(currentmonth, currentyear);
-        var options_this=calendar;
-        report_index233(tel,userName,currentyear,currentmonth,options_this);
-      };
-      yearsub.onclick = function () {
-        var currentyear = selectYear.value;
-        if (currentyear > 2000) currentyear--;
-        selectYear.value = currentyear;
-        var currentmonth = selectMonth.value;
+      //   selectMonth.value = currentmonth;
+      //   var options_this=calendar;
+      //   calendar.update(currentmonth, currentyear);
+      //   var options_this=calendar;
+      //   report_index233(tel,userName,currentyear,currentmonth,options_this);
+      // };
+      // yearsub.onclick = function () {
+      //   var currentyear = selectYear.value;
+      //   if (currentyear > 2000) currentyear--;
+      //   selectYear.value = currentyear;
+      //   var currentmonth = selectMonth.value;
         
-        selectMonth.value = currentmonth;
-        var options_this=calendar;
-        calendar.update(currentmonth, currentyear);
-        var options_this=calendar;
-        report_index233(tel,userName,currentyear,currentmonth,options_this);
-      };
-      monthadd.onclick = function () {
-        var currentmonth = selectMonth.value;
-        var currentyear = selectYear.value;
-        if (currentmonth < 12) currentmonth++;else {
-          currentmonth = 1;
-          selectYear.value = ++currentyear;
-        };
-        selectMonth.value = currentmonth;
-        calendar.update(currentmonth, currentyear);
-        var options_this=calendar;
-        report_index233(tel,userName,currentyear,currentmonth,options_this);
-      };
-      monthsub.onclick = function () {
-        var currentmonth = selectMonth.value;
-        var currentyear = selectYear.value;
-        if (currentmonth > 1) currentmonth--;else {
-          currentmonth = 12;
-          selectYear.value = --currentyear;
-        }
-        selectMonth.value = currentmonth;
-        calendar.update(currentmonth, currentyear);
-        var options_this=calendar;
-        report_index233(tel,userName,currentyear,currentmonth,options_this);
-      };
+      //   selectMonth.value = currentmonth;
+      //   var options_this=calendar;
+      //   calendar.update(currentmonth, currentyear);
+      //   var options_this=calendar;
+      //   report_index233(tel,userName,currentyear,currentmonth,options_this);
+      // };
+      // monthadd.onclick = function () {
+      //   var currentmonth = selectMonth.value;
+      //   var currentyear = selectYear.value;
+      //   if (currentmonth < 12) currentmonth++;else {
+      //     currentmonth = 1;
+      //     selectYear.value = ++currentyear;
+      //   };
+      //   selectMonth.value = currentmonth;
+      //   calendar.update(currentmonth, currentyear);
+      //   var options_this=calendar;
+      //   report_index233(tel,userName,currentyear,currentmonth,options_this);
+      // };
+      // monthsub.onclick = function () {
+      //   var currentmonth = selectMonth.value;
+      //   var currentyear = selectYear.value;
+      //   if (currentmonth > 1) currentmonth--;else {
+      //     currentmonth = 12;
+      //     selectYear.value = --currentyear;
+      //   }
+      //   selectMonth.value = currentmonth;
+      //   calendar.update(currentmonth, currentyear);
+      //   var options_this=calendar;
+      //   report_index233(tel,userName,currentyear,currentmonth,options_this);
+      // };
 
       /*var returntoday = container.querySelector('.sc-return-today');
       returntoday.onclick = function () {

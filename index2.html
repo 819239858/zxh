@@ -12,7 +12,7 @@
     <script src="javascript/jquery.SuperSlide.2.1.1.js"></script>
     <script src="javascript/public.js"></script>
     <script src="javascript/pages/login.js"></script>
-    <script src="javascript/plug-ins/pagination.js"></script>
+    <script src="javascript/plug-ins/oldPage.js"></script>
     <script src="javascript/public.js?v=1.4.0"></script>
 
     <script src="website/main.js"></script>
@@ -58,6 +58,7 @@
         <img src="img/postion.png"/>
         当前位置：<a href="index2.html">网站首页 &gt;</a>
         <span></span>
+        <i onclick="returnMenu()">&emsp;&emsp;返回</i>
     </div>
     
     <div class="main" id="main">
@@ -67,7 +68,7 @@
                 <p class="title">防火新闻</p>
                 <ul class="article" id="article1" style="width:50%;margin-right: 4%;">
                 </ul>
-                <a href="javascript:;" class="more" onclick="menu_1()">更多&nbsp;&gt;</a>
+                <a href="javascript:;" class="more" onclick="menu1()">更多&nbsp;&gt;</a>
                 <div id="slideBox" class="slideBox">
                     <!-- 文字 -->
                     <div class="td"><ul></ul></div>
@@ -98,7 +99,7 @@
             <p class="title">当前火情</p>
             <ul class="article" id="article2">
             </ul>
-            <a href="javascript:;" class="more" onclick="menu_3()">更多&nbsp;&gt;</a>
+            <a href="javascript:;" class="more" onclick="menu3()">更多&nbsp;&gt;</a>
         </div>
         
         <div class="clearfix">
@@ -106,13 +107,13 @@
                 <p class="title">火险预报</p>
                 <ul class="article" id="article3">
                 </ul>
-                <a href="javascript:;" class="more" onclick="menu_2()">更多&nbsp;&gt;</a>
+                <a href="javascript:;" class="more" onclick="menu2()">更多&nbsp;&gt;</a>
             </div>
             <div class="section" style="width:568px;">
-                <p class="title">经验交流</p>
+                <p class="title">防火知识</p>
                 <ul class="article" id="article4">
                 </ul>
-                <a href="javascript:;" class="more" onclick="menu_4()">更多&nbsp;&gt;</a>
+                <a href="javascript:;" class="more" onclick="menu4()">更多&nbsp;&gt;</a>
             </div>
         </div>
        
@@ -144,12 +145,17 @@
             </li>
             <li class="borderLi">
                 <a href="http://127.16.1.7" target="_blank">
-                    <img src="img/logo/san.jpg" alt="" >
+                    <img src="img/logo/psan.png" alt="" > 
+                </a>
+            </li>
+            <li class="borderLi">
+                <a href="http://60.205.191.66/FireReport/Account/LogOn?returnUrl=%2FFireReport" target="_blank">
+                    <img src="img/logo/si2.png" alt="">
                 </a>
             </li>
             <li>
-                <a href="http://60.205.191.66/FireReport/Account/LogOn?returnUrl=%2FFireReport" target="_blank">
-                    <img src="img/logo/si.jpg" alt="">
+                <a href="http://www.forestry.gov.cn/HN.html" target="_blank">
+                    <img src="img/logo/wu.png" alt="" >
                 </a>
             </li>
         </ul>

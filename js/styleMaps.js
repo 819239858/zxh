@@ -17,6 +17,7 @@ var videotype = new Map();
 var news_Type = new Map();
 var sign = new Map();
 var seenLevel=new Map();
+var loadType=new Map();
 
 userLevel.put(1,"省");
 userLevel.put(2,"市");
@@ -124,3 +125,8 @@ seenLevel.put("4","森林防火简报");
 seenLevel.put("5","森林火情专报");
 seenLevel.put("6","天气预报 预警信息");
 seenLevel.put("7","湖南省应急管理厅");
+
+loadType.put(1,"web端");
+loadType.put(2,"护林员App");
+loadType.put(3,"消防员App");
+loadType.put(4,"无人机App");

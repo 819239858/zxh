@@ -111,7 +111,7 @@ $("#citySel").click(function(event){
 //下拉框选择
 $("#cityList>li").each(function(){
 	$(this).click(function(event){
-		console.log('点击');
+		
 		event.stopPropagation(); 
 		// 再次点击删除
 		for(var i=0;i<arr.length;i++){
@@ -242,7 +242,7 @@ function handelData(resArr){
 	var seriesArr=[];
 	for(var i=0;i<arr.length;i++){
 		var line=new Line(arr[i],"line","总量"+i,staticData[arr[i]].data);
-		console.log(line);
+		
 		seriesArr.push(line);
 	}
 	var option = {

@@ -7,12 +7,9 @@ function sj() {
     $(".mail_index").hide().eq(1).show();
     $(".search_area li").addClass("progressing").eq(0).siblings().removeClass("progressing");
 }
-
 // 点击选中指派对象
 var ss=[];var username=[];
-
 var text=[];
-
 // 首页----显示已读邮件，未读邮件
 function index1() {
     sendAjax({
@@ -25,11 +22,11 @@ function index1() {
                 if(result.unread_count=='undefined' || result.unread_count==null){
                     $(".tz2 span").html('0');
                     $(".title2").html('0');
-                    $("#tongz").html('0');
+                   
                 }else{
                     $(".tz2 span").html(result.unread_count);
                     $(".title2").html(result.unread_count);
-                    $("#tongz").html(result.unread_count);
+                   
                 }
             }else{
                 layer.msg("请求失败，稍后重试！");
@@ -72,7 +69,7 @@ function information(e) {
                                     var result = result.var.data;
                                     for (var i = 0; i < result.length; i++) {
                                         if (result[i].status=='0') {isReply='未读'}else{isReply='已读'}
-                                        if (result[i].other_path.length==0) {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                                        if (result[i].other_path.length==0) {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                                         $("#complete_report2").append(
                                             "<tr><td><input type=\"checkbox\" onclick=\"single_check(this)\" name=\"check_name\"  data-name=\"" + result[i].id + "\"></td><td>" + isReply + "</td><td>" + result[i].theme + "</td><td>" + result[i].sender_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">详情</a><a onclick=\"new_office(" + result[i].sender_tel + ")\">回复</a></td></tr>"
                                         );
@@ -88,7 +85,7 @@ function information(e) {
                     });
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].status=='0') {isReply='未读'}else{isReply='已读'}
-                        if (result[i].other_path.length==0) {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                        if (result[i].other_path.length==0) {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                         $("#complete_report2").append(
                             "<tr><td><input type=\"checkbox\" onclick=\"single_check(this)\"  name=\"check_name\"  data-name=\"" + result[i].id + "\"></td><td>" + isReply + "</td><td>" + result[i].theme + "</td><td>" + result[i].sender_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">详情</a><a onclick=\"new_office(" + result[i].sender_tel + ")\">回复</a></td></tr>"
                         );
@@ -131,7 +128,7 @@ function information(e) {
                                     $("#complete_track").html('');
                                     var result = result.var.data;
                                     for (var i = 0; i < result.length; i++) {
-                                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                                         $("#complete_track").append(
                                             "<tr><td><input type=\"checkbox\" onclick=\"single_check_send(this)\" name=\"check_name1\"  data-name=\"" + result[i].id + "\"></td><td>" + result[i].theme + "</td><td>" + result[i].recipient_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">详情</a></td></tr>"
                                         );
@@ -145,7 +142,7 @@ function information(e) {
                         }
                     });
                     for (var i = 0; i < result.length; i++) {
-                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                         $("#complete_track").append(
                             "<tr><td><input type=\"checkbox\" name=\"check_name1\" onclick=\"single_check_send(this)\" data-name=\"" + result[i].id + "\"></td><td>" + result[i].theme + "</td><td>" + result[i].recipient_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">详情</a></td></tr>"
                         );
@@ -187,7 +184,7 @@ function information(e) {
                                 "data":{"theme":title,"per_page": 20,"current_page": p,"status":"0"},"callback":function(result){
                                     var result = result.var.data;
                                     for (var i = 0; i < result.length; i++) {
-                                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                                         $("#complete_report3").append(
                                             "<tr><td><input type=\"checkbox\" onclick=\"single_check_save(this)\" name=\"check_name2\"  data-name=\"" + result[i].id + "\"></td><td>" + result[i].theme + "</td><td>" + result[i].recipient_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">再次编辑</a></td></tr>"
                                         );
@@ -202,7 +199,7 @@ function information(e) {
                         }
                     });
                     for (var i = 0; i < result.length; i++) {
-                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                        if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                         $("#complete_report3").append(
                             "<tr><td><input type=\"checkbox\" name=\"check_name2\" onclick=\"single_check_save(this)\" data-name=\"" + result[i].id + "\"></td><td>" + result[i].theme + "</td><td>" + result[i].recipient_name + "</td><td>" + result[i].region_name + "</td><td>" + attach + "</td><td>" + result[i].create_time + "</td><td><a class=\"mr-5\">再次编辑</a></td></tr>"
                         );
@@ -243,7 +240,7 @@ function information(e) {
                             "data":{"theme":title,"per_page": 20,"current_page": p},"callback":function(result){
                                 var result = result.var.data;
                                 for (var i = 0; i < result.length; i++) {
-                                    if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                                    if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                                     $("#complete_report4").append(
                                         "<tr><td>" + result[i].recipient_tel + "</td><td>" + result[i].theme + "</td><td>" + attach + "</td><td>" + result[i].send_time + "</td><td><a class=\"mr-5\">详情</a></td></tr>"
                                     );
@@ -258,7 +255,7 @@ function information(e) {
                     }
                 });
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#01dacf"></i>'}
+                    if (result[i].other_path=='') {attach=''}else{attach='<i class="icon-file" style="color:#addc9d"></i>'}
                     $("#complete_report4").append(
                         "<tr><td>" + result[i].recipient_tel + "</td><td>" + result[i].theme + "</td><td>" + attach + "</td><td>" + result[i].send_time + "</td><td><a class=\"mr-5\">详情</a></td></tr>"
                     );
@@ -427,9 +424,6 @@ function audit_th(fireId) {
         title: '提示',
         btnAlign: 'c'
     }, function() {
-        // if (fireId!=undefined) {
-        //     name_array=fireId;
-        // }
         sendAjax({
             "url":"fire/mail/delOutbox",
             "data":{"ids[]":name_array},"callback":function(result){
@@ -464,7 +458,7 @@ $(function() {
     $(".introduction p span").html(name+"，"+msg[Math.floor(Math.random() * msg.length)]);
     var city= sessionStorage.getItem("liveCity");
     
-    if (city=='湖南省'||city=='') {
+    if (city=='湖南省'||city==''||city=='城市') {
         city='长沙市';
     }else if (city.length>3) {
         city=city.substring(3);
@@ -473,7 +467,6 @@ $(function() {
         var weather = new AMap.Weather();
         weather.getLive(city, function(err, data) {
             if (!err) {
-                
                 var str = [];
                 if (data.weather=="多云"||data.weather=="阵雨") {$('.imgtq').attr('src','img/lqz/01.png')}
                 if (data.weather=="晴") {$('.imgtq').attr('src','img/lqz/00.png')}
@@ -497,8 +490,8 @@ $(function() {
 function new_office(name,id) {
     text=[];
     if(name == undefined){
-        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li  class='label1'><label><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
-            "<select id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
+        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li  class='label1'><label><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query3(this,value,value)\" style=\"width:75px\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
+            "<select id=\"hot_city\" onchange=\"user_query(value,this)\" style=\"width:75px\"></select><select style=\"width:75px\" id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(value,this)\"></select><select style=\"width:75px\" id=\"area_sx\" class=\"remove_disabled\" onchange=\"user_query(value,this)\"></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
     }else{
         var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li  class='label1'><label><i style='color:red'>*</i>收件人：</label><input type=\"text\" class=\"form-control form-boxed\" class=\"userphoneSetInput\" value=\"\" id=\"userphone\">" +
             "<li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>"
@@ -515,7 +508,6 @@ function new_office(name,id) {
         shadeClose: true, //开启遮罩关闭
     }, function(){
         var sender = sessionStorage.getItem("uname");
-        // var receive = $('#userphone').attr("data-name");
         var receive = text.join(",");
         if(name==undefined){
             //发送邮件
@@ -606,23 +598,12 @@ function new_office(name,id) {
 function article(result) {
     text=[];
     if(result.other_path.length>0){
-        // var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li><label><i style='color:red'>*</i>收件人：</label><input type=\"text\" class=\"form-control form-boxed\"  id=\"userphone\"><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
-        // "</li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\""+result.theme+"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"><a href=\"../uploads/"+result.other_path[0].path+"\" >"+result.other_path[0].path+"</a></span></li>" +
-        // "<li><textarea id=\"edit\">"+"</textarea></li>" +
-        // "<li><label>发件人：</label><span id=\"senderPer\">"+sessionStorage.getItem("uname")+"</span></li><ul>";
-        
-        // var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li class='label1'><label ><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
-        // "<select id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"><a href=\"../uploads/"+result.other_path[0].path+"\" >"+result.other_path[0].path+"</a></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
-        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li class='label1'><label ><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
-        "<select id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><span class=\"videoname\"><a href=\"../uploads/"+result.other_path[0].path+"\" >"+result.other_path[0].path+"</a></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
-
+        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li class='label1'><label ><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\" style=\"width:75px\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
+        "<select id=\"hot_city\" style=\"width:75px\" onchange=\"user_query(this)\"></select><select style=\"width:75px\" id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select style=\"width:75px\" id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><span class=\"videoname\"><a href=\"../uploads/"+result.other_path[0].path+"\" >"+result.other_path[0].path+"</a></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
     }else{
-        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li class='label1'><label><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
-            "<select id=\"hot_city\" onchange=\"user_query(this)\"></select><select  id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
-    
+        var add_resources ="<ul class=\"form_sub form_sub_release\" style=\"width:750px\"><li class='label1'><label><i style='color:red'>*</i>收件人：</label><div type=\"text\" class=\"getPerMail\"  id=\"userphone\"></div><div id=\"user_query1\"></div><select id=\"people\" class=\"remove_disabled\" onchange=\"user_query(this,value,value)\" style=\"width:75px\"><option value='1'>后台用户</option><option value='3'>消防员</option><option value='2'>护林员</option><option value='4'>无人机</option><option value='5'>载人机</option></select>" +
+            "<select id=\"hot_city\" style=\"width:75px\" onchange=\"user_query(this)\"></select><select style=\"width:75px\" id=\"city_sx\" class=\"remove_disabled\" onchange=\"user_query(this)\"></select><select style=\"width:75px\" id=\"area_sx\" class=\"remove_disabled\" ></select><div id=\"user_query\"></div></li><li><label><i style='color:red'>*</i>主题：</label><input type=\"text\" class=\"form-control form-boxed\" value=\"\" id=\"usertitle\"></li><li><label>添加附件：</label><input type=\"file\" id=\"photoName1\" class=\"upFileBtn\"/><a class=\"fileInput\">添加附件</a><i style='margin-left: 10px;font-size: 12px;color:red'>格式为：zip、doc、xls、ppt、pdf、rar</i><span class=\"videoname\"></span></li><li style='height: 320px;overflow: auto;'><textarea id=\"edit\"></textarea></li><li><label>发件人：</label><span>"+sessionStorage.getItem("name")+sessionStorage.getItem("uname")+"</span></li><ul>";
     }
-    
-    
     layer.confirm(add_resources, {
         type: 1,
         closeBtn: 1, //关闭按钮
@@ -635,11 +616,6 @@ function article(result) {
         shadeClose: true, //开启遮罩关闭
     }, function(){
         var sender = sessionStorage.getItem("uname");
-        //var receive = $('#userphone').val();
-        // var receive = $('#userphone').attr("data-name");
-        // if (receive==undefined||receive=='') {receive=$('#userphone').val();}
-        //邮件的时候，还有全部人的发送未完成
-
         var theme =$('#usertitle').val();
         var content =$('#edit').val();
          //result.other_path[0].other_path
@@ -648,7 +624,6 @@ function article(result) {
         }else{
             var accessory=videoName.join();
         }
-        
             sendAjax({
                 "url":"fire/mail/sendMail",
                 "data":{"id":result.id,"sender":sender,"theme":theme,"content":content,"accessory":accessory,
@@ -667,7 +642,6 @@ function article(result) {
                     layer.msg("错误！！");
                 }
             });
-        
     }, function(){
         sendAjax({
             "url":"fire/mail/delOutbox",
@@ -677,7 +651,6 @@ function article(result) {
                     document.getElementById("all").checked = false;
                     information();
                     text=[];
-                    
                 }else {
                     layer.msg(result.var)
                 }
@@ -692,15 +665,11 @@ function article(result) {
             }
         })
     }, function(){
-       
     });
 
     $('#edit').val(result.content);
     $('#usertitle').val( result.theme);
     $('#senderPer').val(sessionStorage.getItem("name")+sessionStorage.getItem("uname"));
-    //收件人
-    // recipient_name:"邵阳市阳荣峰,张三丰"
-    // recipient_tel:"15500000022,18684770665"
     if(result.recipient_name.indexOf(',')!=-1){
         //存在多个人的时候
         var name=result.recipient_name.split(',');
@@ -719,9 +688,6 @@ function article(result) {
 
     var all_citys=localStorage.getItem('Public_city');
     $('#hot_city').html(all_citys);
-
-    //$("#userphone").attr("disabled","disabled");
-    //$("select").hide();
     $('#edit').editable({inlineMode: false,language: "zh_cn",alwaysBlank: true,contenteditable:true});
 
     $("#photoName1").takungaeOtherup({
@@ -733,7 +699,6 @@ function article(result) {
         id:"videoname"
     });
 }
-
 // 收件1+发件2邮件详情
 function report_index(result,status) {
     
@@ -851,17 +816,13 @@ function report_index1(result) {
         layer.closeAll('page');
     });
 }
-
 all=[];
-
-// 搜索用户查询
-function user_query(e,id,price) {
+// 城市搜索用户查询
+function user_query(region,e,id,price) {
     // callback1();
     if (id==undefined) {
       id=$("#people").val();
     }
-    var region=$("#hot_city").val();
-    $("#city_sx").val()==''||$("#city_sx").val()==undefined?region=$("#hot_city").val():$("#area_sx").val()==''||$("#area_sx").val()==undefined?region=$("#city_sx").val():region=$("#area_sx").val();
     var dom = $(e).next();
     sendAjax({
       "url":"fire/region/getRegion",
@@ -891,53 +852,110 @@ function user_query(e,id,price) {
       "data":{"mold_type":id,"region":region},"callback":function(data){
         if (data.code=="s_ok") {
           $("#user_query").show();
-          $("#user_query").children('span').remove();
+          $("#user_query").children('p').remove();
           all=data.var;
           var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area_sx option:selected').text()==''?$('#city_sx option:selected').text():$('#area_sx option:selected').text());
+          var pro=localStorage.getItem('pro_setItem');
           if(city=='城市'){
-            city='湖南省'
+            city=pro;
             }
           if (price!=undefined) {
             $("#userphone").attr("data-name",'');
-            $("#user_query").append("<span onclick=\"selected(this)\" data-name=\"43\">"+city+"</span>");
+            $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
           }else{
             $("#userphone").attr("data-name",'');
-            $("#user_query").append("<span onclick=\"selected(this)\" data-name=\""+region+"\">"+city+"</span>");
+            $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
           }
-          for (var i = 0; i < data.var.length; i++) {
-            $("#user_query").append("<span onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name + "</span>");
+          if (data.var.length!=0){
+            for (var i = 0; i < data.var.length; i++) {
+                $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name + '-'+data.var[i].tel +"</p>");
+            }
           }
-        }else if (data.var.length==0){
-          layer.msg('查询数据为空');
-          $("#user_query").children('span').remove();
-        }else{
+        }else {
           layer.msg('查询失败');
         }
       }
     });
 }
+function user_query3(e,id,price) {
+    if (id==undefined) {
+        id=$("#people").val();
+      }
+      var region=$("#hot_city").val();
+      $("#city_sx").val()==''||$("#city_sx").val()==undefined?region=$("#hot_city").val():$("#area_sx").val()==''||$("#area_sx").val()==undefined?region=$("#city_sx").val():region=$("#area_sx").val();
+      var dom = $(e).next();
+      sendAjax({
+        "url":"fire/region/getRegion",
+        "data":{"parentId":region},"callback":function(data){
+          if (price!=undefined) {
+            // $(dom).next().children('option').remove();
+          }else{
+            $(dom).children('option').remove();
+            $(dom).next("#area").children('option').remove();
+            $(dom).next("#area_sx").children('option').remove();
+            $(dom).next("#village").children('option').remove();
+            $(dom).append("<option></option>");
+            if (data.code=="s_ok") {
+              $.each(data.var, function(i, element) {
+                var op = $("<option></option>").attr({ 'value': element.id, }).html(element.name);
+                $(dom).append(op);
+              });
+            }
+          } 
+        },
+        error: function(e) {
+          layer.msg("错误！！");
+        }
+      });
+      sendAjax({
+        "url":"fire/user/getUserByNameOrTel",
+        "data":{"mold_type":id,"region":region},"callback":function(data){
+          if (data.code=="s_ok") {
+            $("#user_query").show();
+            $("#user_query").children('p').remove();
+            all=data.var;
+            var city=$('#city_sx option:selected').text()==''?$('#hot_city option:selected').text():($('#area_sx option:selected').text()==''?$('#city_sx option:selected').text():$('#area_sx option:selected').text());
+            var pro=localStorage.getItem('pro_setItem');
+            if(city=='城市'){
+              city=pro
+            }
+            if (price!=undefined) {
+              $("#userphone").attr("data-name",'');
+              $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
+            }else{
+              $("#userphone").attr("data-name",'');
+              $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+id+"_"+region+"\">"+city+"</p>");
+            }
+            if (data.var.length!=0){
+                for (var i = 0; i < data.var.length; i++) {
+                    $("#user_query").append("<p onclick=\"selected(this)\" data-name=\""+data.var[i].tel+"\">" + data.var[i].name+'-'+data.var[i].tel + "</p>");
+                  }
+              }        
+          }else {
+            layer.msg('查询失败');
+          }
+        }
+      });
+}
 // 搜索用户查询--点击
 function selected(e) {
 var number=e.getAttribute('data-name');
 if(text.length<1){
-
-    var html="<div class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></div>";
+    var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
     text.push(number); 
     $("#userphone").append(html); 
 }else{
     if(text.indexOf(number)==-1){
         
-        var html="<div class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></div>";
+        var html="<p class='setBoxSpanDel' onclick='delThis(this)' data-name=\""+number+"\"><span>"+e.innerHTML+"</span><i >x</i></p>";
         text.push(number); 
         $("#userphone").append(html); 
     }
 }  
 };
-
 //收件人点击删除
 function delThis(e){
     e.remove();
     var number=e.getAttribute('data-name');
     text.splice(text.indexOf(number),1); 
 }
-

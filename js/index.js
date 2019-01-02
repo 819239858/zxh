@@ -39,13 +39,29 @@ $(function() {
         character="管理员";
     }
     $("#user_user span").html(city+'-'+character+'：'+user);
-    $("#mobile_app_download").click(function() {
-        var app="<div class='styleCss' style='display:inline-block;margin-right:25px'><img src='img/apk/hunan/apk/hly_php.png' style='width: 195px'><p>护林员APP</p><p>版本号：1.05</p><p>更新日期：2018-12-6</p>" +
-            "</div><div class=\"styleCss\" style='display:inline-block;margin-right:25px'><img src='img/apk/hunan/apk/xfy_php.png' style='width: 195px'><p>消防员APP</p><p>版本号：1.05</p><p>更新日期：2018-12-6</p></div>"+
-            "<div class=\"styleCss\" style='display:inline-block;margin-right:20px'><img src='img/apk/hunan/apk/wrj_php.png' style='width: 195px'><p>无人机APP</p><p>版本号：1.05</p><p>更新日期：2018-11-8</p></div>";
+  
+    //护林员APP下载
+    $("#menu_31").click(function() {
+        var app="<div class='styleCss' style='display:inline-block;'><img src='img/apk/hunan/apk/hly_php.png' style='width: 195px'><p>护林员APP</p><p>版本号：1.05</p><p>更新日期：2018-12-28</p></div>";
         layer.alert(app, {
-            skin: 'layui-layer-molv',title:'APP下载'
-            ,closeBtn: 0,anim: 4,btnAlign: 'c',area:['800px','350px']
+            skin: 'layui-layer-molv',title:'护林员APP下载'
+            ,closeBtn: 0,anim: 4,btnAlign: 'c',area:['400px','350px']
+        });
+    });
+    //消防员APP下载
+    $("#menu_32").click(function() {
+        var app="<div class='styleCss' style='display:inline-block;'><img src='img/apk/hunan/apk/xfy_php.png' style='width: 195px'><p>消防员APP</p><p>版本号：1.05</p><p>更新日期：2018-12-28</p></div>";
+        layer.alert(app, {
+            skin: 'layui-layer-molv',title:'消防员APP下载'
+            ,closeBtn: 0,anim: 4,btnAlign: 'c',area:['400px','350px']
+        });
+    });
+    //无人机APP下载
+    $("#menu_33").click(function() {
+        var app="<div class='styleCss' style='display:inline-block;'><img src='img/apk/hunan/apk/wrj_php.png' style='width: 195px'><p>无人机APP</p><p>版本号：1.05</p><p>更新日期：2018-12-28</p></div>";
+        layer.alert(app, {
+            skin: 'layui-layer-molv',title:'无人机APP下载'
+            ,closeBtn: 0,anim: 4,btnAlign: 'c',area:['400px','350px']
         });
     });
     // 页面加载
@@ -319,6 +335,12 @@ $(function() {
         //隐藏地图
         stopInterval();
     });
+    $('#menu_40').click(function(){
+        $("#index_main_context").load("loading.html");
+        $("#index_titel").html("登录记录");
+        //隐藏地图
+        stopInterval();
+    });
     /**
      * 历史视频数据
      */
@@ -408,13 +430,15 @@ function returnDer(id,set) {
 //查询权限
 function callback1() {
     var region= sessionStorage.getItem("region");
-    var character = sessionStorage.getItem("userLevel");
-    console.log(region,character)
+    var character = sessionStorage.getItem("userLevel");   
     if (character!='3'&&region!='43') {
         $("#province option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
+        $("#task_province option[value='" + region+ "']").prop("selected", "selected");
         $("#hot_city option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
         $("#fireArea option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
-        $("#province").change();$("#hot_city").change();$("#fireArea").change();
+        $("#province").change();
+        $("#task_province").change();
+        $("#hot_city").change();$("#fireArea").change();
         if (region.length>4){
             $("#city option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
             $("#city_sx option[value='" + region+ "']").prop("selected", "selected").parent().css("background-color","#f2f2f2").prop("disabled", "disabled");
@@ -427,11 +451,10 @@ function callback1() {
         }
     }
 }
-
 //渲染城市范围线
 function addBeiJing(city) {
     var city= sessionStorage.getItem("liveCity");
-    // console.log(city);
+   
     if (city=='43'||city==''||city=='省'||city==undefined) {city='湖南省'}
     if (city=='湘西自治州') {city='土家族苗族自治州'}
     //加载云图层插件
@@ -460,12 +483,12 @@ function addBeiJing(city) {
                         //生成行政区划polygon
                         var polygon = new AMap.Polygon({
                             map: map,
-                            strokeWeight: 2,
+                            strokeWeight: 3,
                             path: bounds[i],
                             fillOpacity: 0.01,
                             fillColor: '#fff',
                             //strokeColor: 'red'
-                            strokeColor: a
+                            strokeColor: '#ff0000'
                         });
                         polygons.push(polygon);
                     }

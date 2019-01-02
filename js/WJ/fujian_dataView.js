@@ -687,7 +687,7 @@ function getYearData(allArr) {
 //每年每月切换
 function change_day(dayPic, dayBtn, yearPic, yearBtn) {
     $(dayPic).css('display', 'block');
-    $(dayBtn).css('background-color', '#01dacf');
+    $(dayBtn).css('background-color', '#addc9d');
     $(dayBtn).css('color', '#fff');
     $(yearPic).css('display', 'none');
     $(yearBtn).css('background-color', '#fff');
@@ -699,6 +699,6 @@ function change_year(dayPic, dayBtn, yearPic, yearBtn) {
     $(dayBtn).css('background-color', '#fff');
     $(dayBtn).css('color', '#000');
     $(dayPic).css('display', 'none');
-    $(yearBtn).css('background-color', '#01dacf');
+    $(yearBtn).css('background-color', '#addc9d');
     $(yearBtn).css('color', '#fff');
 };
